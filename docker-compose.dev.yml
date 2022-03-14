@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: my-app-backend
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    environment:
+      FLASK_ENV: development
+    # healthcheck
+    volumes: 
+      - ./backend/src:/usr/src
+    container_name: my-app-backend
+    ports:
+      - 5000:5000
