@@ -1,14 +1,47 @@
 services:
   backend:
-    image: my-app-backend
+    image: todo-app-backend-dev
     build:
       context: ./backend
       dockerfile: dev.Dockerfile
     environment:
       FLASK_ENV: development
+      DB_URL: postgresql://postgres:password@postgres-db:5432/todo-db
     # healthcheck
+    depends_on:
+      postgres-db:
+        condition: service_healthy
     volumes: 
       - ./backend/src:/usr/src
-    container_name: my-app-backend
+    container_name: todo-app-backend-dev
     ports:
       - 5000:5000
+
+  postgres-db:
+      image: postgres:14.2-alpine
+      ports:
+        - 5432:5432
+      restart: always
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+      environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: todo-db
+      container_name: todo-app-postgres-dev
+      volumes:
+        - ./postgres_dev_data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: todo-pgadmin-dev
+    image: dpage/pgadmin4
+    restart: always
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      GUNICORN_ACCESS_LOGFILE: /dev/null
+    ports:
+      - "8098:80"
