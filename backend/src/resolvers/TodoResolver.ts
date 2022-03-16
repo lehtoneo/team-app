@@ -5,7 +5,7 @@ import { Todo } from '../models/Todo';
 import {
   EdgeType,
   ConnectionType,
-  ConnectionArgs,
+  PaginationInput,
   PageInfo
 } from '../relaySpec';
 import { Raw, MoreThan, LessThan } from 'typeorm';
@@ -28,10 +28,10 @@ export class TodoResolver {
 
   @Query(() => TodoConnection)
   async todoConnection(
-    @Args() connArgs: ConnectionArgs
+    @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput
   ): Promise<TodoConnection> {
-    const first = connArgs.first || 10;
-    const after = connArgs.after || new Date('1800-01-01').toISOString();
+    const first = connArgs?.first || 10;
+    const after = connArgs?.after || new Date('1800-01-01').toISOString();
 
     const afterIsDate = !isNaN(Date.parse(after));
     if (!afterIsDate) {

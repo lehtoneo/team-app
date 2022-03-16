@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import TodoList from './components/TodoList';
-import { todoService } from './services/todo';
-import { Todo } from './types';
+import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+
+import { getApolloClient } from './utils/ApolloClient';
+import LandingPage from './components/pages/LandingPage';
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  useEffect(() => {
-    const fetchTodos = async () => {
-      const todoResult = await todoService.getAll();
-      console.log({ todoResult });
-      setTodos(todoResult);
-    };
-    fetchTodos();
-  }, []);
+  const apolloClient = getApolloClient();
+
   return (
-    <div className="App">
-      <h1>Todo app</h1>
-      <TodoList todos={todos} />
-    </div>
+    <ApolloProvider client={apolloClient}>
+      <div className="App">
+        <h1>Todo app</h1>
+        <LandingPage />
+      </div>
+    </ApolloProvider>
   );
 }
 

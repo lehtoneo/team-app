@@ -7,8 +7,8 @@ import {
   InputType
 } from 'type-graphql';
 import { Min, Max } from 'class-validator';
-@ArgsType()
-export class ConnectionArgs {
+@InputType()
+export class PaginationInput {
   @Field((type) => String, {
     nullable: true,
     description: 'Paginate after opaque cursor'
