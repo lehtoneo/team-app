@@ -3,7 +3,7 @@
 ## Build dev
 
 ``` 
-docker build -f dev.Dockerfile -t my-app-backend .
+docker build -f dev.Dockerfile -t todo-app-backend-dev .
 ```
 
 ## Install deps
