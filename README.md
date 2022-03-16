@@ -1,9 +1,9 @@
 # My todo app
 
-Backend is Python Rest API and frontend is a Next JS app
+Backend is Python Rest API and frontend is a React app (create-react-app)
 
-## Build dev
+## Dev env setup:
 
 ``` 
-docker build -f dev.Dockerfile -t my-app-backend .
+docker compose -f docker-compose.dev.yml up --build
 ```
