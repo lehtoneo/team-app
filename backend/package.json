@@ -7,7 +7,8 @@
     "dev": "nodemon -r -e ts,json,js --exec \"npm run tsnode\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier-format": "prettier --config .prettierrc ./src/**/*.ts --write",
-    "tsnode": "ts-node src/index.ts"
+    "tsnode": "ts-node src/index.ts",
+    "build": "tsc -p ./*"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
   "dependencies": {
     "apollo-server-express": "^3.6.4",
     "class-validator": "^0.13.2",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "graphql": "^15.3.0",
     "pg": "^8.7.3",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "eslint": "^8.8.0",

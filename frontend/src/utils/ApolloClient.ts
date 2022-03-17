@@ -1,11 +1,11 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-const { REACT_APP_BACKEND_URL } = process.env;
+const { GRAPHQL_API_URL } = process.env;
 
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? REACT_APP_BACKEND_URL
-    : REACT_APP_BACKEND_URL
-    ? REACT_APP_BACKEND_URL
+    ? GRAPHQL_API_URL
+    : GRAPHQL_API_URL
+    ? GRAPHQL_API_URL
     : 'http://localhost:5000/graphql';
 
 export const getApolloClient = () => {

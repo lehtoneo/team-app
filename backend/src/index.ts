@@ -6,8 +6,9 @@ import { buildSchema } from 'type-graphql';
 import { getApolloServer } from './apolloServer';
 async function main() {
   const app = express();
+  app.use(express.static('../frontend-build'))
   const port = 5000;
-  const connection = await createConnection();
+  await createConnection();
 
   const server = await getApolloServer();
   await server.start();

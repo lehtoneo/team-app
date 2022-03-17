@@ -1,4 +1,4 @@
-import { Todo } from './../../../frontend/src/types/index';
+import { Todo } from '../models/Todo';
 import { InputType, Field } from 'type-graphql';
 
 @InputType()
