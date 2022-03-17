@@ -3,7 +3,7 @@ const { GRAPHQL_API_URL } = process.env;
 
 const API_URL = GRAPHQL_API_URL
     ? GRAPHQL_API_URL
-    : 'http://localhost:5000/graphql';
+    : '/graphql';
 
 
 export const getApolloClient = () => {
