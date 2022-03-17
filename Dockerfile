@@ -1,15 +1,11 @@
 #frontend
 FROM node:16 AS frontend-build-stage
 
-ARG GRAPHQL_API_URL=https://lehtoneo-todo-app.herokuapp.com/graphql
-
 WORKDIR /usr/src/frontend
 
 COPY ./frontend .
 
 RUN npm ci
-
-ENV GRAPHQL_API_URL=$GRAPHQL_API_URL
 
 RUN npm run build
 

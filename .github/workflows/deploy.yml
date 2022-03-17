@@ -30,7 +30,5 @@ jobs:
 
           dockerfile_name: Dockerfile
 
-          docker_options: "--build-arg GRAPHQL_API_URL=https://lehtoneo-todo-app.herokuapp.com/graphql"
-
           process_type: web
           
