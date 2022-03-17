@@ -7,7 +7,7 @@ module.exports = {
   url: DATABASE_URL,
   synchronize: true,
   logging: false,
-  entities: ['src/models/**/*.ts'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts']
+  entities: ['src/models/**/*.ts', 'src/models/**/*.js'],
+  migrations: ['src/migration/**/*.ts', 'src/migration/**/*.js'],
+  subscribers: ['src/subscriber/**/*.ts', 'src/subscriber/**/*.js']
 };

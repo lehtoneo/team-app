@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "nodemon -r -e ts,json,js --exec \"npm run tsnode\"",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf frontend-build && mkdir frontend-build && cd ../frontend/ && npm run build && cp -r build/* ../backend/frontend-build",
     "prettier-format": "prettier --config .prettierrc ./src/**/*.ts --write",
     "tsnode": "ts-node src/index.ts",
-    "build": "tsc -p ./*"
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",
