@@ -1,7 +1,7 @@
 #frontend
 FROM node:16 AS frontend-build-stage
 
-ARG GRAPHQL_API_URL
+ARG GRAPHQL_API_URL=https://lehtoneo-todo-app.herokuapp.com/graphql
 
 WORKDIR /usr/src/frontend
 
