@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-express';
 import { CreateWorkoutInput } from '../inputs/CreateWorkoutInput';
-import { Resolver, Query, Mutation, Arg, ObjectType, Args } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, ObjectType } from 'type-graphql';
 import { Workout } from '../models/Workout';
 import {
   EdgeType,
@@ -8,7 +8,7 @@ import {
   PaginationInput,
   PageInfo
 } from '../relaySpec';
-import { Raw, MoreThan, LessThan } from 'typeorm';
+import { MoreThan, LessThan } from 'typeorm';
 
 @ObjectType()
 export class WorkoutEdge extends EdgeType('workout', Workout) {}

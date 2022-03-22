@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LoginModal from './modals/SignInModal';
+import SignInUpModal from './modals/SignInUpModal';
 
 interface INavBarProps {
   currentRoute?: string;
