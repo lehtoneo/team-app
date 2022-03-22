@@ -8,8 +8,9 @@ async function main() {
   const app = express();
   app.use(express.static('frontend-build'));
   const port = process.env.PORT || 5000;
+  console.log('Creating DB connection');
   await createConnection();
-
+  console.log('DB connection created');
   const server = await getApolloServer();
   await server.start();
 

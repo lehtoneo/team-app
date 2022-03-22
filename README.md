@@ -19,5 +19,5 @@ docker run -p 127.0.0.1:5000:5000/tcp --env DATABASE_URL=postgresql://postgres:p
 ## Dev env setup:
 
 ``` 
-docker compose -f docker-compose.dev.yml up --build
+See ./frontend and ./backend README.md:s
 ```
