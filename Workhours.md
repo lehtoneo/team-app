@@ -8,3 +8,4 @@
 | 16.3 | 1    | Connect the frontend with backend and test querying the backend from the frontend |
 | 17.3 | 2.5    | Config prod env. Setup CI workflow |
 | 22.3 | 0.5    | Change todo to workout, start working towards app in which user can plan workouts and write down workouts |
+| 22.3 | 2    | Add tailwind css to front. Create initial navigation and components |
