@@ -1,24 +1,23 @@
 services:
-
   postgres-db:
-      image: postgres:14.2-alpine
-      ports:
-        - 5432:5432
-      restart: always
-      healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-      environment:
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: todo-db
-      container_name: todo-app-postgres-dev
-      volumes:
-        - ./postgres_dev_data:/var/lib/postgresql/data
+    image: postgres:14.2-alpine
+    ports:
+      - 5432:5432
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: workout-db
+    container_name: workoutplanner-app-postgres-dev
+    volumes:
+      - ./postgres_dev_data:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: todo-pgadmin-dev
+    container_name: workoutplanner-pgadmin-dev
     image: dpage/pgadmin4
     restart: always
 
@@ -27,4 +26,4 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
       GUNICORN_ACCESS_LOGFILE: /dev/null
     ports:
-      - "8098:80"
+      - '8098:80'

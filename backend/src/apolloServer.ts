@@ -3,11 +3,11 @@ import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 
-import { TodoResolver } from './resolvers/TodoResolver';
+import { WorkoutResolver } from './resolvers/WorkoutResolver';
 
 const getApolloServer = async () => {
   const schema = await buildSchema({
-    resolvers: [TodoResolver]
+    resolvers: [WorkoutResolver]
   });
   const server = new ApolloServer({ schema });
   return server;

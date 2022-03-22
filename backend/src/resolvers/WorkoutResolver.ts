@@ -1,7 +1,7 @@
 import { UserInputError } from 'apollo-server-express';
-import { CreateTodoInput } from './../inputs/CreateTodoInput';
+import { CreateWorkoutInput } from '../inputs/CreateWorkoutInput';
 import { Resolver, Query, Mutation, Arg, ObjectType, Args } from 'type-graphql';
-import { Todo } from '../models/Todo';
+import { Workout } from '../models/Workout';
 import {
   EdgeType,
   ConnectionType,
@@ -11,33 +11,33 @@ import {
 import { Raw, MoreThan, LessThan } from 'typeorm';
 
 @ObjectType()
-export class TodoEdge extends EdgeType('todo', Todo) {}
+export class WorkoutEdge extends EdgeType('workout', Workout) {}
 
 @ObjectType()
-export class TodoConnection extends ConnectionType<TodoEdge>(
-  'todo',
-  TodoEdge
+export class WorkoutConnection extends ConnectionType<WorkoutEdge>(
+  'workout',
+  WorkoutEdge
 ) {}
 
 @Resolver()
-export class TodoResolver {
-  @Query(() => [Todo])
-  async todos() {
-    return await Todo.find();
+export class WorkoutResolver {
+  @Query(() => [Workout])
+  async workouts() {
+    return await Workout.find();
   }
 
-  @Query(() => TodoConnection)
-  async todoConnection(
+  @Query(() => WorkoutConnection)
+  async workoutConnection(
     @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput
-  ): Promise<TodoConnection> {
+  ): Promise<WorkoutConnection> {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
 
     const afterIsDate = !isNaN(Date.parse(after));
     if (!afterIsDate) {
-      throw new UserInputError(`Arg after should be a date string`);
+      throw new UserInputError('Arg after should be a date string');
     }
-    const todoDbResult = await Todo.find({
+    const workoutDBResult = await Workout.find({
       where: {
         created_at: MoreThan(new Date(after))
       },
@@ -47,29 +47,31 @@ export class TodoResolver {
       take: first + 1
     });
 
-    const edges = todoDbResult
-      .map((todo) => {
+    const edges = workoutDBResult
+      .map((workout) => {
         return {
-          node: todo,
-          cursor: todo.created_at.toISOString()
+          node: workout,
+          cursor: workout.created_at.toISOString()
         };
       })
       .slice(0, first);
 
     const endCursor =
-      todoDbResult.length > 0
-        ? todoDbResult[todoDbResult.length - 1].created_at.toISOString()
+      workoutDBResult.length > 0
+        ? workoutDBResult[workoutDBResult.length - 1].created_at.toISOString()
         : null;
 
     const startCursor =
-      todoDbResult.length > 0 ? todoDbResult[0].created_at.toISOString() : null;
+      workoutDBResult.length > 0
+        ? workoutDBResult[0].created_at.toISOString()
+        : null;
 
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
       }
 
-      const previousInDb = await Todo.findOne({
+      const previousInDb = await Workout.findOne({
         where: {
           created_at: LessThan(new Date(startCursor))
         },
@@ -81,7 +83,7 @@ export class TodoResolver {
       return previousInDb !== undefined;
     };
     const pageInfo: PageInfo = {
-      hasNextPage: todoDbResult.length > first,
+      hasNextPage: workoutDBResult.length > first,
       endCursor,
       startCursor,
       hasPreviousPage: await getHasPreviousPage()
@@ -93,9 +95,9 @@ export class TodoResolver {
     };
   }
 
-  @Mutation(() => Todo)
-  async createTodo(@Arg('todoInput') data: CreateTodoInput) {
-    const book = Todo.create(data);
+  @Mutation(() => Workout)
+  async createWorkout(@Arg('workoutInput') data: CreateWorkoutInput) {
+    const book = Workout.create(data);
     await book.save();
     return book;
   }

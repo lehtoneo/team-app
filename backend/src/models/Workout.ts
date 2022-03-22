@@ -10,7 +10,7 @@ import { IdAndDates } from './IdAndDates';
 
 @Entity()
 @ObjectType()
-export class Todo extends IdAndDates {
+export class Workout extends IdAndDates {
   @Field(() => String)
   @Column()
   description: string;

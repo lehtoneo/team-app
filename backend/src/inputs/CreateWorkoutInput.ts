@@ -1,8 +1,8 @@
-import { Todo } from '../models/Todo';
+import { Workout } from '../models/Workout';
 import { InputType, Field } from 'type-graphql';
 
 @InputType()
-export class CreateTodoInput implements Partial<Todo> {
+export class CreateWorkoutInput implements Partial<Workout> {
   @Field()
   description: string;
 
