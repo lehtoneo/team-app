@@ -1,12 +1,12 @@
 import React from 'react';
-import useTodoConnection from '../../hooks/useTodoConnection';
-import TodoList from '../TodoList';
+import useWorkoutConnection from '../../hooks/useWorkoutConnection';
+import WorkoutList from '../WorkoutList';
 
 const LandingPage = () => {
-  const { todos } = useTodoConnection();
+  const { workouts } = useWorkoutConnection();
   return (
     <div>
-      <TodoList todos={todos} />
+      <WorkoutList workouts={workouts} />
     </div>
   );
 };

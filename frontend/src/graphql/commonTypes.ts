@@ -20,7 +20,7 @@ export interface IConnection<T> {
   pageInfo: PageInfo;
 }
 
-export interface Todo {
+export interface Workout {
   id: number;
   description: string;
   done: boolean;
