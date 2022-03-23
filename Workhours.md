@@ -11,3 +11,4 @@
 | 22.3 | 2    | Add tailwind css to front. Create initial navigation and components |
 | 22.3 | 3    | Create frontend components. Create login flow to backend |
 | 23.3 | 3    | Finish login flow in backend |
+| 23.3 | 5    | Finish login flow in frontend |
