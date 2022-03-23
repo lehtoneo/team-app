@@ -10,14 +10,14 @@ import { ObjectType, Field, ID } from 'type-graphql';
 export class IdAndDates extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Field(() => Date)
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)'
   })
-  public created_at: Date;
+  public createdAt: Date;
 
   @Field(() => Date)
   @UpdateDateColumn({
@@ -25,5 +25,5 @@ export class IdAndDates extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)'
   })
-  public updated_at: Date;
+  public updatedAt: Date;
 }

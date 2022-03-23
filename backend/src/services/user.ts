@@ -1,3 +1,4 @@
+import { RefreshToken } from './../models/UserRefreshToken';
 import { SignInInput } from './../inputs/SignInInput';
 import { CreateUserInput } from '../inputs/CreateUserInput';
 import { sign } from 'jsonwebtoken';
@@ -42,10 +43,22 @@ const signIn = async (signInInput: SignInInput): Promise<SignInResult> => {
   const success = await compare(signInInput.password, user.passwordHash);
   if (!success) return { success: false };
 
-  const tokens = getAccessAndRefreshToken(user);
+  const tokens = await getAccessAndRefreshToken(user);
+
   return {
     success: true,
     tokens
+  };
+};
+
+const signOut = async (user: Pick<User, 'id'>, refreshToken: string) => {
+  await RefreshToken.delete({
+    userId: user.id,
+    value: refreshToken
+  });
+
+  return {
+    success: true
   };
 };
 
@@ -56,7 +69,19 @@ const getUserForToken = (user: User) => {
   };
 };
 
-const getAccessAndRefreshToken = (user: User) => {
+const saveUserRefreshToken = async (
+  user: Pick<User, 'id'>,
+  refreshTokenValue: string
+) => {
+  const newRefreshTokenValues = {
+    value: refreshTokenValue,
+    userId: user.id
+  };
+  const newRefreshTokenInDb = RefreshToken.create(newRefreshTokenValues);
+  await newRefreshTokenInDb.save();
+};
+
+const getAccessAndRefreshToken = async (user: User) => {
   const userForToken = getUserForToken(user);
 
   const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'cba';
@@ -67,7 +92,7 @@ const getAccessAndRefreshToken = (user: User) => {
   const refreshToken = sign(userForToken, REFRESH_TOKEN_SECRET, {
     expiresIn: REFRESH_TOKEN_LIFE
   });
-
+  await saveUserRefreshToken(user, refreshToken);
   return {
     accessToken,
     refreshToken
@@ -92,5 +117,6 @@ export default {
   getAccessAndRefreshToken,
   getAccessToken,
   createUser,
-  signIn
+  signIn,
+  signOut
 };

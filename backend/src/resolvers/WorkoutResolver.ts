@@ -39,10 +39,10 @@ export class WorkoutResolver {
     }
     const workoutDBResult = await Workout.find({
       where: {
-        created_at: MoreThan(new Date(after))
+        createdAt: MoreThan(new Date(after))
       },
       order: {
-        updated_at: 'ASC'
+        updatedAt: 'ASC'
       },
       take: first + 1
     });
@@ -51,19 +51,19 @@ export class WorkoutResolver {
       .map((workout) => {
         return {
           node: workout,
-          cursor: workout.created_at.toISOString()
+          cursor: workout.createdAt.toISOString()
         };
       })
       .slice(0, first);
 
     const endCursor =
       workoutDBResult.length > 0
-        ? workoutDBResult[workoutDBResult.length - 1].created_at.toISOString()
+        ? workoutDBResult[workoutDBResult.length - 1].createdAt.toISOString()
         : null;
 
     const startCursor =
       workoutDBResult.length > 0
-        ? workoutDBResult[0].created_at.toISOString()
+        ? workoutDBResult[0].createdAt.toISOString()
         : null;
 
     const getHasPreviousPage = async () => {
@@ -73,10 +73,10 @@ export class WorkoutResolver {
 
       const previousInDb = await Workout.findOne({
         where: {
-          created_at: LessThan(new Date(startCursor))
+          createdAt: LessThan(new Date(startCursor))
         },
         order: {
-          updated_at: 'DESC'
+          updatedAt: 'DESC'
         }
       });
 
