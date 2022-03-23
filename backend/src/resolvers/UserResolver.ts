@@ -1,14 +1,15 @@
+import { MyAuthContext } from './../types/MyContext';
 import { SignOutInput } from './../inputs/SignOutInput';
 import { SignInInput } from './../inputs/SignInInput';
 import { Tokens } from './../extra-graphql-types/Tokens';
 import { CreateUserInput } from './../inputs/CreateUserInput';
 import userService from '../services/user';
-import { Resolver, Mutation, Arg } from 'type-graphql';
+import { Resolver, Mutation, Arg, UseMiddleware, Ctx } from 'type-graphql';
 import { UserInputError } from 'apollo-server-express';
 import { User } from '../models/User';
-
-
-
+import authService from '../services/auth';
+import { isAuth } from '../middleware/isAuth';
+import { SignOutResult } from '../extra-graphql-types/SignOutResult';
 @Resolver()
 export class UserResolver {
   @Mutation(() => Tokens)
@@ -19,17 +20,28 @@ export class UserResolver {
     }
     return signInResult.tokens;
   }
-  @Mutation(() => User)
-  async signOut(@Arg('signOutInput') _data: SignOutInput): Promise<User> {
-    throw new UserInputError('not implemented');
-    return new User();
+  @Mutation(() => SignOutResult)
+  async signOut(
+    @Arg('signOutInput') data: SignOutInput
+  ): Promise<SignOutResult> {
+    return await userService.signOut(data.refreshToken);
+  }
+  @Mutation(() => Tokens)
+  async newAccessToken(
+    @Arg('refreshToken') refreshToken: string
+  ): Promise<Tokens> {
+    const accessToken = await authService.newAccessToken(refreshToken);
+    return {
+      accessToken,
+      refreshToken
+    };
   }
   @Mutation(() => Tokens)
   async createUser(
     @Arg('createUserInput') data: CreateUserInput
   ): Promise<Tokens> {
     const newUser = await userService.createUser(data);
-    const tokens = await userService.getAccessAndRefreshToken(newUser);
+    const tokens = await authService.getAccessAndRefreshToken(newUser);
     return tokens;
   }
 }
