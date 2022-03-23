@@ -9,3 +9,5 @@
 | 17.3 | 2.5    | Config prod env. Setup CI workflow |
 | 22.3 | 0.5    | Change todo to workout, start working towards app in which user can plan workouts and write down workouts |
 | 22.3 | 2    | Add tailwind css to front. Create initial navigation and components |
+| 22.3 | 3    | Create frontend components. Create login flow to backend |
+| 23.3 | 3    | Finish login flow in backend |
