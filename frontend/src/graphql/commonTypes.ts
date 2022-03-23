@@ -1,3 +1,9 @@
+
+export interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface PaginationInput {
   after?: string;
   first?: number;

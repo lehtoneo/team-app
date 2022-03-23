@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { string } from 'yup';
+import { CreateUserInput } from '../../graphql/mutations/createUser';
+import { SignInInput } from '../../graphql/mutations/signIn';
+import useCreateUser from '../../hooks/useCreateUser';
+import useSignIn from '../../hooks/useSignIn';
 import SignInForm from '../forms/SignInForm';
 import SignUpForm from '../forms/SignUpForm';
 
@@ -9,6 +12,7 @@ export type SignInUpModalState = 'sign-in' | 'sign-up';
 interface IModalProps {
   isOpen: boolean;
   onClose: () => any;
+  onSignUpCompleted?: () => any;
 }
 
 interface ILoginModalProps extends IModalProps {
@@ -20,25 +24,22 @@ const SignInUpModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
   const [internalModalState, setInternalModalState] =
     useState<SignInUpModalState>(modalState || 'sign-in');
 
-  const handleCreateAccountClick: React.MouseEventHandler<HTMLButtonElement> = (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    console.log('here');
-    setInternalModalState('sign-up');
-  };
+  const { createUser } = useCreateUser();
+  const { signIn } = useSignIn();
   useEffect(() => {
     if (modalState) {
       setInternalModalState(modalState);
     }
   }, [modalState]);
 
-  const handleSignUp = (values: {
-    email: string;
-    password: string;
-    firstname: string;
-  }) => {
-    console.log({ values });
+  const handleSignUp = async (values: CreateUserInput) => {
+    const tokens = await createUser(values);
+    onClose();
+  };
+
+  const handleSignIn = async (values: SignInInput) => {
+    const signInResult = await signIn(values);
+    onClose();
   };
 
   return (
@@ -70,7 +71,7 @@ const SignInUpModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
       </div>
       {internalModalState === 'sign-in' ? (
         <SignInForm
-          onSubmit={(u, p) => console.log(u)}
+          onSubmit={handleSignIn}
           onCreateAccountClick={() => setInternalModalState('sign-up')}
         />
       ) : (

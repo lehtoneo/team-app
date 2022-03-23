@@ -91,11 +91,12 @@ const validateTokenUser = (tokenUser: any): tokenUser is ITokenUser => {
 };
 
 const validateAccessToken = async (headers: any): Promise<User | undefined> => {
-  if (!headers || !headers.accessToken) {
+  if (!headers || !headers.authorization) {
     return undefined;
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const accessToken = headers.accessToken;
+  const accessToken = headers.authorization;
+
   if (
     accessToken &&
     isString(accessToken) &&
@@ -118,6 +119,7 @@ const validateAccessToken = async (headers: any): Promise<User | undefined> => {
       return undefined;
     }
   }
+  console.log('???');
   return undefined;
 };
 

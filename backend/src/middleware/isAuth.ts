@@ -3,7 +3,8 @@ import { AuthenticationError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
-  console.log({ context });
+  const contextPayload = context.payload;
+  console.log({ contextPayload });
   if (!context.payload.user) {
     throw new AuthenticationError('Unauthorized');
   }

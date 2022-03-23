@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SignInUpModal from './modals/SignInUpModal';
 
 interface INavBarProps {
   currentRoute?: string;
   onSignInPress?: () => void;
+  onSignOutPress?: () => any;
+  isLoggedIn: boolean | undefined;
 }
 
 const NavBar = (props: INavBarProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-
+  const [loggedInLoading, setLoggedInLoading] = useState<boolean>(
+    props.isLoggedIn === undefined
+  );
+  const notLoggedIn = props.isLoggedIn === false;
+  useEffect(() => {
+    if (props.isLoggedIn !== undefined) {
+      setLoggedInLoading(false);
+    }
+  }, [props.isLoggedIn]);
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -72,37 +82,35 @@ const NavBar = (props: INavBarProps) => {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  About
-                </a>
+                {props.isLoggedIn && (
+                  <a
+                    href="#"
+                    className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                    aria-current="page"
+                  >
+                    Own workouts
+                  </a>
+                )}
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <button
-                  onClick={props.onSignInPress}
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                  type="button"
-                >
-                  Sign in
-                </button>
+                {notLoggedIn ? (
+                  <button
+                    onClick={props.onSignInPress}
+                    className="animate-pulse block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                    type="button"
+                  >
+                    Sign in
+                  </button>
+                ) : (
+                  <button
+                    onClick={props.onSignOutPress}
+                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                    type="button"
+                  >
+                    {' '}
+                    Sign out
+                  </button>
+                )}
               </li>
             </ul>
           </div>

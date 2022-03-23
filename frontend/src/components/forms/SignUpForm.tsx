@@ -1,9 +1,10 @@
 import React, { useState, useEffect, MouseEventHandler } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 
 import Button from '../Button';
-import Input from '../Input';
-import Label from '../Label';
+import Label from './components/Label';
+import Field from './components/Field';
+import CustomErrorMessage from './components/CustomErrorMessage';
 
 interface SignUpFormValues {
   email: string;
@@ -17,6 +18,7 @@ interface ISignUpFormProps {
 }
 
 const SignUpForm = ({ onSignInClick, onSubmit }: ISignUpFormProps) => {
+  const [error, setError] = useState<string | undefined>(undefined);
   const initialValues: SignUpFormValues = {
     email: '',
     firstname: '',
@@ -26,25 +28,37 @@ const SignUpForm = ({ onSignInClick, onSubmit }: ISignUpFormProps) => {
     <>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => onSubmit(values)}
+        onSubmit={async (values) => {
+          try {
+            await onSubmit(values);
+          } catch (e: any) {
+            if (e.message && typeof e.message === 'string') {
+              const message: string = e.message;
+              if (message.startsWith('duplicate key')) {
+                setError('Email is taken');
+              } else {
+                setError('Something went wrong');
+              }
+            }
+          }
+        }}
       >
         <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
             Sign up to Workout planner
           </h3>
+          <CustomErrorMessage message={error} />
           <div>
             <Label htmlFor="email">Your email</Label>
-            <Input
+            <Field
               type="email"
               name="email"
-              id="email"
-              placeholder="name@company.com"
-              required
+              placeholder="youremail@company.com"
             />
           </div>
           <div>
             <Label htmlFor="firstname">Firstname</Label>
-            <Input
+            <Field
               type="text"
               name="firstname"
               id="firstname"
@@ -54,7 +68,7 @@ const SignUpForm = ({ onSignInClick, onSubmit }: ISignUpFormProps) => {
           </div>
           <div>
             <Label htmlFor="password">Your password</Label>
-            <Input
+            <Field
               type="password"
               name="password"
               id="password"
@@ -62,17 +76,14 @@ const SignUpForm = ({ onSignInClick, onSubmit }: ISignUpFormProps) => {
               required
             />
           </div>
-          <Button id="submit" type="submit" color="green">
-            Sign up
-          </Button>
+          <Button type="submit" color="green" title="Sign up" />
           <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             Already registered?{' '}
             <Button
               exactClassName="text-blue-700 hover:underline dark:text-blue-500"
               onClick={onSignInClick}
-            >
-              Sign In
-            </Button>
+              title={'Sign In'}
+            />
           </div>
         </Form>
       </Formik>

@@ -4,14 +4,27 @@ import { SignInInput } from './../inputs/SignInInput';
 import { Tokens } from './../extra-graphql-types/Tokens';
 import { CreateUserInput } from './../inputs/CreateUserInput';
 import userService from '../services/user';
-import { Resolver, Mutation, Arg, UseMiddleware, Ctx } from 'type-graphql';
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  UseMiddleware,
+  Ctx,
+  Query
+} from 'type-graphql';
 import { UserInputError } from 'apollo-server-express';
 import { User } from '../models/User';
 import authService from '../services/auth';
 import { isAuth } from '../middleware/isAuth';
 import { SignOutResult } from '../extra-graphql-types/SignOutResult';
+
 @Resolver()
 export class UserResolver {
+  @UseMiddleware(isAuth)
+  @Query(() => User)
+  async me(@Ctx() ctx: MyAuthContext): Promise<User> {
+    return ctx.payload.user;
+  }
   @Mutation(() => Tokens)
   async signIn(@Arg('signInInput') data: SignInInput): Promise<Tokens> {
     const signInResult = await userService.signIn(data);
