@@ -9,7 +9,10 @@ import {
 
 const useCreateUser = () => {
   const client = useApolloClient();
-  const [createUserMutation] = useMutation<CreateUserData>(CREATE_USER, {
+  const [createUserMutation] = useMutation<
+    CreateUserData,
+    { createUserInput: CreateUserInput }
+  >(CREATE_USER, {
     fetchPolicy: 'no-cache'
   });
   const createUser = async (createUserInput: CreateUserInput) => {
