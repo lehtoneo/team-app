@@ -12,3 +12,4 @@
 | 22.3 | 3    | Create frontend components. Create login flow to backend |
 | 23.3 | 3    | Finish login flow in backend |
 | 23.3 | 5    | Finish login flow in frontend |
+| 28.3 | 4.5    | Create ui components, fix some login bugs |
