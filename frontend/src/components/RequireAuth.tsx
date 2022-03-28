@@ -1,10 +1,19 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import useCurrentUser from '../hooks/useCurrentUser';
+import { UserState } from '../redux/reducers/userReducer';
 
-const RequireAuthPage = ({ children }: { children: React.ReactNode }) => {
-  const { isLoggedIn } = useCurrentUser();
-  return isLoggedIn ? children : <Navigate to="/" replace />;
+type RequireAuthProps = {
+  userState: UserState;
+};
+
+const RequireAuthPage: React.FC<RequireAuthProps> = ({
+  children,
+  userState
+}) => {
+  if (!userState.isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+  return <>{children}</>;
 };
 
 export default RequireAuthPage;

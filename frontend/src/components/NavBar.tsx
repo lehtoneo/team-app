@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import SignInUpModal from './modals/SignInUpModal';
 
 interface INavBarProps {
   currentRoute?: string;
   onSignInPress?: () => void;
   onSignOutPress?: () => any;
-  isLoggedIn: boolean | undefined;
+  isLoggedIn: boolean;
 }
 
 const NavBar = (props: INavBarProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [loggedInLoading, setLoggedInLoading] = useState<boolean>(
-    props.isLoggedIn === undefined
-  );
-  const notLoggedIn = props.isLoggedIn === false;
-  useEffect(() => {
-    if (props.isLoggedIn !== undefined) {
-      setLoggedInLoading(false);
-    }
-  }, [props.isLoggedIn]);
+
+  const notLoggedIn = !props.isLoggedIn;
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -26,11 +21,11 @@ const NavBar = (props: INavBarProps) => {
     <header>
       <nav className="px-100 sm:px-2 m-2 bg-white border border-gray py-2.5 rounded dark:bg-gray-800">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          <a href="https://flowbite.com" className="bg-red flex items-center">
+          <Link to="/" className="bg-red flex items-center">
             <span className="text-xl font-semibold dark:text-white">
               Workout Planner
             </span>
-          </a>
+          </Link>
           <button
             onClick={toggleMobileMenu}
             data-collapse-toggle="mobile-menu"
@@ -73,13 +68,13 @@ const NavBar = (props: INavBarProps) => {
           >
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
                   aria-current="page"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
                 {props.isLoggedIn && (

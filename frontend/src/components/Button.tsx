@@ -1,3 +1,4 @@
+import { printIntrospectionSchema } from 'graphql';
 import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
 
 type ButtonColor = 'green' | 'blue' | 'red';
@@ -11,7 +12,6 @@ interface IButtonProps
   exactClassName?: string;
   onClick?: (...args: any[]) => any;
   loading?: boolean;
-  title: string;
 }
 
 const buttonColorConfig: { [key in ButtonColor]: string } = {
@@ -20,16 +20,22 @@ const buttonColorConfig: { [key in ButtonColor]: string } = {
   red: `bg-red-700 hover:bg-red-800 focus:ring-red-400`
 };
 
-const buttonConfigCommon = `text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center`;
+const buttonConfigCommon = `w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center`;
 
 const getClassName = (color: ButtonColor) => {
   return `${buttonConfigCommon} ${buttonColorConfig[color]}`;
 };
 
-const Button = (props: IButtonProps) => {
+const Button: React.FC<IButtonProps> = (props) => {
   const color = props.color ? props.color : 'blue';
   const className = props.exactClassName || getClassName(color);
-  const { exactClassName, color: col, onClick, ...buttonElementProps } = props;
+  const {
+    exactClassName,
+    color: col,
+    onClick,
+    children,
+    ...buttonElementProps
+  } = props;
 
   const usedClassName = props.exactClassName || className;
 
@@ -44,7 +50,7 @@ const Button = (props: IButtonProps) => {
       onClick={handleClick}
       disabled={props.loading}
     >
-      {props.title}
+      {props.children}
     </button>
   );
 };

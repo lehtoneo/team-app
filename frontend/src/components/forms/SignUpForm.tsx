@@ -76,14 +76,17 @@ const SignUpForm = ({ onSignInClick, onSubmit }: ISignUpFormProps) => {
               required
             />
           </div>
-          <Button type="submit" color="green" title="Sign up" />
+          <Button type="submit" color="green">
+            Sign Up
+          </Button>
           <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             Already registered?{' '}
             <Button
               exactClassName="text-blue-700 hover:underline dark:text-blue-500"
               onClick={onSignInClick}
-              title={'Sign In'}
-            />
+            >
+              Sign In
+            </Button>
           </div>
         </Form>
       </Formik>

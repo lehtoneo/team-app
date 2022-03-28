@@ -42,7 +42,7 @@ const SignInForm = ({
         <h3 className="text-xl font-medium text-gray-900 dark:text-white">
           Sign in to Workout planner
         </h3>
-        <CustomErrorMessage message={error}/>
+        <CustomErrorMessage message={error} />
         <div>
           <Label>Your email</Label>
           <Field
@@ -63,14 +63,17 @@ const SignInForm = ({
             required
           />
         </div>
-        <Button id="submit" type="submit" title="Sign In" />
+        <Button id="submit" type="submit">
+          Sign In
+        </Button>
         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
           Not registered?{' '}
           <Button
             exactClassName="text-blue-700 hover:underline dark:text-blue-500"
             onClick={onSignInClick}
-            title="Create account"
-          />
+          >
+            Create account
+          </Button>
         </div>
       </Form>
     </Formik>

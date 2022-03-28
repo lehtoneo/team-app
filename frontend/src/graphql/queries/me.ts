@@ -18,5 +18,5 @@ export const ME = gql`
 `;
 
 export interface MeData {
-  me?: AllUserData | null;
+  me: AllUserData;
 }
