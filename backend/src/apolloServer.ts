@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 
-import { WorkoutResolver } from './resolvers/WorkoutResolver';
+import { TeamResolver } from './resolvers/TeamResolver';
 import { User } from './models/User';
 import authService from './services/auth';
 
@@ -14,7 +14,7 @@ export interface IContext {
 
 const getApolloServer = async () => {
   const schema = await buildSchema({
-    resolvers: [WorkoutResolver, UserResolver]
+    resolvers: [TeamResolver, UserResolver]
   });
   const server = new ApolloServer({
     schema,

@@ -4,12 +4,12 @@ import { IdAndDates } from './IdAndDates';
 
 @Entity()
 @ObjectType()
-export class Workout extends IdAndDates {
+export class Team extends IdAndDates {
+  @Field(() => String)
+  @Column()
+  name: string;
+
   @Field(() => String)
   @Column()
   description: string;
-
-  @Field(() => Boolean)
-  @Column({ default: false })
-  done: boolean;
 }
