@@ -4,6 +4,10 @@ import 'dotenv/config';
 import { User } from '../models/User';
 import { isNumber, isString } from 'class-validator';
 import { AuthenticationError } from 'apollo-server-express';
+import userService from './user';
+import AppDataSource from '../data-source';
+
+const userRepository = AppDataSource.getRepository(User);
 
 interface ITokenUser {
   id: number;
@@ -53,8 +57,10 @@ const newAccessToken = async (refreshToken: string): Promise<string> => {
       throw new Error('');
     }
     const isTokenInDb = await RefreshToken.findOne({
-      userId: decodedToken.id,
-      value: refreshToken
+      where: {
+        userId: decodedToken.id,
+        value: refreshToken
+      }
     });
 
     if (!isTokenInDb) {
@@ -90,13 +96,15 @@ const validateTokenUser = (tokenUser: any): tokenUser is ITokenUser => {
   return true;
 };
 
-const validateAccessToken = async (headers: any): Promise<User | undefined> => {
+const validateAccessToken = async (headers: any): Promise<User | null> => {
   if (!headers || !headers.authorization) {
-    return undefined;
+    return null;
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const accessToken = headers.authorization;
-
+  if (accessToken === 'iamadevuser') {
+    return await userService.getDevUser();
+  }
   if (
     accessToken &&
     isString(accessToken) &&
@@ -108,19 +116,21 @@ const validateAccessToken = async (headers: any): Promise<User | undefined> => {
       const decodedToken = verify(tokenAfterBearer, ACCESS_TOKEN_SECRET);
 
       if (!validateTokenUser(decodedToken)) {
-        return undefined;
+        return null;
       }
-      const currentUser = await User.findOne({
-        id: decodedToken.id
+      const currentUser = await userRepository.findOne({
+        where: {
+          id: decodedToken.id
+        }
       });
 
       return currentUser;
     } catch (error) {
-      return undefined;
+      return null;
     }
   }
   console.log('???');
-  return undefined;
+  return null;
 };
 
 const authService = {

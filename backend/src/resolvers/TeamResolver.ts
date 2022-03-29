@@ -1,6 +1,15 @@
+import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
 import { CreateTeamInput } from '../inputs/CreateTeamInput';
-import { Resolver, Query, Mutation, Arg, ObjectType } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Arg,
+  ObjectType,
+  UseMiddleware,
+  Ctx
+} from 'type-graphql';
 import { Team } from '../models/Team';
 import {
   EdgeType,
@@ -8,7 +17,10 @@ import {
   PaginationInput,
   PageInfo
 } from '../relaySpec';
-import { MoreThan, LessThan } from 'typeorm';
+import { MoreThan, LessThan, FindOptionsWhere, ILike, In } from 'typeorm';
+import { MyAuthContext, MyContext } from '../types/MyContext';
+import { FilterTeamsInput } from '../inputs/FilterTeamsInput';
+import AppDataSource from '../data-source';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -19,16 +31,20 @@ export class TeamConnection extends ConnectionType<TeamEdge>(
   TeamEdge
 ) {}
 
+const teamRepository = AppDataSource.getRepository(Team);
+
 @Resolver()
 export class TeamResolver {
   @Query(() => [Team])
-  async teams() {
-    return await Team.find();
+  async teams(): Promise<Team[]> {
+    return await teamRepository.find();
   }
 
   @Query(() => TeamConnection)
   async teamConnection(
-    @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput
+    @Ctx() ctx: MyContext,
+    @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput,
+    @Arg('filterTeamsInput', { nullable: true }) filterArgs?: FilterTeamsInput
   ): Promise<TeamConnection> {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
@@ -37,10 +53,20 @@ export class TeamResolver {
     if (!afterIsDate) {
       throw new UserInputError('Arg after should be a date string');
     }
-    const teamDBResult = await Team.find({
-      where: {
-        createdAt: MoreThan(new Date(after))
-      },
+    const where: FindOptionsWhere<Team> = {
+      createdAt: MoreThan(new Date(after))
+    };
+    // eslint-disable-next-line no-empty
+    if (filterArgs?.name) {
+      where.name = ILike(`${filterArgs.name}%`);
+    }
+    if (filterArgs?.ownTeamsOnly && ctx.payload.user) {
+      where.members = {
+        id: ctx.payload.user.id
+      };
+    }
+    const teamDBResult = await teamRepository.find({
+      where,
       order: {
         updatedAt: 'ASC'
       },
@@ -71,6 +97,7 @@ export class TeamResolver {
 
       const previousInDb = await Team.findOne({
         where: {
+          ...where,
           createdAt: LessThan(new Date(startCursor))
         },
         order: {
@@ -93,10 +120,17 @@ export class TeamResolver {
     };
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => Team)
-  async createTeam(@Arg('teamInput') data: CreateTeamInput) {
-    const book = Team.create(data);
-    await book.save();
-    return book;
+  async createTeam(
+    @Arg('teamInput') data: CreateTeamInput,
+    @Ctx() ctx: MyAuthContext
+  ) {
+    const team = Team.create(data);
+    const newTeam = await team.save();
+
+    newTeam.members = [ctx.payload.user];
+    const updated = await newTeam.save();
+    return updated;
   }
 }

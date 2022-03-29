@@ -6,6 +6,27 @@ import { User } from '../models/User';
 import { hash, compare } from 'bcrypt';
 import { Tokens } from '../extra-graphql-types/Tokens';
 import authService from './auth';
+import AppDataSource from '../data-source';
+const userRepository = AppDataSource.getRepository(User);
+const devUserEmail = 'a@b.fi';
+const getDevUser = async () => {
+  return await userRepository.findOne({
+    where: {
+      email: devUserEmail
+    }
+  });
+};
+
+const createDevUserIfNotExists = async () => {
+  const isInDb = await User.findOne({
+    where: {
+      email: devUserEmail
+    }
+  });
+  if (!isInDb) {
+    await createUser({ email: devUserEmail, password: 's', firstname: 'ossi' });
+  }
+};
 
 const createUser = async (userInput: CreateUserInput) => {
   console.log('Creating user');
@@ -61,8 +82,12 @@ const signOut = async (refreshToken: string) => {
   };
 };
 
-export default {
+const userService = {
   createUser,
   signIn,
-  signOut
+  signOut,
+  createDevUserIfNotExists,
+  getDevUser
 };
+
+export default userService;

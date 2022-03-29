@@ -7,11 +7,7 @@ import {
 import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
-export class IdAndDates extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Dates extends BaseEntity {
   @Field(() => Date)
   @CreateDateColumn({
     type: 'timestamp',
@@ -26,4 +22,11 @@ export class IdAndDates extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)'
   })
   public updatedAt: Date;
+}
+
+@ObjectType()
+export class IdAndDates extends Dates {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn()
+  id: number;
 }

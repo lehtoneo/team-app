@@ -3,7 +3,7 @@ import { User } from '../models/User';
 
 export interface MyContext {
   payload: {
-    user?: User;
+    user: User | null;
   };
   req: Request;
   res: Response;
