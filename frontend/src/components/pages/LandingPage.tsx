@@ -12,9 +12,7 @@ const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
       <Header>Hi {userFirstName}!</Header>
       <div className="flex-row">
         <div className="flex justify-center p-2">
-          <Link to="/teams">
-            <Button className="justify-center">Teams</Button>
-          </Link>
+          <p>Events:</p>
         </div>
       </div>
     </>

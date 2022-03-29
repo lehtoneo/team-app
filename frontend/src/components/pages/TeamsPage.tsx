@@ -12,15 +12,19 @@ const TeamsPage = () => {
   }
   return (
     <PageContainer>
-      <Header>Wadap</Header>
+      <Header>Teams</Header>
       <div className="my-2"></div>
       <div className="flex-row md:px-40 lg:px-80 sm:px-10">
-        <Link to="template">
-          <Button>Use a template</Button>
+        <Link to="own">
+          <Button>My teams</Button>
         </Link>
         <div className="my-2"></div>
-        <Link to="blank">
-          <Button>Blank</Button>
+        <Link to="join">
+          <Button>Join a team!</Button>
+        </Link>
+        <div className="my-4"></div>
+        <Link to="create">
+          <Button color="green">Create a new team</Button>
         </Link>
       </div>
     </PageContainer>
