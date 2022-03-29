@@ -26,13 +26,23 @@ const useCurrentUser = (params?: IParams) => {
     },
     onCompleted: (data) => {
       if (params?.updateValues) {
-        dispatch(
-          setCurrentUserState({
-            currentUser: data.me,
-            isLoggedIn: true,
-            isLoggingOut: false
-          })
-        );
+        if (data.me) {
+          dispatch(
+            setCurrentUserState({
+              currentUser: data.me,
+              isLoggedIn: true,
+              isLoggingOut: false
+            })
+          );
+        } else {
+          dispatch(
+            setCurrentUserState({
+              currentUser: null,
+              isLoggedIn: false,
+              isLoggingOut: false
+            })
+          );
+        }
       }
     }
   });

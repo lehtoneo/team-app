@@ -1,3 +1,4 @@
+import { GetTeamArgs } from './../args/GetTeamArgs';
 import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
 import { CreateTeamInput } from '../inputs/CreateTeamInput';
@@ -8,7 +9,8 @@ import {
   Arg,
   ObjectType,
   UseMiddleware,
-  Ctx
+  Ctx,
+  Args
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -17,7 +19,7 @@ import {
   PaginationInput,
   PageInfo
 } from '../relaySpec';
-import { MoreThan, LessThan, FindOptionsWhere, ILike, In } from 'typeorm';
+import { MoreThan, LessThan, FindOptionsWhere, ILike } from 'typeorm';
 import { MyAuthContext, MyContext } from '../types/MyContext';
 import { FilterTeamsInput } from '../inputs/FilterTeamsInput';
 import AppDataSource from '../data-source';
@@ -33,11 +35,16 @@ export class TeamConnection extends ConnectionType<TeamEdge>(
 
 const teamRepository = AppDataSource.getRepository(Team);
 
-@Resolver()
+@Resolver(() => Team)
 export class TeamResolver {
-  @Query(() => [Team])
-  async teams(): Promise<Team[]> {
-    return await teamRepository.find();
+  @Query(() => Team, { nullable: true })
+  async oneTeam(@Args() { id }: GetTeamArgs): Promise<Team | null> {
+    const res = await teamRepository.findOne({
+      where: {
+        id
+      }
+    });
+    return res;
   }
 
   @Query(() => TeamConnection)
@@ -72,6 +79,7 @@ export class TeamResolver {
       },
       take: first + 1
     });
+    console.log({ teamDBResult });
 
     const edges = teamDBResult
       .map((team) => {
@@ -123,13 +131,13 @@ export class TeamResolver {
   @UseMiddleware(isAuth)
   @Mutation(() => Team)
   async createTeam(
-    @Arg('teamInput') data: CreateTeamInput,
+    @Arg('createTeamInput') data: CreateTeamInput,
     @Ctx() ctx: MyAuthContext
   ) {
     const team = Team.create(data);
     const newTeam = await team.save();
 
-    newTeam.members = [ctx.payload.user];
+    (await newTeam.members).push(ctx.payload.user);
     const updated = await newTeam.save();
     return updated;
   }

@@ -2,9 +2,9 @@ import { InputType, Field } from 'type-graphql';
 
 @InputType()
 export class FilterTeamsInput {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   name?: string;
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   ownTeamsOnly?: boolean;
 }

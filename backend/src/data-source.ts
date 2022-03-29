@@ -1,9 +1,11 @@
+import { UserEventAttendance } from './models/UserEventAttendance';
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Team } from './models/Team';
 import { User } from './models/User';
 import { RefreshToken } from './models/UserRefreshToken';
 import 'dotenv/config';
+import { Event } from './models/Event';
 const { DATABASE_URL, NODE_ENV } = process.env;
 
 const options: DataSourceOptions = {
@@ -11,7 +13,7 @@ const options: DataSourceOptions = {
   url: DATABASE_URL,
   synchronize: true,
   logging: false,
-  entities: [User, RefreshToken, Team],
+  entities: [User, RefreshToken, Team, Event, UserEventAttendance],
   migrations: [],
   subscribers: [],
   extra: {

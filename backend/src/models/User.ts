@@ -1,3 +1,4 @@
+import { UserEventAttendance } from './UserEventAttendance';
 import { RefreshToken } from './UserRefreshToken';
 import { Entity, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
@@ -23,8 +24,15 @@ export class User extends IdAndDates {
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens: RefreshToken[];
 
+  @OneToMany(
+    () => UserEventAttendance,
+    (eventAttendance) => eventAttendance.user,
+    { lazy: true }
+  )
+  eventAttendances: UserEventAttendance[];
+
   @ManyToMany(() => Team, (team) => team.members, { lazy: true })
   @Field(() => [Team])
   @JoinTable()
-  teams: Team[];
+  teams: Promise<Team[]>;
 }

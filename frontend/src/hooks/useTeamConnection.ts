@@ -1,3 +1,4 @@
+import { TeamConnectionInput } from './../graphql/queries/teamConnection';
 import React from 'react';
 import {
   TeamConnectionData,
@@ -5,17 +6,21 @@ import {
 } from '../graphql/queries/teamConnection';
 import { useQuery } from '@apollo/client';
 
-import { PaginationInput } from '../graphql/commonTypes';
-
-const useTeamConnection = (args?: PaginationInput) => {
-  const { data, loading } = useQuery<TeamConnectionData>(TEAM_CONNECTION, {
-    variables: {
-      paginationInput: args
-    },
-    onError: (e) => {
-      console.log(e);
+const useTeamConnection = (args?: TeamConnectionInput) => {
+  const { data, loading } = useQuery<TeamConnectionData, TeamConnectionInput>(
+    TEAM_CONNECTION,
+    {
+      variables: {
+        ...args
+      },
+      onError: (e) => {
+        console.log(e);
+      },
+      onCompleted: (d) => {
+        console.log({ d });
+      }
     }
-  });
+  );
 
   return {
     teams: data?.teamConnection?.edges.map((edge) => edge.node) || [],

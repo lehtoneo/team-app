@@ -9,6 +9,7 @@ import useSignOut from './hooks/useSignOut';
 import RequireAuthPage from './components/RequireAuth';
 import TeamsMainPage from './components/pages/TeamsPage';
 import OwnTeamsPage from './components/pages/OwnTeamsPage';
+import TeamPage from './components/pages/TeamPage';
 
 function App() {
   const [signInUpModalOpen, setSignInUpModalOpen] = useState<boolean>(false);
@@ -44,6 +45,14 @@ function App() {
             element={
               <RequireAuthPage userState={userState}>
                 <OwnTeamsPage />
+              </RequireAuthPage>
+            }
+          />
+          <Route
+            path="teams/team/:id"
+            element={
+              <RequireAuthPage userState={userState}>
+                <TeamPage />
               </RequireAuthPage>
             }
           />

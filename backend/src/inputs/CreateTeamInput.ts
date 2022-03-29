@@ -7,5 +7,5 @@ export class CreateTeamInput implements Partial<Team> {
   name: string;
 
   @Field(() => String, { nullable: true })
-  description: string;
+  description?: string;
 }

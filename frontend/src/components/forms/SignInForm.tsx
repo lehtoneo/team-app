@@ -8,6 +8,7 @@ import { SignInInput } from '../../graphql/mutations/signIn';
 import { string } from 'yup';
 import { printIntrospectionSchema } from 'graphql';
 import CustomErrorMessage from './components/CustomErrorMessage';
+import FormHeader from './components/FormHeader';
 
 interface ISignInFormProps {
   onCreateAccountClick?: (...args: any[]) => void;
@@ -39,9 +40,7 @@ const SignInForm = ({
       }}
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-        <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-          Sign in to Team app
-        </h3>
+        <FormHeader> Sign in to Team app</FormHeader>
         <CustomErrorMessage message={error} />
         <div>
           <Label>Your email</Label>

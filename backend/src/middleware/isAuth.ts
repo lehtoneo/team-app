@@ -4,8 +4,8 @@ import { MiddlewareFn } from 'type-graphql';
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
   const contextPayload = context.payload;
-  console.log({ contextPayload });
-  if (!context.payload.user) {
+
+  if (!contextPayload.user) {
     throw new AuthenticationError('Unauthorized');
   }
   return next();

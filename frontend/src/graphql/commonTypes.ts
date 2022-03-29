@@ -25,7 +25,27 @@ export interface IConnection<T> {
   pageInfo: PageInfo;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  firstname: string;
+  teams: Team[];
+}
+
+export interface Event {
+  id: string;
+  name: string;
+  extraInfo?: string;
+  start: Date;
+  end: Date;
+}
+
+export type TeamUser = Pick<User, 'id' | 'firstname'>;
+
 export interface Team {
   id: number;
-  description: string;
+  description?: string;
+  name: string;
+  members: TeamUser[];
+  events: Event[];
 }

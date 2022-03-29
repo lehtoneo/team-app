@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AllUserData } from '../../graphql/queries/me';
+import { MeUserData } from '../../graphql/queries/me';
 
 export interface LoggedInUserState {
   isLoggedIn: true;
-  currentUser: AllUserData;
+  currentUser: MeUserData;
   isLoggingOut: boolean;
 }
 

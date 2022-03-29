@@ -1,11 +1,8 @@
+import { User } from './../commonTypes';
 import { gql } from '@apollo/client';
 import { IConnection, Team } from '../commonTypes';
 
-export interface AllUserData {
-  id: string;
-  email: string;
-  firstname: string;
-}
+export type MeUserData = Pick<User, 'id' | 'email' | 'firstname'>;
 
 export const ME = gql`
   query me {
@@ -18,5 +15,5 @@ export const ME = gql`
 `;
 
 export interface MeData {
-  me: AllUserData;
+  me: MeUserData | null;
 }
