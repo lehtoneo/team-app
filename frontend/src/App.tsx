@@ -7,8 +7,7 @@ import SignInUpModal from './components/modals/SignInUpModal';
 import useCurrentUser from './hooks/useCurrentUser';
 import useSignOut from './hooks/useSignOut';
 import RequireAuthPage from './components/RequireAuth';
-import StartWorkoutPage from './components/pages/StartWorkoutPage';
-import StartWorkoutTemplatePage from './components/pages/StartWorkoutTemplatePage';
+import SearchTeamsPage from './components/pages/TeamsPage';
 
 function App() {
   const [signInUpModalOpen, setSignInUpModalOpen] = useState<boolean>(false);
@@ -32,21 +31,13 @@ function App() {
         <Routes>
           <Route index element={<LandingPage />} />
           <Route
-            path="start-workout"
+            path="teams"
             element={
               <RequireAuthPage userState={userState}>
-                <StartWorkoutPage />
+                <SearchTeamsPage />
               </RequireAuthPage>
             }
           />
-          <Route
-            path="start-workout/template"
-            element={
-              <RequireAuthPage userState={userState}>
-                <StartWorkoutTemplatePage />
-              </RequireAuthPage>
-            }
-          ></Route>
         </Routes>
       </div>
     </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useCurrentUser from '../../hooks/useCurrentUser';
-import useWorkoutConnection from '../../hooks/useWorkoutConnection';
+import useTeamConnection from '../../hooks/useTeamConnection';
 import Button from '../Button';
-import WorkoutList from '../WorkoutList';
+import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
 import Header from '../Header';
 const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
@@ -12,8 +12,8 @@ const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
       <Header>Hi {userFirstName}!</Header>
       <div className="flex-row">
         <div className="flex justify-center p-2">
-          <Link to="/start-workout">
-            <Button className="justify-center">Start a new workout</Button>
+          <Link to="/teams">
+            <Button className="justify-center">Teams</Button>
           </Link>
         </div>
       </div>
@@ -22,7 +22,7 @@ const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
 };
 
 const LandingPage = () => {
-  const { workouts } = useWorkoutConnection();
+  const { teams } = useTeamConnection();
   const { isLoggedIn, currentUser } = useCurrentUser();
   if (isLoggedIn === undefined) {
     return <PageContainer></PageContainer>;
@@ -36,8 +36,8 @@ const LandingPage = () => {
   }
   return (
     <PageContainer>
-      <Header>Welcome to workout planner</Header>
-      <WorkoutList workouts={workouts} />
+      <Header>Welcome to Team app</Header>
+      <TeamList teams={teams} />
     </PageContainer>
   );
 };

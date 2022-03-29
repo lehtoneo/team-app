@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { IConnection, Workout } from '../commonTypes';
+import { IConnection, Team } from '../commonTypes';
 
 export interface AllUserData {
   id: string;

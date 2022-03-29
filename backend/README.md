@@ -1,4 +1,4 @@
-# Workout-tracker backend
+# Backend
 
 ## Run dev env
 

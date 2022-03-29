@@ -5,14 +5,14 @@ import Button from '../Button';
 import Header from '../Header';
 import PageContainer from './components/PageContainer';
 
-const StartWorkoutPage = () => {
+const TeamsPage = () => {
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
     throw Error('SHOULD NOT BE HERE');
   }
   return (
     <PageContainer>
-      <Header>Start a workout</Header>
+      <Header>Wadap</Header>
       <div className="my-2"></div>
       <div className="flex-row md:px-40 lg:px-80 sm:px-10">
         <Link to="template">
@@ -27,4 +27,4 @@ const StartWorkoutPage = () => {
   );
 };
 
-export default StartWorkoutPage;
+export default TeamsPage;

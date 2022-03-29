@@ -1,7 +1,7 @@
 import { UserInputError } from 'apollo-server-express';
-import { CreateWorkoutInput } from '../inputs/CreateWorkoutInput';
+import { CreateTeamInput } from '../inputs/CreateTeamInput';
 import { Resolver, Query, Mutation, Arg, ObjectType } from 'type-graphql';
-import { Workout } from '../models/Workout';
+import { Team } from '../models/Team';
 import {
   EdgeType,
   ConnectionType,
@@ -11,25 +11,25 @@ import {
 import { MoreThan, LessThan } from 'typeorm';
 
 @ObjectType()
-export class WorkoutEdge extends EdgeType('workout', Workout) {}
+export class TeamEdge extends EdgeType('team', Team) {}
 
 @ObjectType()
-export class WorkoutConnection extends ConnectionType<WorkoutEdge>(
-  'workout',
-  WorkoutEdge
+export class TeamConnection extends ConnectionType<TeamEdge>(
+  'team',
+  TeamEdge
 ) {}
 
 @Resolver()
-export class WorkoutResolver {
-  @Query(() => [Workout])
-  async workouts() {
-    return await Workout.find();
+export class TeamResolver {
+  @Query(() => [Team])
+  async teams() {
+    return await Team.find();
   }
 
-  @Query(() => WorkoutConnection)
-  async workoutConnection(
+  @Query(() => TeamConnection)
+  async teamConnection(
     @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput
-  ): Promise<WorkoutConnection> {
+  ): Promise<TeamConnection> {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
 
@@ -37,7 +37,7 @@ export class WorkoutResolver {
     if (!afterIsDate) {
       throw new UserInputError('Arg after should be a date string');
     }
-    const workoutDBResult = await Workout.find({
+    const teamDBResult = await Team.find({
       where: {
         createdAt: MoreThan(new Date(after))
       },
@@ -47,31 +47,29 @@ export class WorkoutResolver {
       take: first + 1
     });
 
-    const edges = workoutDBResult
-      .map((workout) => {
+    const edges = teamDBResult
+      .map((team) => {
         return {
-          node: workout,
-          cursor: workout.createdAt.toISOString()
+          node: team,
+          cursor: team.createdAt.toISOString()
         };
       })
       .slice(0, first);
 
     const endCursor =
-      workoutDBResult.length > 0
-        ? workoutDBResult[workoutDBResult.length - 1].createdAt.toISOString()
+      teamDBResult.length > 0
+        ? teamDBResult[teamDBResult.length - 1].createdAt.toISOString()
         : null;
 
     const startCursor =
-      workoutDBResult.length > 0
-        ? workoutDBResult[0].createdAt.toISOString()
-        : null;
+      teamDBResult.length > 0 ? teamDBResult[0].createdAt.toISOString() : null;
 
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
       }
 
-      const previousInDb = await Workout.findOne({
+      const previousInDb = await Team.findOne({
         where: {
           createdAt: LessThan(new Date(startCursor))
         },
@@ -83,7 +81,7 @@ export class WorkoutResolver {
       return previousInDb !== undefined;
     };
     const pageInfo: PageInfo = {
-      hasNextPage: workoutDBResult.length > first,
+      hasNextPage: teamDBResult.length > first,
       endCursor,
       startCursor,
       hasPreviousPage: await getHasPreviousPage()
@@ -95,9 +93,9 @@ export class WorkoutResolver {
     };
   }
 
-  @Mutation(() => Workout)
-  async createWorkout(@Arg('workoutInput') data: CreateWorkoutInput) {
-    const book = Workout.create(data);
+  @Mutation(() => Team)
+  async createTeam(@Arg('teamInput') data: CreateTeamInput) {
+    const book = Team.create(data);
     await book.save();
     return book;
   }

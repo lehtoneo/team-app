@@ -40,7 +40,7 @@ const SignInForm = ({
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
         <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-          Sign in to Workout planner
+          Sign in to Team app
         </h3>
         <CustomErrorMessage message={error} />
         <div>

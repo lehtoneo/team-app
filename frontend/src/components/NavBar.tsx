@@ -23,7 +23,7 @@ const NavBar = (props: INavBarProps) => {
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="bg-red flex items-center">
             <span className="text-xl font-semibold dark:text-white">
-              Workout Planner
+              Team practise app
             </span>
           </Link>
           <button
@@ -83,7 +83,7 @@ const NavBar = (props: INavBarProps) => {
                     className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
                     aria-current="page"
                   >
-                    Own workouts
+                    Own teams
                   </a>
                 )}
               </li>

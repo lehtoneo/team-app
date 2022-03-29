@@ -1,4 +1,3 @@
-
 export interface Tokens {
   accessToken: string;
   refreshToken: string;
@@ -26,8 +25,7 @@ export interface IConnection<T> {
   pageInfo: PageInfo;
 }
 
-export interface Workout {
+export interface Team {
   id: number;
   description: string;
-  done: boolean;
 }
