@@ -26,6 +26,9 @@ export const TEAM_QUERY = gql`
         description
         start
         end
+        team {
+          id
+        }
       }
     }
   }

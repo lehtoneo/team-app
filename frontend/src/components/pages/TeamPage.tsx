@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import useTeam from '../../hooks/useTeam';
 import Button from '../Button';
+import EventList from '../EventList';
 import Header from '../Header';
 import PageContainer from './components/PageContainer';
 
@@ -21,9 +22,7 @@ const TeamPageContent = (props: ITeamPageContentProps) => {
             <Button>Create events</Button>
           </Link>
         </div>
-        {team?.events.map((event) => {
-          return <div key={event.id}>{event.name}</div>;
-        })}
+        <EventList events={team?.events || []} />
         <div>Members</div>
         {team?.members.map((member) => {
           return <div key={member.id}>{member.firstname}</div>;
