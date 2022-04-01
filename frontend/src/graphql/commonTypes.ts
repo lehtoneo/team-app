@@ -35,11 +35,13 @@ export interface User {
 export interface Event {
   id: string;
   name: string;
-  extraInfo?: string;
+  description?: string;
   start: Date;
   end: Date;
+  team: EventTeam;
 }
 
+export type EventTeam = Pick<Team, 'id'>;
 export type TeamUser = Pick<User, 'id' | 'firstname'>;
 
 export interface Team {

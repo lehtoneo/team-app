@@ -1,10 +1,10 @@
-import { CreatedTeamMutationResult } from './../graphql/mutations/createTeam';
+import { CreatedTeamMutationResult } from '../../graphql/mutations/createTeam';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
   CREATE_TEAM,
   CreateTeamInput,
   CreateTeamData
-} from '../graphql/mutations/createTeam';
+} from '../../graphql/mutations/createTeam';
 
 type CreateTeamResult =
   | { success: true; team: CreatedTeamMutationResult }
@@ -14,7 +14,8 @@ const useCreateTeam = () => {
   const [createTeamMutation, { error }] = useMutation<
     CreateTeamData,
     { createTeamInput: CreateTeamInput }
-  >(CREATE_TEAM);
+  >(CREATE_TEAM,
+    );
   const createTeam = async (
     createTeamInput: CreateTeamInput
   ): Promise<CreateTeamResult> => {

@@ -1,9 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { IdAndDates } from './IdAndDates';
 import { Team } from './Team';
 
-import { User } from './User';
 import { UserEventAttendance } from './UserEventAttendance';
 
 @Entity()
@@ -13,9 +12,9 @@ export class Event extends IdAndDates {
   @Column({ nullable: false })
   name: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  extraInfo?: string;
+  description?: string;
 
   @Field(() => Date)
   @Column({ nullable: false })
@@ -33,6 +32,14 @@ export class Event extends IdAndDates {
   )
   userAttendances?: Promise<UserEventAttendance[]>;
 
-  @ManyToOne(() => Team, (team) => team.events, { nullable: false })
-  team: User;
+  @Field(() => Team)
+  @ManyToOne(() => Team, { lazy: true, cascade: true })
+  @JoinColumn({
+    name: 'teamId',
+    referencedColumnName: 'id'
+  })
+  team: Promise<Team>;
+
+  @Column({ nullable: false })
+  teamId: number;
 }

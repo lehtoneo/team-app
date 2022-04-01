@@ -79,7 +79,6 @@ export class TeamResolver {
       },
       take: first + 1
     });
-    console.log({ teamDBResult });
 
     const edges = teamDBResult
       .map((team) => {

@@ -6,16 +6,13 @@ import Button from '../Button';
 import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
 import Header from '../Header';
+import MyEvents from '../MyEvents';
 const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
+  const headerText = `Hi ${userFirstName || ''}!`;
   return (
-    <>
-      <Header>Hi {userFirstName}!</Header>
-      <div className="flex-row">
-        <div className="flex justify-center p-2">
-          <p>Events:</p>
-        </div>
-      </div>
-    </>
+    <PageContainer header={headerText}>
+      <MyEvents />
+    </PageContainer>
   );
 };
 
@@ -26,11 +23,7 @@ const LandingPage = () => {
     return <PageContainer></PageContainer>;
   }
   if (isLoggedIn) {
-    return (
-      <PageContainer>
-        <LoggedInLandingPage userFirstName={currentUser?.firstname} />
-      </PageContainer>
-    );
+    return <LoggedInLandingPage userFirstName={currentUser?.firstname} />;
   }
   return (
     <PageContainer>

@@ -31,7 +31,7 @@ export class User extends IdAndDates {
   )
   eventAttendances: UserEventAttendance[];
 
-  @ManyToMany(() => Team, (team) => team.members, { lazy: true })
+  @ManyToMany(() => Team, (team) => team.members, { lazy: true, cascade: true })
   @Field(() => [Team])
   @JoinTable()
   teams: Promise<Team[]>;

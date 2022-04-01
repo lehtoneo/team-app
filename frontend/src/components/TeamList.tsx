@@ -14,7 +14,7 @@ const Team = ({
   onClick?: (id: number) => any;
 }) => {
   return (
-    <Link to={`/teams/team/${team.id}`}>
+    <Link to={`/teams/${team.id}`}>
       <div className="border-2 my-1">
         <div className="p-2">{team.name}</div>
       </div>

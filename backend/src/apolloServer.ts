@@ -7,6 +7,7 @@ import { buildSchema } from 'type-graphql';
 import { TeamResolver } from './resolvers/TeamResolver';
 import { User } from './models/User';
 import authService from './services/auth';
+import { EventResolver } from './resolvers/EventResolver';
 
 export interface IContext {
   user?: User;
@@ -14,7 +15,7 @@ export interface IContext {
 
 const getApolloServer = async () => {
   const schema = await buildSchema({
-    resolvers: [TeamResolver, UserResolver]
+    resolvers: [TeamResolver, UserResolver, EventResolver]
   });
   const server = new ApolloServer({
     schema,

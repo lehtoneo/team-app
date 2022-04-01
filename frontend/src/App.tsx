@@ -10,6 +10,7 @@ import RequireAuthPage from './components/RequireAuth';
 import TeamsMainPage from './components/pages/TeamsPage';
 import OwnTeamsPage from './components/pages/OwnTeamsPage';
 import TeamPage from './components/pages/TeamPage';
+import CreateTeamEventPage from './components/pages/CreateTeamEventPage';
 
 function App() {
   const [signInUpModalOpen, setSignInUpModalOpen] = useState<boolean>(false);
@@ -31,7 +32,8 @@ function App() {
       />
       <div className="p-5">
         <Routes>
-          <Route index element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />} />
+
           <Route
             path="teams"
             element={
@@ -41,7 +43,7 @@ function App() {
             }
           />
           <Route
-            path="teams/own"
+            path="/teams/own"
             element={
               <RequireAuthPage userState={userState}>
                 <OwnTeamsPage />
@@ -49,10 +51,18 @@ function App() {
             }
           />
           <Route
-            path="teams/team/:id"
+            path="/teams/:id"
             element={
               <RequireAuthPage userState={userState}>
                 <TeamPage />
+              </RequireAuthPage>
+            }
+          />
+          <Route
+            path="/teams/:id/create-event"
+            element={
+              <RequireAuthPage userState={userState}>
+                <CreateTeamEventPage />
               </RequireAuthPage>
             }
           />

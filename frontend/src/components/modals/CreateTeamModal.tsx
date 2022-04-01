@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 
 import { CreateTeamInput } from '../../graphql/mutations/createTeam';
-import useCreateTeam from '../../hooks/useCreateTeam';
+import useCreateTeam from '../../hooks/useTeam/useCreateTeam';
 import CreateTeamForm from '../forms/CreateTeamForm';
 
 import ModalHeader from './ModalHeader';

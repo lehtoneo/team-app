@@ -23,7 +23,7 @@ export const TEAM_QUERY = gql`
       events {
         id
         name
-        extraInfo
+        description
         start
         end
       }

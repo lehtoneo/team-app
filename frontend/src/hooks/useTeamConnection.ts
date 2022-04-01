@@ -17,7 +17,7 @@ const useTeamConnection = (args?: TeamConnectionInput) => {
         console.log(e);
       },
       onCompleted: (d) => {
-        console.log({ d });
+        // console.log({ d });
       }
     }
   );

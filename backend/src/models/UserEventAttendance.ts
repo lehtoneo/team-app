@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
-import { Dates, IdAndDates } from './IdAndDates';
+import { Dates } from './IdAndDates';
 import { Event } from './Event';
 
 import { User } from './User';
@@ -13,7 +13,6 @@ export class UserEventAttendance extends Dates {
   userId: number;
 
   @PrimaryColumn()
-  @Field(() => ID)
   eventId: number;
 
   @ManyToOne(() => User, (user) => user.eventAttendances)

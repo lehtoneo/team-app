@@ -6,12 +6,12 @@ import Header from '../Header';
 import PageContainer from './components/PageContainer';
 
 interface ITeamPageContentProps {
-  id: number;
+  teamId: number;
 }
 
 const TeamPageContent = (props: ITeamPageContentProps) => {
-  const { team, loading: loadingTeam } = useTeam({ id: props.id });
-  console.log({ team });
+  const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
+
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>
       <div>
@@ -38,7 +38,7 @@ const TeamPage = () => {
   if (!id || isNaN(Number(id))) {
     return <Navigate to="/" />;
   }
-  return <TeamPageContent id={Number(id)} />;
+  return <TeamPageContent teamId={Number(id)} />;
 };
 
 export default TeamPage;
