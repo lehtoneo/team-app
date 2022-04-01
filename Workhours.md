@@ -14,3 +14,4 @@
 | 23.3 | 5    | Finish login flow in frontend |
 | 28.3 | 4.5    | Create ui components, fix some login bugs |
 | 28.3 | 8.5    | Create ui components, implement hooks to frontend, create graphql queries, create graphql schemas |
+| 1.4 | 4    | Implementation: some ui components, db models and grapqhl queries to backend |
