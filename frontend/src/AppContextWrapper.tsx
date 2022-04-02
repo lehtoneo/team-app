@@ -9,20 +9,20 @@ import { Provider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClient } from './utils/ApolloClient';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 const AppContextWrapper = () => {
   const apolloClient = getApolloClient();
   const reduxStore = store;
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={reduxStore}>
         <ApolloProvider client={apolloClient}>
           <ToastContainer />
           <App />
         </ApolloProvider>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
