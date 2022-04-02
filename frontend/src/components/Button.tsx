@@ -40,6 +40,9 @@ const Button: React.FC<IButtonProps> = (props) => {
   const usedClassName = props.exactClassName || className;
 
   const handleClick = () => {
+    if (props.disabled) {
+      return;
+    }
     props.onClick && props.onClick();
   };
 

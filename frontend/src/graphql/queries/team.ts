@@ -5,14 +5,22 @@ import { User } from './me';
 
 export type TeamEvent = Pick<
   Event,
-  'id' | 'description' | 'start' | 'end' | 'name' | 'team'
+  | 'id'
+  | 'description'
+  | 'start'
+  | 'end'
+  | 'name'
+  | 'team'
+  | 'currentUserEventAttendance'
 >;
+
+type TeamMembershipRole = 'OWNER' | 'MEMBER';
 
 interface TeamMembership {
   id: string;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
-  role: string;
+  role: TeamMembershipRole;
 }
 
 export type TeamTeamMembership = Pick<TeamMembership, 'id' | 'user' | 'role'>;
@@ -23,23 +31,42 @@ export interface Team {
   name: string;
   memberships: TeamTeamMembership[];
   events: TeamEvent[];
+  currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;
+  joinId: string | null;
 }
 
 export type TeamQuerySuccessData = Pick<
   Team,
-  'description' | 'id' | 'name' | 'memberships' | 'events'
+  | 'description'
+  | 'id'
+  | 'name'
+  | 'memberships'
+  | 'events'
+  | 'currentUserTeamMembership'
+  | 'joinId'
 >;
 
-export interface TeamInput {
+interface GetTeamById {
   id: number;
+  joinId?: undefined;
 }
+interface GetTeamByJoinId {
+  id?: undefined;
+  joinId: string;
+}
+export type GetOneTeamInput = GetTeamById | GetTeamByJoinId;
 
 export const TEAM_QUERY = gql`
-  query oneTeam($id: ID!) {
-    oneTeam(id: $id) {
+  query oneTeam($getOneTeamInput: GetOneTeamInput!) {
+    oneTeam(getOneTeamInput: $getOneTeamInput) {
       id
       description
       name
+      joinId
+      currentUserTeamMembership {
+        id
+        role
+      }
       memberships {
         id
         role
@@ -56,6 +83,13 @@ export const TEAM_QUERY = gql`
         end
         team {
           id
+        }
+        currentUserEventAttendance {
+          id
+          createdAt
+          attendance
+          userId
+          reason
         }
       }
     }

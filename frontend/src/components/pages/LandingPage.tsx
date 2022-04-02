@@ -6,19 +6,20 @@ import Button from '../Button';
 import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
 import Header from '../Header';
-import MyEvents from '../MyEvents';
+import MyUpcomingEvents from '../MyUpcomingEvents';
+import useSignIn from '../../hooks/useSignIn';
 const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
   const headerText = `Hi ${userFirstName || ''}!`;
   return (
     <PageContainer header={headerText}>
-      <MyEvents />
+      <MyUpcomingEvents />
     </PageContainer>
   );
 };
 
 const LandingPage = () => {
-  const { teams } = useTeamConnection();
   const { isLoggedIn, currentUser } = useCurrentUser();
+  const { setUserWantsToLogin } = useSignIn();
   if (isLoggedIn === undefined) {
     return <PageContainer></PageContainer>;
   }
@@ -26,9 +27,12 @@ const LandingPage = () => {
     return <LoggedInLandingPage userFirstName={currentUser?.firstname} />;
   }
   return (
-    <PageContainer>
-      <Header>Welcome to Team app</Header>
-      <TeamList teams={teams} />
+    <PageContainer header="Welcome to Team app">
+      <div className="my-2">
+        <Button onClick={() => setUserWantsToLogin(true)}>
+          Sign In to get started
+        </Button>
+      </div>
     </PageContainer>
   );
 };

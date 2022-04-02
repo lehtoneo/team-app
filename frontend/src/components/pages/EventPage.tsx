@@ -12,6 +12,7 @@ import PageContainer from './components/PageContainer';
 import Field, { fieldClassName } from '../forms/components/Field';
 import Label from '../forms/components/Label';
 import { SaveAttendanceInput } from '../../graphql/mutations/saveAttendance';
+import { formatEventDate } from '../../utils/Dates';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -36,7 +37,7 @@ interface IMarkAttendanceProps {
 
 const MarkAttendance: React.FC<IMarkAttendanceProps> = (props) => {
   const [reason, setReason] = useState<string>('');
-  const inOutText = props.attendanceValue ? 'In' : 'Out';
+  const inOutText = props.attendanceValue ? 'IN' : 'OUT';
   return (
     <div className="my-2">
       <div>{inOutText}</div>
@@ -72,16 +73,19 @@ const UserEventAttendanceComponent: React.FC<
       ? props.eventAttendance.attendance
       : true
   );
-  const headerText = props.eventAttendance
-    ? 'You have marked'
-    : `You haven't marked you attendance`;
-  const buttonText = props.eventAttendance
-    ? 'Change attendance'
-    : 'Mark attendance';
+  const buttonText = props.eventAttendance ? 'Change' : 'Mark status';
+  const attendanceStatus = props.eventAttendance?.attendance;
+  const attendanceText =
+    attendanceStatus !== undefined
+      ? attendanceStatus
+        ? 'IN'
+        : 'OUT'
+      : 'not decided';
+
   return (
     <div>
-      <div>{headerText}</div>
-      <div className="px-5 my-2">
+      <div>In/Out: {attendanceText}</div>
+      <div className="my-2">
         <Button onClick={() => setShowMarkAttendance(!showMarkAttendance)}>
           {buttonText}
         </Button>
@@ -143,16 +147,16 @@ const EventPageContent = (props: ITeamPageContentProps) => {
   }
 
   return (
-    <PageContainer header={`${event?.name || ''}`}>
+    <PageContainer header={`${event.name || ''}`}>
       <div>
-        <div>Starts at</div>
-        <div>{event?.start}</div>
-        <div>Ends at</div>
-        <div>{event?.start}</div>
+        <div>Starts</div>
+        <div>{formatEventDate(event.start)}</div>
+        <div>Ends</div>
+        <div>{formatEventDate(event.end)}</div>
         <div>Your attendance</div>
-        {userEventAttendance !== undefined && (
+        {event.currentUserEventAttendance !== undefined && (
           <UserEventAttendanceComponent
-            eventAttendance={userEventAttendance}
+            eventAttendance={event.currentUserEventAttendance}
             onSubmit={handleAttendanceSubmit}
           />
         )}

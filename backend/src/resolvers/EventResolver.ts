@@ -1,6 +1,6 @@
 import { GetByIdArgs } from './../args/GetByIdArgs';
 import { FilterEventsInput } from '../inputs/FilterEventsInput';
-import { MyAuthContext } from './../types/MyContext';
+import { MyAuthContext, MyContext } from './../types/MyContext';
 import { isAuth } from './../middleware/isAuth';
 import {
   Resolver,
@@ -10,7 +10,9 @@ import {
   Ctx,
   ObjectType,
   Query,
-  Args
+  Args,
+  FieldResolver,
+  Root
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import AppDataSource from '../data-source';
@@ -24,10 +26,13 @@ import {
 } from '../relaySpec';
 
 import { UserInputError } from 'apollo-server-express';
-import { FindOptionsWhere, In, LessThan } from 'typeorm';
+import { FindOptionsWhere, In, LessThan, MoreThan } from 'typeorm';
+import { UserEventAttendance } from '../models/UserEventAttendance';
 
 const teamRepository = AppDataSource.getRepository(Team);
 const eventRepository = AppDataSource.getRepository(Event);
+const userEventAttendanceRepository =
+  AppDataSource.getRepository(UserEventAttendance);
 
 @ObjectType()
 export class EventEdge extends EdgeType('event', Event) {}
@@ -40,6 +45,21 @@ export class EventConnection extends ConnectionType<EventEdge>(
 
 @Resolver(() => Event)
 export class EventResolver {
+  @FieldResolver(() => UserEventAttendance)
+  async currentUserEventAttendance(
+    @Root() event: Event,
+    @Ctx() ctx: MyContext
+  ): Promise<UserEventAttendance | null> {
+    if (!ctx.payload.user) {
+      return null;
+    }
+
+    const userAttendance = await userEventAttendanceRepository.findOneBy({
+      userId: ctx.payload.user.id,
+      eventId: event.id
+    });
+    return userAttendance;
+  }
   @UseMiddleware(isAuth)
   @Mutation(() => Event)
   async createTeamEvent(
@@ -84,7 +104,7 @@ export class EventResolver {
     @Ctx() ctx: MyAuthContext,
     @Arg('paginationInput', { nullable: true }) connArgs?: PaginationInput,
     // eslint-disable-next-line @typescript-eslint/ban-types
-    @Arg('filterEventsInput', { nullable: true }) _?: FilterEventsInput
+    @Arg('filterEventsInput', { nullable: true }) filterArgs?: FilterEventsInput
   ): Promise<EventConnection> {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
@@ -99,6 +119,10 @@ export class EventResolver {
         userTeamMemberships.map((teamMembership) => teamMembership.teamId)
       )
     };
+
+    if (filterArgs?.futureEventsOnly) {
+      where.end = MoreThan(new Date());
+    }
 
     const eventDbResult = await eventRepository.find({
       where,

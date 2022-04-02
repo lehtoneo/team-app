@@ -25,6 +25,9 @@ export class TeamMembership extends Dates {
   team: Promise<Team>;
 
   @Field(() => String, { nullable: true, defaultValue: 'MEMBER' })
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 'MEMBER' })
   role?: string;
+
+  @Field(() => TeamMembership, { nullable: true })
+  currentUserTeamMembership?: TeamMembership;
 }

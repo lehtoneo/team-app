@@ -18,6 +18,7 @@ export interface Event {
   start: Date;
   end: Date;
   team: EventTeam;
+  currentUserEventAttendance: UserEventAttendace | null;
   userAttendances: UserEventAttendace[];
 }
 
@@ -42,6 +43,13 @@ export const EVENT_QUERY = gql`
         createdAt
         userId
         attendance
+        reason
+      }
+      currentUserEventAttendance {
+        id
+        createdAt
+        attendance
+        userId
         reason
       }
     }

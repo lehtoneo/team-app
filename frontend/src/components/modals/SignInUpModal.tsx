@@ -34,12 +34,12 @@ const SignInUpModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
   }, [modalState]);
 
   const handleSignUp = async (values: CreateUserInput) => {
-    const tokens = await createUser(values);
+    await createUser(values);
     onClose();
   };
 
   const handleSignIn = async (values: SignInInput) => {
-    const signInResult = await signIn(values);
+    await signIn(values);
     onClose();
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom';
 import useTeam from '../../hooks/useTeam';
 import Button from '../Button';
 import EventList from '../EventList';
@@ -11,19 +11,32 @@ interface ITeamPageContentProps {
 }
 
 const TeamPageContent = (props: ITeamPageContentProps) => {
+  const location = useLocation();
+
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
+  const isOwner = team?.currentUserTeamMembership.role === 'OWNER';
+  const joinLink = window.location.host + `/teams/join/${team?.joinId}`;
   console.log({ team });
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>
       <div>
-        <div>Events</div>
-        <div className="flex">
-          <Link to="create-event">
-            <Button>Create events</Button>
-          </Link>
-        </div>
+        {isOwner && team.joinId && (
+          <div className="flex my-3">
+            <Button onClick={() => navigator.clipboard.writeText(joinLink)}>
+              Copy join link
+            </Button>
+          </div>
+        )}
+        <div className="text-lg font-bold">Events</div>
+        {isOwner && (
+          <div className="flex">
+            <Link to="create-event">
+              <Button>Create events</Button>
+            </Link>
+          </div>
+        )}
         <EventList events={team?.events || []} />
-        <div>Members</div>
+        <div className="text-lg font-bold">Members</div>
         {team?.memberships.map((teamMembership) => {
           return (
             <div key={teamMembership.id}>{teamMembership.user.firstname}</div>

@@ -12,9 +12,11 @@ import OwnTeamsPage from './components/pages/OwnTeamsPage';
 import TeamPage from './components/pages/TeamPage';
 import CreateTeamEventPage from './components/pages/CreateTeamEventPage';
 import EventPage from './components/pages/EventPage';
+import TeamJoinPage from './components/pages/TeamJoinPage';
+import useSignIn from './hooks/useSignIn';
 
 function App() {
-  const [signInUpModalOpen, setSignInUpModalOpen] = useState<boolean>(false);
+  const { userWantsToLogin, setUserWantsToLogin } = useSignIn();
   const { signOut } = useSignOut();
   const userState = useCurrentUser({ updateValues: true });
   if (userState.isLoggedIn === undefined) {
@@ -23,11 +25,11 @@ function App() {
   return (
     <div className="flex-row" id="app">
       <SignInUpModal
-        isOpen={signInUpModalOpen}
-        onClose={() => setSignInUpModalOpen(false)}
+        isOpen={userWantsToLogin}
+        onClose={() => setUserWantsToLogin(false)}
       />
       <NavBar
-        onSignInPress={() => setSignInUpModalOpen(true)}
+        onSignInPress={() => setUserWantsToLogin(true)}
         isLoggedIn={userState.isLoggedIn}
         onSignOutPress={signOut}
       />
@@ -75,6 +77,7 @@ function App() {
               </RequireAuthPage>
             }
           />
+          <Route path="/teams/join/:joinId" element={<TeamJoinPage />} />
         </Routes>
       </div>
     </div>

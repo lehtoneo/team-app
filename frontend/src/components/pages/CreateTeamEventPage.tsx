@@ -50,11 +50,11 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
 };
 
 const CreateTeamEventPage = () => {
-  const { id } = useParams();
-  if (!id || isNaN(Number(id))) {
+  const { teamId } = useParams();
+  if (!teamId || isNaN(Number(teamId))) {
     return <Navigate to="/" />;
   }
-  return <CreateTeamEventContent teamId={Number(id)} />;
+  return <CreateTeamEventContent teamId={Number(teamId)} />;
 };
 
 export default CreateTeamEventPage;

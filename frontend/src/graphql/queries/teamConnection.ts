@@ -2,7 +2,10 @@ import { gql } from '@apollo/client';
 import { IConnection, PaginationInput } from '../commonTypes';
 import { Team } from './team';
 
-export type TeamListInfo = Pick<Team, 'description' | 'id' | 'name'>;
+export type TeamListInfo = Pick<
+  Team,
+  'description' | 'id' | 'name' | 'currentUserTeamMembership'
+>;
 
 type TeamConnection = IConnection<TeamListInfo>;
 interface FilterTeamsInput {
@@ -29,6 +32,10 @@ export const TEAM_CONNECTION = gql`
           id
           description
           name
+          currentUserTeamMembership {
+            id
+            role
+          }
         }
         cursor
       }

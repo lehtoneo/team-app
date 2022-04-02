@@ -40,6 +40,9 @@ export class Event extends IdAndDates {
   })
   team: Promise<Team>;
 
+  @Field(() => UserEventAttendance, { nullable: true })
+  currentUserEventAttendance?: UserEventAttendance;
+
   @Column({ nullable: false })
   teamId: number;
 }

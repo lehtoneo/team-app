@@ -23,7 +23,7 @@ const NavBar = (props: INavBarProps) => {
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="bg-red flex items-center">
             <span className="text-xl font-semibold dark:text-white">
-              Team practise app
+              Team App
             </span>
           </Link>
           <button

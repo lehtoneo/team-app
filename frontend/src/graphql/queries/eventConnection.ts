@@ -1,11 +1,21 @@
 import { gql } from '@apollo/client';
 import { IConnection, PaginationInput } from '../commonTypes';
 import { Event } from './event';
-export type EventListInfo = Pick<Event, 'description' | 'id' | 'name' | 'team'>;
+export type EventListInfo = Pick<
+  Event,
+  | 'description'
+  | 'id'
+  | 'name'
+  | 'team'
+  | 'currentUserEventAttendance'
+  | 'start'
+>;
 
 type EventConnection = IConnection<EventListInfo>;
 
-interface FilterEventsInput {}
+interface FilterEventsInput {
+  futureEventsOnly?: boolean;
+}
 
 export interface EventConnectionInput {
   paginationInput?: PaginationInput;
@@ -26,8 +36,16 @@ export const EVENT_CONNECTION = gql`
           id
           description
           name
+          start
           team {
             id
+          }
+          currentUserEventAttendance {
+            id
+            createdAt
+            attendance
+            userId
+            reason
           }
         }
         cursor

@@ -3,8 +3,11 @@ import useEventConnection from '../hooks/useEventConnection';
 import EventList from './EventList';
 import Header from './Header';
 
-const MyEvents: React.FC = () => {
-  const { events } = useEventConnection({ paginationInput: { first: 20 } });
+const MyUpcomingEvents: React.FC = () => {
+  const { events } = useEventConnection({
+    paginationInput: { first: 20 },
+    eventFilters: { futureEventsOnly: true }
+  });
   return (
     <div>
       <Header size={3}>Your upcoming Events:</Header>
@@ -13,4 +16,4 @@ const MyEvents: React.FC = () => {
   );
 };
 
-export default MyEvents;
+export default MyUpcomingEvents;

@@ -11,7 +11,9 @@ import {
   ObjectType,
   UseMiddleware,
   Ctx,
-  Args
+  Args,
+  FieldResolver,
+  Root
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -24,6 +26,8 @@ import { MoreThan, LessThan, FindOptionsWhere, ILike } from 'typeorm';
 import { MyAuthContext, MyContext } from '../types/MyContext';
 import { FilterTeamsInput } from '../inputs/FilterTeamsInput';
 import AppDataSource from '../data-source';
+import { JoinTeamInput } from '../inputs/JoinTeamInput';
+import { GetOneTeamInput } from '../inputs/GetOneTeamInput';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -39,14 +43,62 @@ const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 
 @Resolver(() => Team)
 export class TeamResolver {
-  @Query(() => Team, { nullable: true })
-  async oneTeam(@Args() { id }: GetByIdArgs): Promise<Team | null> {
-    const res = await teamRepository.findOne({
-      where: {
-        id
-      }
+  @FieldResolver(() => String, { nullable: true })
+  async joinId(
+    @Root() team: Team,
+    @Ctx() ctx: MyContext
+  ): Promise<string | null> {
+    if (!ctx.payload.user) {
+      return null;
+    }
+
+    const userTeamMembership = await teamMembershipRepository.findOneBy({
+      userId: ctx.payload.user.id,
+      teamId: team.id
     });
-    return res;
+
+    if (userTeamMembership && userTeamMembership.role === 'OWNER') {
+      return team.joinId;
+    }
+    return null;
+  }
+  @FieldResolver(() => TeamMembership, { nullable: true })
+  async currentUserTeamMembership(
+    @Root() team: Team,
+    @Ctx() ctx: MyContext
+  ): Promise<TeamMembership | null> {
+    if (!ctx.payload.user) {
+      return null;
+    }
+
+    const teamMembership = await teamMembershipRepository.findOneBy({
+      teamId: team.id,
+      userId: ctx.payload.user.id
+    });
+    return teamMembership;
+  }
+  @Query(() => Team, { nullable: true })
+  async oneTeam(
+    @Arg('getOneTeamInput') args: GetOneTeamInput
+  ): Promise<Team | null> {
+    const { id, joinId } = args;
+    if (id) {
+      const res = await teamRepository.findOne({
+        where: {
+          id
+        }
+      });
+      return res;
+    } else if (joinId) {
+      const res = await teamRepository.findOne({
+        where: {
+          joinId
+        }
+      });
+      return res;
+    } else {
+      throw new UserInputError('QUERY NEED EITHER JOINID OR USERID');
+    }
   }
 
   @Query(() => TeamConnection)
@@ -145,5 +197,28 @@ export class TeamResolver {
     await teamMembershipRepository.save(newMembership);
 
     return newTeam;
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => Team)
+  async joinTeam(
+    @Arg('joinTeamInput') data: JoinTeamInput,
+    @Ctx() ctx: MyAuthContext
+  ) {
+    const team = await teamRepository.findOneBy({
+      joinId: data.joinId
+    });
+
+    if (!team) {
+      throw new UserInputError('Team not found');
+    }
+
+    const newMembership = new TeamMembership();
+    newMembership.userId = ctx.payload.user.id;
+    newMembership.teamId = team.id;
+    newMembership.role = 'MEMBER';
+    await teamMembershipRepository.save(newMembership);
+
+    return team;
   }
 }
