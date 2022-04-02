@@ -15,3 +15,4 @@
 | 28.3 | 4.5    | Create ui components, fix some login bugs |
 | 28.3 | 8.5    | Create ui components, implement hooks to frontend, create graphql queries, create graphql schemas |
 | 1.4 | 4    | Implementation: some ui components, db models and grapqhl queries to backend |
+| 2.4 | 4    | Event page implementation: query to change event attendance + ui components | 
