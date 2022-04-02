@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
-import { IConnection, PaginationInput, Event } from '../commonTypes';
-
+import { IConnection, PaginationInput } from '../commonTypes';
+import { Event } from './event';
 export type EventListInfo = Pick<Event, 'description' | 'id' | 'name' | 'team'>;
 
 type EventConnection = IConnection<EventListInfo>;

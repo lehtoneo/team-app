@@ -1,6 +1,12 @@
-import { User } from './../commonTypes';
 import { gql } from '@apollo/client';
-import { IConnection, Team } from '../commonTypes';
+import { Team } from './team';
+
+export interface User {
+  id: number;
+  email: string;
+  firstname: string;
+  teams: Team[];
+}
 
 export type MeUserData = Pick<User, 'id' | 'email' | 'firstname'>;
 

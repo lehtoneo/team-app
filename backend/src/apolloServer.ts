@@ -8,6 +8,8 @@ import { TeamResolver } from './resolvers/TeamResolver';
 import { User } from './models/User';
 import authService from './services/auth';
 import { EventResolver } from './resolvers/EventResolver';
+import TeamMembershipResolver from './resolvers/TeamMembershipResolver';
+import UserEventAttendanceResolver from './resolvers/UserEventAttendanceResolver';
 
 export interface IContext {
   user?: User;
@@ -15,7 +17,13 @@ export interface IContext {
 
 const getApolloServer = async () => {
   const schema = await buildSchema({
-    resolvers: [TeamResolver, UserResolver, EventResolver]
+    resolvers: [
+      TeamResolver,
+      UserResolver,
+      EventResolver,
+      TeamMembershipResolver,
+      UserEventAttendanceResolver
+    ]
   });
   const server = new ApolloServer({
     schema,

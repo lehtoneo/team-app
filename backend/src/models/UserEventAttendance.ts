@@ -13,6 +13,7 @@ export class UserEventAttendance extends Dates {
   userId: number;
 
   @PrimaryColumn()
+  @Field(() => ID)
   eventId: number;
 
   @ManyToOne(() => User, (user) => user.eventAttendances)

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
-import { IConnection, PaginationInput, Team } from '../commonTypes';
+import { IConnection, PaginationInput } from '../commonTypes';
+import { Team } from './team';
 
 export type TeamListInfo = Pick<Team, 'description' | 'id' | 'name'>;
 

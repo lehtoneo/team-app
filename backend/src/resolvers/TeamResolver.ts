@@ -1,4 +1,5 @@
-import { GetTeamArgs } from './../args/GetTeamArgs';
+import { TeamMembership } from './../models/TeamMembership';
+import { GetByIdArgs } from '../args/GetByIdArgs';
 import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
 import { CreateTeamInput } from '../inputs/CreateTeamInput';
@@ -34,11 +35,12 @@ export class TeamConnection extends ConnectionType<TeamEdge>(
 ) {}
 
 const teamRepository = AppDataSource.getRepository(Team);
+const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 
 @Resolver(() => Team)
 export class TeamResolver {
   @Query(() => Team, { nullable: true })
-  async oneTeam(@Args() { id }: GetTeamArgs): Promise<Team | null> {
+  async oneTeam(@Args() { id }: GetByIdArgs): Promise<Team | null> {
     const res = await teamRepository.findOne({
       where: {
         id
@@ -68,8 +70,8 @@ export class TeamResolver {
       where.name = ILike(`${filterArgs.name}%`);
     }
     if (filterArgs?.ownTeamsOnly && ctx.payload.user) {
-      where.members = {
-        id: ctx.payload.user.id
+      where.memberships = {
+        userId: ctx.payload.user.id
       };
     }
     const teamDBResult = await teamRepository.find({
@@ -136,8 +138,12 @@ export class TeamResolver {
     const team = Team.create(data);
     const newTeam = await team.save();
 
-    (await newTeam.members).push(ctx.payload.user);
-    const updated = await newTeam.save();
-    return updated;
+    const newMembership = new TeamMembership();
+    newMembership.userId = ctx.payload.user.id;
+    newMembership.teamId = newTeam.id;
+    newMembership.role = 'OWNER';
+    await teamMembershipRepository.save(newMembership);
+
+    return newTeam;
   }
 }

@@ -12,7 +12,7 @@ interface ITeamPageContentProps {
 
 const TeamPageContent = (props: ITeamPageContentProps) => {
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
-
+  console.log({ team });
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>
       <div>
@@ -24,8 +24,10 @@ const TeamPageContent = (props: ITeamPageContentProps) => {
         </div>
         <EventList events={team?.events || []} />
         <div>Members</div>
-        {team?.members.map((member) => {
-          return <div key={member.id}>{member.firstname}</div>;
+        {team?.memberships.map((teamMembership) => {
+          return (
+            <div key={teamMembership.id}>{teamMembership.user.firstname}</div>
+          );
         })}
       </div>
     </PageContainer>
@@ -33,11 +35,11 @@ const TeamPageContent = (props: ITeamPageContentProps) => {
 };
 
 const TeamPage = () => {
-  const { id } = useParams();
-  if (!id || isNaN(Number(id))) {
+  const { teamId } = useParams();
+  if (!teamId || isNaN(Number(teamId))) {
     return <Navigate to="/" />;
   }
-  return <TeamPageContent teamId={Number(id)} />;
+  return <TeamPageContent teamId={Number(teamId)} />;
 };
 
 export default TeamPage;

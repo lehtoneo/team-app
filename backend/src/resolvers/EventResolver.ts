@@ -1,3 +1,4 @@
+import { GetByIdArgs } from './../args/GetByIdArgs';
 import { FilterEventsInput } from '../inputs/FilterEventsInput';
 import { MyAuthContext } from './../types/MyContext';
 import { isAuth } from './../middleware/isAuth';
@@ -8,7 +9,8 @@ import {
   UseMiddleware,
   Ctx,
   ObjectType,
-  Query
+  Query,
+  Args
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import AppDataSource from '../data-source';
@@ -67,6 +69,16 @@ export class EventResolver {
   }
 
   @UseMiddleware(isAuth)
+  @Query(() => Event, { nullable: true })
+  async oneEvent(
+    @Ctx() ctx: MyAuthContext,
+    @Args() { id }: GetByIdArgs
+  ): Promise<Event | null> {
+    const res = await eventRepository.findOneBy({ id });
+    return res;
+  }
+
+  @UseMiddleware(isAuth)
   @Query(() => EventConnection)
   async eventConnection(
     @Ctx() ctx: MyAuthContext,
@@ -76,14 +88,16 @@ export class EventResolver {
   ): Promise<EventConnection> {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
-    const userTeams = await ctx.payload.user.teams;
+    const userTeamMemberships = await ctx.payload.user.teams;
 
     const afterIsDate = !isNaN(Date.parse(after));
     if (!afterIsDate) {
       throw new UserInputError('Arg after should be a date string');
     }
     const where: FindOptionsWhere<Event> = {
-      teamId: In(userTeams.map((team) => team.id))
+      teamId: In(
+        userTeamMemberships.map((teamMembership) => teamMembership.teamId)
+      )
     };
 
     const eventDbResult = await eventRepository.find({

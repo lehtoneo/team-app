@@ -1,6 +1,7 @@
+import { TeamMembership } from './TeamMembership';
 import { UserEventAttendance } from './UserEventAttendance';
 import { RefreshToken } from './UserRefreshToken';
-import { Entity, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, OneToMany, JoinTable } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { IsEmail } from 'class-validator';
@@ -31,8 +32,10 @@ export class User extends IdAndDates {
   )
   eventAttendances: UserEventAttendance[];
 
-  @ManyToMany(() => Team, (team) => team.members, { lazy: true, cascade: true })
-  @Field(() => [Team])
-  @JoinTable()
-  teams: Promise<Team[]>;
+  @OneToMany(() => TeamMembership, (membership) => membership.user, {
+    lazy: true,
+    cascade: true
+  })
+  @Field(() => [TeamMembership])
+  teams: Promise<TeamMembership[]>;
 }

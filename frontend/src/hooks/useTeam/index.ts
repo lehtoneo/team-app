@@ -23,8 +23,8 @@ const useTeam = (args: TeamInput) => {
     }
   );
   return {
-    team: data?.oneTeam || undefined,
-    loading,
+    team: data?.oneTeam,
+    loading: data?.oneTeam === undefined,
     error,
     createTeam,
     createTeamError,

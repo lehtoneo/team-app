@@ -1,7 +1,7 @@
-import { Entity, Column, ManyToMany, OneToMany } from 'typeorm';
+import { TeamMembership } from './TeamMembership';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
-import { User } from './User';
 import { Event } from './Event';
 
 @Entity()
@@ -15,9 +15,11 @@ export class Team extends IdAndDates {
   @Column({ nullable: true })
   description?: string;
 
-  @ManyToMany(() => User, (user) => user.teams, { lazy: true })
-  @Field(() => [User])
-  members: Promise<User[]>;
+  @OneToMany(() => TeamMembership, (membership) => membership.team, {
+    lazy: true
+  })
+  @Field(() => [TeamMembership])
+  memberships: Promise<TeamMembership[]>;
 
   @OneToMany(() => Event, (event) => event.team, { lazy: true })
   @Field(() => [Event])

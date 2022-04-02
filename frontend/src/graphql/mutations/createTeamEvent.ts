@@ -1,5 +1,3 @@
-import { Team } from './../commonTypes';
-
 import { gql } from '@apollo/client';
 
 export interface CreateTeamEventInput {

@@ -7,6 +7,7 @@ import { RefreshToken } from './models/UserRefreshToken';
 import 'dotenv/config';
 import { Event } from './models/Event';
 import { config } from './config';
+import { TeamMembership } from './models/TeamMembership';
 const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
@@ -14,7 +15,14 @@ const options: DataSourceOptions = {
   url: DATABASE_URL,
   synchronize: true,
   logging: false,
-  entities: [User, RefreshToken, Team, Event, UserEventAttendance],
+  entities: [
+    User,
+    RefreshToken,
+    Team,
+    Event,
+    UserEventAttendance,
+    TeamMembership
+  ],
   migrations: [],
   subscribers: [],
   extra: {

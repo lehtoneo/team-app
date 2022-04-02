@@ -14,7 +14,7 @@ interface IEventProps {
 
 const Event = (props: IEventProps) => {
   return (
-    <Link to={`/team/${props.event.team.id}/events/${props.event.id}`}>
+    <Link to={`/teams/${props.event.team.id}/events/${props.event.id}`}>
       <div className="border-2 my-1">
         <div className="p-2">{props.event.name}</div>
       </div>

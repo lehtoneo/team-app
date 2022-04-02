@@ -1,4 +1,4 @@
-import { Team } from './../commonTypes';
+import { Team } from '../queries/team';
 
 import { gql } from '@apollo/client';
 
