@@ -22,7 +22,7 @@ RUN npm run build
 FROM node:16.13.2-alpine3.14 as backend-ts-remover
 WORKDIR /usr/app
 COPY --from=backend-ts-compiler /usr/app/package*.json ./
-COPY --from=backend-ts-compiler /usr/app/build ./
+COPY --from=backend-ts-compiler /usr/app/build ./src
 RUN npm install --only=production
 
 FROM node:16.13.2-alpine3.14

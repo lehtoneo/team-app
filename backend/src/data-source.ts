@@ -6,7 +6,8 @@ import { User } from './models/User';
 import { RefreshToken } from './models/UserRefreshToken';
 import 'dotenv/config';
 import { Event } from './models/Event';
-const { DATABASE_URL, NODE_ENV } = process.env;
+import { config } from './config';
+const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
   type: 'postgres',

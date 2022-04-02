@@ -6,6 +6,7 @@ import { isNumber, isString } from 'class-validator';
 import { AuthenticationError } from 'apollo-server-express';
 import userService from './user';
 import AppDataSource from '../data-source';
+import { config } from '../config';
 
 const userRepository = AppDataSource.getRepository(User);
 
@@ -31,8 +32,7 @@ const saveUserRefreshToken = async (
   await newRefreshTokenInDb.save();
 };
 
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'cba';
-const REFRESH_TOKEN_LIFE = process.env.REFRESH_TOKEN_LIFE || '360d';
+const { REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE } = config;
 
 const getAccessAndRefreshToken = async (user: User) => {
   const userForToken = getUserForToken(user);
@@ -75,8 +75,7 @@ const newAccessToken = async (refreshToken: string): Promise<string> => {
   }
 };
 
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'abcd';
-const ACCESS_TOKEN_LIFE = process.env.ACCESS_TOKEN_LIFE || '900s';
+const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE } = config;
 
 const getAccessToken = (user: ITokenUser) => {
   const userForToken = getUserForToken(user);

@@ -1,0 +1,15 @@
+import 'dotenv/config';
+
+const { NODE_ENV, DATABASE_URL, PORT } = process.env;
+const { REFRESH_TOKEN_SECRET, ACCESS_TOKEN_SECRET } = process.env;
+const { REFRESH_TOKEN_LIFE, ACCESS_TOKEN_LIFE } = process.env;
+
+export const config = {
+  PORT: PORT || '5000',
+  NODE_ENV: NODE_ENV || 'dev',
+  DATABASE_URL: DATABASE_URL,
+  REFRESH_TOKEN_SECRET: REFRESH_TOKEN_SECRET || 'cba',
+  REFRESH_TOKEN_LIFE: REFRESH_TOKEN_LIFE || '360d',
+  ACCESS_TOKEN_SECRET: ACCESS_TOKEN_SECRET || 'cba',
+  ACCESS_TOKEN_LIFE: ACCESS_TOKEN_LIFE || '900s'
+};
