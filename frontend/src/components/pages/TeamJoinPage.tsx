@@ -46,7 +46,7 @@ const LoggedInContent: React.FC<LoggedInContentProps> = (props) => {
       toast(`Joined team ${result.team.name} succesfully`, { type: 'success' });
       navigate(`/teams/${result.team.id}`);
     } else {
-      toast(`Something went wrong`, { type: 'error' });
+      toast(result.error.message, { type: 'error' });
     }
     setJoining(false);
   };
@@ -64,13 +64,17 @@ const LoggedInContent: React.FC<LoggedInContentProps> = (props) => {
 
 const TeamJoinPageContent = (props: TeamJoinPageContentProps) => {
   const { isLoggedIn } = useCurrentUser();
-  const { team } = useTeam({ joinId: props.joinId });
+  const { team, error } = useTeam({ joinId: props.joinId });
   if (isLoggedIn === undefined) {
     return <div>Loading</div>;
   }
 
+  if (team === null || error) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <PageContainer header={`Join team ${team?.name}`}>
+    <PageContainer header={`Join team ${team?.name || ''}`}>
       {isLoggedIn ? (
         <LoggedInContent joinId={props.joinId} />
       ) : (

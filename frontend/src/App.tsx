@@ -23,17 +23,19 @@ function App() {
     return <div>Loading</div>;
   }
   return (
-    <div className="flex-row" id="app">
+    <div className="flex-row bg-gray-200" id="app">
       <SignInUpModal
         isOpen={userWantsToLogin}
         onClose={() => setUserWantsToLogin(false)}
       />
-      <NavBar
-        onSignInPress={() => setUserWantsToLogin(true)}
-        isLoggedIn={userState.isLoggedIn}
-        onSignOutPress={signOut}
-      />
-      <div className="p-5">
+      <div className="p-2">
+        <NavBar
+          onSignInPress={() => setUserWantsToLogin(true)}
+          isLoggedIn={userState.isLoggedIn}
+          onSignOutPress={signOut}
+        />
+      </div>
+      <div className="p-5 container mx-auto bg-white min-h-screen rounded my-0">
         <Routes>
           <Route path="/" element={<LandingPage />} />
 

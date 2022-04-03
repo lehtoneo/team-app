@@ -19,7 +19,7 @@ const NavBar = (props: INavBarProps) => {
   };
   return (
     <header>
-      <nav className="px-100 sm:px-2 m-2 bg-white border border-gray py-2.5 rounded dark:bg-gray-800">
+      <nav className="px-100 sm:px-2 bg-white border border-gray py-2.5 rounded dark:bg-gray-800">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="bg-red flex items-center">
             <span className="text-xl font-semibold dark:text-white">

@@ -4,11 +4,19 @@ import {
   JOIN_TEAM,
   JoinTeamInput
 } from './../../graphql/mutations/joinTeam';
-import { useMutation } from '@apollo/client';
+import { useMutation, ApolloError } from '@apollo/client';
+
+const unknownError: UnknownError = {
+  message: 'Unknown error'
+};
+
+interface UnknownError {
+  message: 'Unknown error';
+}
 
 type JoinTeamResult =
   | { success: true; team: JoinedTeamMutationResult }
-  | { success: false; team?: null };
+  | { success: false; team?: null; error: ApolloError | UnknownError };
 
 const useJoinTeam = () => {
   const [createTeamMutation, { error }] = useMutation<
@@ -27,7 +35,8 @@ const useJoinTeam = () => {
 
       if (!res.data?.joinTeam) {
         return {
-          success: false
+          success: false,
+          error: unknownError
         };
       } else {
         return {
@@ -35,9 +44,16 @@ const useJoinTeam = () => {
           team: res.data.joinTeam
         };
       }
-    } catch (e) {
+    } catch (e: any) {
+      if (e instanceof ApolloError) {
+        return {
+          success: false,
+          error: e
+        };
+      }
       return {
-        success: false
+        success: false,
+        error: unknownError
       };
     }
   };

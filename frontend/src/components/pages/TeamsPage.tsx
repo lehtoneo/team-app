@@ -25,10 +25,6 @@ const TeamsPage = () => {
         <Link to="own">
           <Button>My teams</Button>
         </Link>
-        <div className="my-2"></div>
-        <Link to="join">
-          <Button>Join a team!</Button>
-        </Link>
         <div className="my-4"></div>
         <Button onClick={() => setCreateTeamModalOpen(true)} color="green">
           Create a new team

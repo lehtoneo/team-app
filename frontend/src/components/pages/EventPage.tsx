@@ -13,6 +13,8 @@ import Field, { fieldClassName } from '../forms/components/Field';
 import Label from '../forms/components/Label';
 import { SaveAttendanceInput } from '../../graphql/mutations/saveAttendance';
 import { formatEventDate } from '../../utils/Dates';
+import InfoItem from '../InfoItem';
+import { TeamTeamMembership } from '../../graphql/queries/team';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -103,11 +105,40 @@ const UserEventAttendanceComponent: React.FC<
   );
 };
 
+interface MemberListProps {
+  members: TeamTeamMembership[];
+  header: string;
+}
+const MemberList: React.FC<MemberListProps> = (props) => {
+  const firstClassName = '';
+  const middleClassName = 'ml-2';
+  const lastClassName = middleClassName;
+  return (
+    <div>
+      <div className="font-bold">{props.header}</div>
+      <div className="flex">
+        {props.members.map((membership, index) => {
+          const isFirst = index === 0;
+          const isLast = index === props.members.length - 1;
+          const className = isFirst
+            ? firstClassName
+            : isLast
+            ? lastClassName
+            : middleClassName;
+          return (
+            <div className={className}>
+              {membership.user.firstname}
+              {!isLast && ', '}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const EventPageContent = (props: ITeamPageContentProps) => {
   const { currentUser } = useCurrentUser();
-  const [userEventAttendance, setUserEventAttendance] = useState<
-    UserEventAttendace | undefined | null
-  >(undefined);
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
   const {
     event,
@@ -126,40 +157,54 @@ const EventPageContent = (props: ITeamPageContentProps) => {
     }
   };
 
-  useEffect(() => {
-    if (team && event && currentUser) {
-      const eventAttendanceFromArray = event.userAttendances.find(
-        (attendance) => attendance.userId === currentUser.id
-      );
-      if (eventAttendanceFromArray) {
-        setUserEventAttendance(eventAttendanceFromArray);
-      } else {
-        setUserEventAttendance(null);
-      }
-    }
-  }, [event, team, currentUser]);
-
   if (loadingTeam || loadingEvent) {
     return <PageContainer>Loading....</PageContainer>;
   }
   if (!event || !currentUser || !team) {
     return <Navigate to="/not-found" />;
   }
+  const userMap: { [key in number]: TeamTeamMembership } = {};
+  const inUsers = team.memberships.filter((membership) => {
+    const memberAttendance = event.userAttendances.find(
+      (attendance) => attendance.userId === membership.user.id
+    );
+
+    return memberAttendance?.attendance === true;
+  });
+  const outUsers = team.memberships.filter((membership) => {
+    const memberAttendance = event.userAttendances.find(
+      (attendance) => attendance.userId === membership.user.id
+    );
+
+    return memberAttendance?.attendance === false;
+  });
+
+  const notDecidedUsers = team.memberships.filter((membership) => {
+    const memberInAttendanceList = event.userAttendances.find(
+      (attendance) => attendance.userId === membership.user.id
+    );
+
+    return !memberInAttendanceList;
+  });
 
   return (
     <PageContainer header={`${event.name || ''}`}>
       <div>
-        <div>Starts</div>
-        <div>{formatEventDate(event.start)}</div>
-        <div>Ends</div>
-        <div>{formatEventDate(event.end)}</div>
-        <div>Your attendance</div>
-        {event.currentUserEventAttendance !== undefined && (
-          <UserEventAttendanceComponent
-            eventAttendance={event.currentUserEventAttendance}
-            onSubmit={handleAttendanceSubmit}
-          />
-        )}
+        <InfoItem header="Starts" text={formatEventDate(event.start)} />
+        <InfoItem header="Ends" text={formatEventDate(event.end)} />
+        <InfoItem header="You attendance">
+          {event.currentUserEventAttendance !== undefined && (
+            <UserEventAttendanceComponent
+              eventAttendance={event.currentUserEventAttendance}
+              onSubmit={handleAttendanceSubmit}
+            />
+          )}
+        </InfoItem>
+        <InfoItem header="Member attendances">
+          <MemberList header="In" members={inUsers} />
+          <MemberList header="Out" members={outUsers} />
+          <MemberList header="Not decided" members={notDecidedUsers} />
+        </InfoItem>
       </div>
     </PageContainer>
   );

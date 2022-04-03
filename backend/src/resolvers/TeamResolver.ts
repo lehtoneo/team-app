@@ -213,6 +213,15 @@ export class TeamResolver {
       throw new UserInputError('Team not found');
     }
 
+    const isUserMember = await teamMembershipRepository.findOneBy({
+      userId: ctx.payload.user.id,
+      teamId: team.id
+    });
+
+    if (isUserMember) {
+      throw new UserInputError('You are already a member of the team');
+    }
+
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = team.id;

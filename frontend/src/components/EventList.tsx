@@ -6,6 +6,7 @@ import { formatEventDate } from '../utils/Dates';
 
 interface EventListProps {
   events: EventListInfo[];
+  loading?: boolean;
 }
 
 interface EventProps {
@@ -70,9 +71,10 @@ const EventItem = (props: EventProps) => {
 const EventList = (props: EventListProps) => {
   return (
     <div>
-      {props.events.map((event) => {
-        return <EventItem event={event} key={event.id} />;
-      })}
+      {!props.loading &&
+        props.events.map((event) => {
+          return <EventItem event={event} key={event.id} />;
+        })}
     </div>
   );
 };

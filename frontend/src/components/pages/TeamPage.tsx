@@ -15,8 +15,9 @@ const TeamPageContent = (props: ITeamPageContentProps) => {
 
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
   const isOwner = team?.currentUserTeamMembership.role === 'OWNER';
-  const joinLink = window.location.host + `/teams/join/${team?.joinId}`;
-  console.log({ team });
+  const url = new URL(window.location.href);
+  const joinLink = url.origin + '/#' + `/teams/join/${team?.joinId}`;
+
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>
       <div>
