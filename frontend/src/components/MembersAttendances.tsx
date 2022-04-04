@@ -26,7 +26,7 @@ const MemberList: React.FC<MemberListProps> = (props) => {
             : middleClassName;
           return (
             <div className={className} key={membership.id}>
-              {membership.user.firstname} {membership.user.id}
+              {membership.user.firstname}
               {!isLast && ', '}
             </div>
           );
