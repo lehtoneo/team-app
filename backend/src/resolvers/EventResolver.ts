@@ -17,7 +17,7 @@ import {
 import { Team } from '../models/Team';
 import AppDataSource from '../data-source';
 import { Event } from '../models/Event';
-import { CreateTeamEventInput } from '../inputs/CreateTeamEventInput';
+import { CreateEventInput } from '../inputs/event/CreateEventInput';
 import {
   ConnectionType,
   EdgeType,
@@ -28,6 +28,9 @@ import {
 import { UserInputError } from 'apollo-server-express';
 import { FindOptionsWhere, In, LessThan, MoreThan } from 'typeorm';
 import { UserEventAttendance } from '../models/UserEventAttendance';
+import { EditEventInput } from '../inputs/event/EditEventInput';
+import teamAuthService from '../services/teamAuth';
+import { UserTeamRole } from '../models/TeamMembership';
 
 const teamRepository = AppDataSource.getRepository(Team);
 const eventRepository = AppDataSource.getRepository(Event);
@@ -62,17 +65,10 @@ export class EventResolver {
   }
   @UseMiddleware(isAuth)
   @Mutation(() => Event)
-  async createTeamEvent(
-    @Arg('createTeamEventInput') data: CreateTeamEventInput,
-    @Ctx() _ctx: MyAuthContext
+  async createEvent(
+    @Arg('createEventInput') data: CreateEventInput,
+    @Ctx() ctx: MyAuthContext
   ) {
-    const newEvent = new Event();
-    newEvent.name = data.name;
-    newEvent.description = data.description;
-    newEvent.end = data.end;
-    newEvent.start = data.start;
-    newEvent.teamId = data.teamId;
-
     const team = await teamRepository.findOne({
       where: {
         id: data.teamId
@@ -82,8 +78,44 @@ export class EventResolver {
     if (!team) {
       throw Error('Team not found');
     }
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user,
+      team,
+      UserTeamRole.OWNER
+    );
+
+    const newEvent = new Event();
+    newEvent.name = data.name;
+    newEvent.description = data.description;
+    newEvent.end = data.end;
+    newEvent.start = data.start;
+    newEvent.teamId = data.teamId;
 
     const savedEvent = await eventRepository.save(newEvent);
+
+    return savedEvent;
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => Event)
+  async editEvent(
+    @Arg('editEventInput') data: EditEventInput,
+    @Ctx() ctx: MyAuthContext
+  ) {
+    const currentUser = ctx.payload.user;
+    const event = await eventRepository.findOneByOrFail({ id: data.id });
+
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      currentUser,
+      event.teamId,
+      UserTeamRole.OWNER
+    );
+
+    event.name = data.name;
+    event.description = data.description;
+    event.end = data.end;
+    event.start = data.start;
+    const savedEvent = await eventRepository.save(event);
 
     return savedEvent;
   }
@@ -95,6 +127,14 @@ export class EventResolver {
     @Args() { id }: GetByIdArgs
   ): Promise<Event | null> {
     const res = await eventRepository.findOneBy({ id });
+    if (!res) {
+      throw new UserInputError('Event not found');
+    }
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user,
+      res.teamId,
+      UserTeamRole.MEMBER
+    );
     return res;
   }
 

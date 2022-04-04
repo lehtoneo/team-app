@@ -5,14 +5,7 @@ import {
   JoinTeamInput
 } from './../../graphql/mutations/joinTeam';
 import { useMutation, ApolloError } from '@apollo/client';
-
-const unknownError: UnknownError = {
-  message: 'Unknown error'
-};
-
-interface UnknownError {
-  message: 'Unknown error';
-}
+import { unknownError, UnknownError } from '../../types';
 
 type JoinTeamResult =
   | { success: true; team: JoinedTeamMutationResult }

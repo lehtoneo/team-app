@@ -126,7 +126,7 @@ const MemberList: React.FC<MemberListProps> = (props) => {
             ? lastClassName
             : middleClassName;
           return (
-            <div className={className}>
+            <div className={className} key={membership.id}>
               {membership.user.firstname}
               {!isLast && ', '}
             </div>
@@ -187,9 +187,16 @@ const EventPageContent = (props: ITeamPageContentProps) => {
     return !memberInAttendanceList;
   });
 
+  console.log({ team });
+
   return (
     <PageContainer header={`${event.name || ''}`}>
       <div>
+        {team.currentUserTeamMembership.role === 'OWNER' && (
+          <Link to="edit">
+            <Button>Edit</Button>
+          </Link>
+        )}
         <InfoItem header="Starts" text={formatEventDate(event.start)} />
         <InfoItem header="Ends" text={formatEventDate(event.end)} />
         <InfoItem header="You attendance">
@@ -213,7 +220,7 @@ const EventPageContent = (props: ITeamPageContentProps) => {
 const EventPage = () => {
   const { eventId, teamId } = useParams();
   if (!teamId || !eventId || isNaN(Number(eventId))) {
-    return <Navigate to="/" />;
+    return <Navigate to="/not-found" />;
   }
   return <EventPageContent eventId={Number(eventId)} teamId={Number(teamId)} />;
 };

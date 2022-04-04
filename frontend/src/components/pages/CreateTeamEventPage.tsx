@@ -2,9 +2,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useCreateEvent from '../../hooks/useEvent/useCreateEvent';
 import useTeam from '../../hooks/useTeam';
-import CreateEventForm, {
-  ICreateEventFormValues
-} from '../forms/CreateEventForm';
+import EventForm, { EventFormValues } from '../forms/EventForm';
 import PageContainer from './components/PageContainer';
 
 interface ITeamPageContentProps {
@@ -16,9 +14,7 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
   const { team } = useTeam({ id: props.teamId });
   const { createEvent, error } = useCreateEvent();
 
-  const handleCreateEventSubmit = async (
-    formValues: ICreateEventFormValues
-  ) => {
+  const handleCreateEventSubmit = async (formValues: EventFormValues) => {
     const result = await createEvent({
       ...formValues,
       teamId: props.teamId
@@ -33,7 +29,8 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>
       <div className="mt-5">
-        <CreateEventForm
+        <EventForm
+          type="create"
           onSubmit={(val) => handleCreateEventSubmit(val)}
           error={error?.message}
         />

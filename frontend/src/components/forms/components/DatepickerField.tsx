@@ -35,6 +35,7 @@ const DatePickerField = ({ ...props }: IProps) => {
     <DatePicker
       {...field}
       {...props.datePickerProps}
+      calendarStartDay={1}
       className={fieldClassName}
       selected={(field.value && new Date(field.value)) || null}
       onChange={(val) => {

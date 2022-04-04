@@ -14,6 +14,7 @@ import CreateTeamEventPage from './components/pages/CreateTeamEventPage';
 import EventPage from './components/pages/EventPage';
 import TeamJoinPage from './components/pages/TeamJoinPage';
 import useSignIn from './hooks/useSignIn';
+import EditTeamEventPage from './components/pages/EditTeamEventPage';
 
 function App() {
   const { userWantsToLogin, setUserWantsToLogin } = useSignIn();
@@ -79,7 +80,16 @@ function App() {
               </RequireAuthPage>
             }
           />
+          <Route
+            path="/teams/:teamId/events/:eventId/edit"
+            element={
+              <RequireAuthPage userState={userState}>
+                <EditTeamEventPage />
+              </RequireAuthPage>
+            }
+          />
           <Route path="/teams/join/:joinId" element={<TeamJoinPage />} />
+          <Route path="/*" element={<div>Page Not found</div>} />
         </Routes>
       </div>
     </div>

@@ -1,5 +1,4 @@
-import { TeamMembership } from './../models/TeamMembership';
-import { GetByIdArgs } from '../args/GetByIdArgs';
+import { TeamMembership, UserTeamRole } from './../models/TeamMembership';
 import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
 import { CreateTeamInput } from '../inputs/CreateTeamInput';
@@ -11,7 +10,6 @@ import {
   ObjectType,
   UseMiddleware,
   Ctx,
-  Args,
   FieldResolver,
   Root
 } from 'type-graphql';
@@ -193,7 +191,7 @@ export class TeamResolver {
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = newTeam.id;
-    newMembership.role = 'OWNER';
+    newMembership.role = UserTeamRole.OWNER;
     await teamMembershipRepository.save(newMembership);
 
     return newTeam;
@@ -225,7 +223,7 @@ export class TeamResolver {
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = team.id;
-    newMembership.role = 'MEMBER';
+    newMembership.role = UserTeamRole.MEMBER;
     await teamMembershipRepository.save(newMembership);
 
     return team;

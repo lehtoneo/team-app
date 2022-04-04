@@ -1,30 +1,29 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
 import Button from '../Button';
 import Field from './components/Field';
 import Label from './components/Label';
-import { Form, Formik, ErrorMessage } from 'formik';
-import { SignInInput } from '../../graphql/mutations/signIn';
-import { string } from 'yup';
-import { printIntrospectionSchema } from 'graphql';
+import { Form, Formik } from 'formik';
 import CustomErrorMessage from './components/CustomErrorMessage';
 import FormHeader from './components/FormHeader';
 import DatePickerField from './components/DatepickerField';
 
-interface ICreateEventFormProps {
-  onSubmit: (values: ICreateEventFormValues) => Promise<any>;
+interface EventFormProps {
+  onSubmit: (values: EventFormValues) => Promise<any>;
   error?: string;
+  type: 'edit' | 'create';
+  initialValues?: EventFormValues;
 }
 
-export interface ICreateEventFormValues {
+export interface EventFormValues {
   name: string;
   description?: string;
   start: Date;
   end: Date;
 }
 
-const CreateEventForm = ({ onSubmit, error }: ICreateEventFormProps) => {
-  const initialValues: ICreateEventFormValues = {
+const EventForm = (props: EventFormProps) => {
+  const headerText = props.type === 'create' ? 'Create an Event' : 'Edit event';
+  const submitText = props.type === 'create' ? 'Create' : 'Edit';
+  const initialValues: EventFormValues = props.initialValues || {
     name: '',
     description: '',
     start: new Date(),
@@ -34,12 +33,12 @@ const CreateEventForm = ({ onSubmit, error }: ICreateEventFormProps) => {
     <Formik
       initialValues={initialValues}
       onSubmit={async (values) => {
-        await onSubmit(values);
+        await props.onSubmit(values);
       }}
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-        <FormHeader>Create an Event</FormHeader>
-        <CustomErrorMessage message={error} />
+        <FormHeader>{headerText}</FormHeader>
+        <CustomErrorMessage message={props.error} />
         <div>
           <Label>Name</Label>
           <Field name="name" id="name" placeholder="Event name" required />
@@ -77,11 +76,11 @@ const CreateEventForm = ({ onSubmit, error }: ICreateEventFormProps) => {
           />
         </div>
         <Button id="submit" type="submit" color="green">
-          Create
+          {submitText}
         </Button>
       </Form>
     </Formik>
   );
 };
 
-export default CreateEventForm;
+export default EventForm;
