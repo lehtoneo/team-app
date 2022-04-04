@@ -16,24 +16,27 @@ interface EventFormProps {
 export interface EventFormValues {
   name: string;
   description?: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
 }
 
 const EventForm = (props: EventFormProps) => {
   const headerText = props.type === 'create' ? 'Create an Event' : 'Edit event';
   const submitText = props.type === 'create' ? 'Create' : 'Edit';
+  console.log(props.initialValues);
   const initialValues: EventFormValues = props.initialValues || {
     name: '',
     description: '',
-    start: new Date(),
-    end: new Date()
+    start: new Date().toISOString(),
+    end: new Date().toISOString()
   };
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={async (values) => {
-        await props.onSubmit(values);
+        await props.onSubmit({
+          ...values
+        });
       }}
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">

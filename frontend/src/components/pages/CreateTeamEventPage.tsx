@@ -17,6 +17,8 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
   const handleCreateEventSubmit = async (formValues: EventFormValues) => {
     const result = await createEvent({
       ...formValues,
+      start: new Date(formValues.start),
+      end: new Date(formValues.end),
       teamId: props.teamId
     });
 

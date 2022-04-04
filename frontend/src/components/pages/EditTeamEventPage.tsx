@@ -21,6 +21,8 @@ const EditTeamEventContent = (props: EditEventPageContentProps) => {
     console.log({ formValues });
     const result = await editEvent({
       ...formValues,
+      start: new Date(formValues.start),
+      end: new Date(formValues.end),
       id: props.eventId
     });
 

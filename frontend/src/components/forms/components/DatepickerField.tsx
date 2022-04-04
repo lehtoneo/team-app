@@ -15,7 +15,6 @@ interface IProps {
 const DatePickerField = ({ ...props }: IProps) => {
   const { setFieldValue } = useFormikContext();
   const [field] = useField(props.fieldProps);
-
   const handleChange = (val: Date | null) => {
     if (val) {
       setFieldValue(field.name, val);
@@ -25,12 +24,10 @@ const DatePickerField = ({ ...props }: IProps) => {
   };
 
   useEffect(() => {
-    if (props.initialTime) {
-      handleChange(props.initialTime);
-    } else {
-      handleChange(new Date());
-    }
+    handleChange(new Date(field.value));
   }, []);
+
+  useEffect(() => {}, []);
   return (
     <DatePicker
       {...field}

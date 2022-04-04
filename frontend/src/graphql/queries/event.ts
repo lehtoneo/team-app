@@ -1,12 +1,15 @@
 import { gql } from '@apollo/client';
+import { User } from './me';
 import { Team } from './team';
+
+export type EventAttendanceUser = Pick<User, 'id' | 'firstname'>;
 
 export interface UserEventAttendace {
   id: string;
   createdAt: Date;
-  userId: number;
   attendance: boolean;
   reason?: string;
+  user: EventAttendanceUser;
 }
 
 export type EventTeam = Pick<Team, 'id' | 'name'>;
@@ -15,8 +18,8 @@ export interface Event {
   id: string;
   name: string;
   description?: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   team: EventTeam;
   currentUserEventAttendance: UserEventAttendace | null;
   userAttendances: UserEventAttendace[];
@@ -41,7 +44,10 @@ export const EVENT_QUERY = gql`
       userAttendances {
         id
         createdAt
-        userId
+        user {
+          id
+          firstname
+        }
         attendance
         reason
       }
@@ -49,7 +55,10 @@ export const EVENT_QUERY = gql`
         id
         createdAt
         attendance
-        userId
+        user {
+          id
+          firstname
+        }
         reason
       }
     }

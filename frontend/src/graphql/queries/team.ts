@@ -17,7 +17,7 @@ export type TeamEvent = Pick<
 type TeamMembershipRole = 'OWNER' | 'MEMBER';
 
 interface TeamMembership {
-  id: string;
+  id: number;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
   role: TeamMembershipRole;

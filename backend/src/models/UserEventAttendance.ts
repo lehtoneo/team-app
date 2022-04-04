@@ -16,9 +16,10 @@ export class UserEventAttendance extends Dates {
   @Field(() => ID)
   eventId: number;
 
-  @ManyToOne(() => User, (user) => user.eventAttendances)
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.eventAttendances, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: Promise<User>;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   @ManyToOne(() => Event, (event) => event.userAttendances)
   @JoinColumn({ name: 'eventId' })

@@ -1,6 +1,7 @@
 import moment from 'moment';
 
-export const formatEventDate = (date: Date) => {
+export const formatEventDate = (dateString: string) => {
+  const date = new Date(dateString);
   const dateMoment = moment(date);
   const iscurrentDate = dateMoment.isSame(new Date(), 'day');
   const hoursAndMins = dateMoment.format('HH:mm');
