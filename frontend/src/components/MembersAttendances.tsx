@@ -26,7 +26,7 @@ const MemberList: React.FC<MemberListProps> = (props) => {
             : middleClassName;
           return (
             <div className={className} key={membership.id}>
-              {membership.user.firstname}
+              {membership.user.firstname} {membership.user.id}
               {!isLast && ', '}
             </div>
           );
@@ -60,8 +60,8 @@ const MembersAttendances: React.FC<MembersAttendancesProps> = (props) => {
 
     const notDecidedUsers = props.allTeamMembers.filter(
       (member) =>
-        !!props.attendances.find(
-          (attendance) => attendance.user.id === member.id
+        !props.attendances.find(
+          (attendance) => attendance.user.id === member.user.id
         )
     );
 
