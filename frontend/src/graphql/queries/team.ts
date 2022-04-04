@@ -24,6 +24,11 @@ interface TeamMembership {
 }
 
 export type TeamTeamMembership = Pick<TeamMembership, 'id' | 'user' | 'role'>;
+export interface TeamSettings {
+  id: number;
+  discordWebhookUrl: string | null;
+  discordNotificationsOn: boolean;
+}
 
 export interface Team {
   id: number;
@@ -33,6 +38,7 @@ export interface Team {
   events: TeamEvent[];
   currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;
   joinId: string | null;
+  settings: TeamSettings | null;
 }
 
 export type TeamQuerySuccessData = Pick<
@@ -44,6 +50,7 @@ export type TeamQuerySuccessData = Pick<
   | 'events'
   | 'currentUserTeamMembership'
   | 'joinId'
+  | 'settings'
 >;
 
 interface GetTeamById {
@@ -63,6 +70,11 @@ export const TEAM_QUERY = gql`
       description
       name
       joinId
+      settings {
+        id
+        discordWebhookUrl
+        discordNotificationsOn
+      }
       currentUserTeamMembership {
         id
         role

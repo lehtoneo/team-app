@@ -1,5 +1,13 @@
+import { TeamSettings } from './TeamSettings';
 import { TeamMembership } from './TeamMembership';
-import { Entity, Column, OneToMany, Generated } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  Generated,
+  OneToOne,
+  JoinColumn
+} from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { Event } from './Event';
@@ -29,4 +37,12 @@ export class Team extends IdAndDates {
   @Column()
   @Generated('uuid')
   joinId: string;
+
+  @Column({ nullable: true })
+  settingsId?: number;
+
+  @Field(() => TeamSettings, { nullable: true })
+  @OneToOne(() => TeamSettings, { lazy: true })
+  @JoinColumn({ name: 'settingsId' })
+  settings: Promise<TeamSettings>;
 }

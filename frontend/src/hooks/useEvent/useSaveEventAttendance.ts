@@ -1,5 +1,5 @@
 import { TEAM_QUERY } from './../../graphql/queries/team';
-import { Event } from './../../graphql/queries/event';
+import { Event, EVENT_QUERY } from './../../graphql/queries/event';
 import {
   SaveAttendanceData,
   SaveAttendanceInput
@@ -17,7 +17,7 @@ const useSaveEventAttendance = ({ eventId }: { eventId: number }) => {
   const [saveAttendanceMutation, { error }] = useMutation<
     SaveAttendanceData,
     { saveAttendanceInput: SaveAttendanceInput }
-  >(SAVE_ATTENDANCE, { refetchQueries: [TEAM_QUERY] });
+  >(SAVE_ATTENDANCE, { refetchQueries: [EVENT_QUERY] });
 
   const saveAttendance = async (
     saveAttendanceInput: Omit<SaveAttendanceInput, 'eventId'>

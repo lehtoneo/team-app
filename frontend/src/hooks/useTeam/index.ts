@@ -4,8 +4,10 @@ import { TeamQueryData, TEAM_QUERY } from '../../graphql/queries/team';
 import { useQuery } from '@apollo/client';
 import useCreateTeam from './useCreateTeam';
 import useJoinTeam from './useJoinTeam';
+import useEditTeam from './useEditTeam';
 
 const useTeam = (args: GetOneTeamInput) => {
+  const { editTeam, error: editTeamError } = useEditTeam();
   const { joinTeam, error: joinTeamError } = useJoinTeam();
   const { createTeam, error: createTeamError } = useCreateTeam();
   const { data, loading, error } = useQuery<
@@ -29,7 +31,9 @@ const useTeam = (args: GetOneTeamInput) => {
     createTeam,
     createTeamError,
     joinTeam,
-    joinTeamError
+    joinTeamError,
+    editTeam,
+    editTeamError
   };
 };
 

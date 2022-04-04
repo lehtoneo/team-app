@@ -6,3 +6,5 @@ npm-debug.log
 frontend-build
 
 secrets.txt
+
+queries.sql

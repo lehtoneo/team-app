@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { UserEventAttendace } from '../../graphql/queries/event';
-import useCurrentUser from '../../hooks/useCurrentUser';
-import useEvent from '../../hooks/useEvent';
-import useTeam from '../../hooks/useTeam';
-import Button from '../Button';
+import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { UserEventAttendace } from '../../../../graphql/queries/event';
+import useCurrentUser from '../../../../hooks/useCurrentUser';
+import useEvent from '../../../../hooks/useEvent';
+import useTeam from '../../../../hooks/useTeam';
+import Button from '../../../Button';
 
-import PageContainer from './components/PageContainer';
-import { SaveAttendanceInput } from '../../graphql/mutations/saveAttendance';
-import { formatEventDate } from '../../utils/Dates';
-import InfoItem from '../InfoItem';
-import MembersAttendances from '../MembersAttendances';
+import PageContainer from '../../components/PageContainer';
+import { SaveAttendanceInput } from '../../../../graphql/mutations/saveAttendance';
+import { formatEventDate } from '../../../../utils/Dates';
+import InfoItem from '../../../InfoItem';
+import MembersAttendances from '../../../MembersAttendances';
 import MarkAttendanceForm, {
   AttendanceFormValues
-} from '../forms/MarkAttendanceForm';
+} from '../../../forms/MarkAttendanceForm';
+import EditTeamEventContent from './EditTeamEventContent';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -91,42 +92,58 @@ const EventPageContent = (props: ITeamPageContentProps) => {
   }
 
   return (
-    <PageContainer header={`${event.name || ''}`}>
-      <div>
-        {team.currentUserTeamMembership.role === 'OWNER' && (
-          <Link to="edit">
-            <Button>Edit</Button>
-          </Link>
-        )}
-        <InfoItem header="Starts" text={formatEventDate(event.start)} />
-        <InfoItem header="Ends" text={formatEventDate(event.end)} />
-        <InfoItem header="Your attendance">
-          {event.currentUserEventAttendance !== undefined && (
-            <UserEventAttendanceComponent
-              eventAttendance={event.currentUserEventAttendance}
-              onSubmit={handleAttendanceSubmit}
-            />
-          )}
-        </InfoItem>
-        <InfoItem header="Member attendances">
-          <MembersAttendances
-            currentUserId={currentUser.id}
-            currentUserAttendance={event.currentUserEventAttendance}
-            allTeamMembers={team.memberships}
-            attendances={event.userAttendances}
+    <div>
+      {team.currentUserTeamMembership.role === 'OWNER' && (
+        <Link to="edit">
+          <Button>Edit</Button>
+        </Link>
+      )}
+      <InfoItem header="Starts" text={formatEventDate(event.start)} />
+      <InfoItem header="Ends" text={formatEventDate(event.end)} />
+      <InfoItem header="Your attendance">
+        {event.currentUserEventAttendance !== undefined && (
+          <UserEventAttendanceComponent
+            eventAttendance={event.currentUserEventAttendance}
+            onSubmit={handleAttendanceSubmit}
           />
-        </InfoItem>
-      </div>
-    </PageContainer>
+        )}
+      </InfoItem>
+      <InfoItem header="Member attendances">
+        <MembersAttendances
+          currentUserId={currentUser.id}
+          currentUserAttendance={event.currentUserEventAttendance}
+          allTeamMembers={team.memberships}
+          attendances={event.userAttendances}
+        />
+      </InfoItem>
+    </div>
   );
 };
 
-const EventPage = () => {
+const SingleEventPage = () => {
   const { eventId, teamId } = useParams();
   if (!teamId || !eventId || isNaN(Number(eventId))) {
     return <Navigate to="/not-found" />;
   }
-  return <EventPageContent eventId={Number(eventId)} teamId={Number(teamId)} />;
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <EventPageContent eventId={Number(eventId)} teamId={Number(teamId)} />
+        }
+      />
+      <Route
+        path="/edit"
+        element={
+          <EditTeamEventContent
+            teamId={Number(teamId)}
+            eventId={Number(eventId)}
+          />
+        }
+      />
+    </Routes>
+  );
 };
 
-export default EventPage;
+export default SingleEventPage;

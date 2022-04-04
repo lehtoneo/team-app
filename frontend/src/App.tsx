@@ -9,12 +9,12 @@ import useSignOut from './hooks/useSignOut';
 import RequireAuthPage from './components/RequireAuth';
 import TeamsMainPage from './components/pages/TeamsPage';
 import OwnTeamsPage from './components/pages/OwnTeamsPage';
-import TeamPage from './components/pages/TeamPage';
-import CreateTeamEventPage from './components/pages/CreateTeamEventPage';
-import EventPage from './components/pages/EventPage';
+import TeamPage from './components/pages/team/TeamPage';
+import CreateTeamEventPage from './components/pages/team/team-events/CreateTeamEventContent';
+import SingleEventPage from './components/pages/team/team-events/SingleEventPage';
 import TeamJoinPage from './components/pages/TeamJoinPage';
 import useSignIn from './hooks/useSignIn';
-import EditTeamEventPage from './components/pages/EditTeamEventPage';
+import EditTeamEventContent from './components/pages/team/team-events/EditTeamEventContent';
 
 function App() {
   const { userWantsToLogin, setUserWantsToLogin } = useSignIn();
@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/teams/:teamId"
+            path="/teams/:teamId/*"
             element={
               <RequireAuthPage userState={userState}>
                 <TeamPage />
@@ -65,26 +65,10 @@ function App() {
             }
           />
           <Route
-            path="/teams/:teamId/create-event"
+            path="/events/:eventId"
             element={
               <RequireAuthPage userState={userState}>
-                <CreateTeamEventPage />
-              </RequireAuthPage>
-            }
-          />
-          <Route
-            path="/teams/:teamId/events/:eventId"
-            element={
-              <RequireAuthPage userState={userState}>
-                <EventPage />
-              </RequireAuthPage>
-            }
-          />
-          <Route
-            path="/teams/:teamId/events/:eventId/edit"
-            element={
-              <RequireAuthPage userState={userState}>
-                <EditTeamEventPage />
+                <SingleEventPage />
               </RequireAuthPage>
             }
           />

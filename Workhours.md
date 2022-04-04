@@ -17,6 +17,5 @@
 | 1.4  | 4    | Implementation: some ui components, db models and grapqhl queries to backend                                                                                                                            |
 | 2.4  | 4    | Event page implementation: query to change event attendance + ui components                                                                                                                             |
 | 2.4  | 3    | Implement join team feature. Create hooks and ui components                                                                                                                                             |
-
 | 3.4 | 1.5 | Ui components |
 | 4.4 | 2.5 | Refactor, edit event feature |

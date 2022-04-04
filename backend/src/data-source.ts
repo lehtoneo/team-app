@@ -8,6 +8,7 @@ import 'dotenv/config';
 import { Event } from './models/Event';
 import { config } from './config';
 import { TeamMembership } from './models/TeamMembership';
+import { TeamSettings } from './models/TeamSettings';
 const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
@@ -21,7 +22,8 @@ const options: DataSourceOptions = {
     Team,
     Event,
     UserEventAttendance,
-    TeamMembership
+    TeamMembership,
+    TeamSettings
   ],
   migrations: [],
   subscribers: [],

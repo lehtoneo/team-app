@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
@@ -23,6 +24,7 @@ interface ILoginModalProps extends IModalProps {
 }
 
 const CreateTeamModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
+  const navigate = useNavigate();
   const { createTeam, error } = useCreateTeam();
   const handleSubmit = async (values: CreateTeamInput) => {
     const { success, team } = await createTeam(values);
@@ -30,6 +32,7 @@ const CreateTeamModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
     if (success) {
       toast(`Team "${team.name}" created!`, { type: 'success' });
       onClose();
+      navigate(`/teams/${team.id}`);
     } else {
     }
   };

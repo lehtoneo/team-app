@@ -1,11 +1,11 @@
 import { toNamespacedPath } from 'node:path/win32';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import useEvent from '../../hooks/useEvent';
-import useCreateEvent from '../../hooks/useEvent/useCreateEvent';
-import useTeam from '../../hooks/useTeam';
-import EventForm, { EventFormValues } from '../forms/EventForm';
-import PageContainer from './components/PageContainer';
+import useEvent from '../../../../hooks/useEvent';
+import useCreateEvent from '../../../../hooks/useEvent/useCreateEvent';
+import useTeam from '../../../../hooks/useTeam';
+import EventForm, { EventFormValues } from '../../../forms/EventForm';
+import PageContainer from '../../components/PageContainer';
 
 interface EditEventPageContentProps {
   teamId: number;
@@ -43,32 +43,20 @@ const EditTeamEventContent = (props: EditEventPageContentProps) => {
   }
 
   return (
-    <PageContainer header={`Team ${team?.name || ''}`}>
-      <div className="mt-5">
-        <EventForm
-          initialValues={{
-            name: event.name,
-            description: event.description,
-            start: event.start,
-            end: event.end
-          }}
-          type="edit"
-          onSubmit={(val) => handleEditEventSubmit(val)}
-          error={editEventError?.message}
-        />
-      </div>
-    </PageContainer>
+    <div className="mt-5">
+      <EventForm
+        initialValues={{
+          name: event.name,
+          description: event.description,
+          start: event.start,
+          end: event.end
+        }}
+        type="edit"
+        onSubmit={(val) => handleEditEventSubmit(val)}
+        error={editEventError?.message}
+      />
+    </div>
   );
 };
 
-const EditTeamEventPage = () => {
-  const { teamId, eventId } = useParams();
-  if (!teamId || isNaN(Number(teamId)) || !eventId) {
-    return <Navigate to="/" />;
-  }
-  return (
-    <EditTeamEventContent teamId={Number(teamId)} eventId={Number(eventId)} />
-  );
-};
-
-export default EditTeamEventPage;
+export default EditTeamEventContent;

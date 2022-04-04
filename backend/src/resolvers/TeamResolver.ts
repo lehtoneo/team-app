@@ -11,7 +11,8 @@ import {
   UseMiddleware,
   Ctx,
   FieldResolver,
-  Root
+  Root,
+  ID
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -26,6 +27,9 @@ import { FilterTeamsInput } from '../inputs/FilterTeamsInput';
 import AppDataSource from '../data-source';
 import { JoinTeamInput } from '../inputs/JoinTeamInput';
 import { GetOneTeamInput } from '../inputs/GetOneTeamInput';
+import { TeamSettings } from '../models/TeamSettings';
+import teamAuthService from '../services/teamAuth';
+import { EditTeamInput } from '../inputs/EditTeamInput';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -38,9 +42,37 @@ export class TeamConnection extends ConnectionType<TeamEdge>(
 
 const teamRepository = AppDataSource.getRepository(Team);
 const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
-
+const teamSettingsRepository = AppDataSource.getRepository(TeamSettings);
 @Resolver(() => Team)
 export class TeamResolver {
+  @FieldResolver(() => String, { nullable: true })
+  async settings(
+    @Root() team: Team,
+    @Ctx() ctx: MyContext
+  ): Promise<TeamSettings | null> {
+    console.log('here');
+    if (!ctx.payload.user) {
+      return null;
+    }
+
+    const userTeamMembership = await teamMembershipRepository.findOneBy({
+      userId: ctx.payload.user.id,
+      teamId: team.id
+    });
+
+    console.log({ userTeamMembership });
+
+    if (userTeamMembership && userTeamMembership.role === UserTeamRole.OWNER) {
+      const res = await teamSettingsRepository.findOneBy({
+        id: (await team.settings).id
+      });
+      console.log({ res });
+      return res;
+    } else {
+      console.log('????');
+      return null;
+    }
+  }
   @FieldResolver(() => String, { nullable: true })
   async joinId(
     @Root() team: Team,
@@ -97,6 +129,35 @@ export class TeamResolver {
     } else {
       throw new UserInputError('QUERY NEED EITHER JOINID OR USERID');
     }
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => Team)
+  async editTeam(
+    @Ctx() ctx: MyAuthContext,
+
+    @Arg('editTeamInput', { nullable: false })
+    editTeamInput: EditTeamInput
+  ): Promise<Team> {
+    const teamId = editTeamInput.id;
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user.id,
+      teamId,
+      UserTeamRole.OWNER
+    );
+    const team = await teamRepository.findOneByOrFail({ id: teamId });
+    if (editTeamInput.settings) {
+      const settingsInput = editTeamInput.settings;
+      const settings = await teamSettingsRepository.findOneByOrFail({
+        id: team.settingsId
+      });
+
+      settings.discordNotificationsOn = settingsInput.discordNotificationsOn;
+      settings.discordWebhookUrl = settingsInput.discordWebhookUrl;
+      await teamSettingsRepository.save(settings);
+    }
+
+    return team;
   }
 
   @Query(() => TeamConnection)
@@ -186,12 +247,17 @@ export class TeamResolver {
     @Ctx() ctx: MyAuthContext
   ) {
     const team = Team.create(data);
+
+    const newSettings = new TeamSettings();
+    const savedSettings = await teamSettingsRepository.save(newSettings);
+    team.settingsId = savedSettings.id;
     const newTeam = await team.save();
 
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = newTeam.id;
     newMembership.role = UserTeamRole.OWNER;
+
     await teamMembershipRepository.save(newMembership);
 
     return newTeam;
@@ -224,8 +290,8 @@ export class TeamResolver {
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = team.id;
     newMembership.role = UserTeamRole.MEMBER;
-    await teamMembershipRepository.save(newMembership);
 
+    await teamMembershipRepository.save(newMembership);
     return team;
   }
 }
