@@ -1,13 +1,10 @@
-import React from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { CreateTeamEventInput } from '../../graphql/mutations/createTeamEvent';
+import useCreateEvent from '../../hooks/useEvent/useCreateEvent';
 import useTeam from '../../hooks/useTeam';
-import Button from '../Button';
 import CreateEventForm, {
-  ICreateTeamEventFormValues
+  ICreateEventFormValues
 } from '../forms/CreateEventForm';
-import Header from '../Header';
 import PageContainer from './components/PageContainer';
 
 interface ITeamPageContentProps {
@@ -16,17 +13,13 @@ interface ITeamPageContentProps {
 
 const CreateTeamEventContent = (props: ITeamPageContentProps) => {
   const navigate = useNavigate();
-  const {
-    team,
-    loading: loadingTeam,
-    createTeamEvent,
-    createTeamEventError
-  } = useTeam({ id: props.teamId });
+  const { team } = useTeam({ id: props.teamId });
+  const { createEvent, error } = useCreateEvent();
 
   const handleCreateEventSubmit = async (
-    formValues: ICreateTeamEventFormValues
+    formValues: ICreateEventFormValues
   ) => {
-    const result = await createTeamEvent({
+    const result = await createEvent({
       ...formValues,
       teamId: props.teamId
     });
@@ -42,7 +35,7 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
       <div className="mt-5">
         <CreateEventForm
           onSubmit={(val) => handleCreateEventSubmit(val)}
-          error={createTeamEventError?.message}
+          error={error?.message}
         />
       </div>
     </PageContainer>

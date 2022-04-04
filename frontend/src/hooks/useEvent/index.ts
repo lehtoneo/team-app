@@ -8,8 +8,11 @@ import {
   EVENT_QUERY
 } from '../../graphql/queries/event';
 import useSaveEventAttendance from './useSaveEventAttendance';
+import useCreateEvent from './useCreateEvent';
 
 const useEvent = (args: EventInput) => {
+  const { createEvent, error: createEventError } = useCreateEvent();
+
   const { saveAttendance, error: saveAttendanceError } = useSaveEventAttendance(
     { eventId: args.id }
   );
@@ -38,7 +41,9 @@ const useEvent = (args: EventInput) => {
         : true,
     error,
     saveAttendance,
-    saveAttendanceError
+    saveAttendanceError,
+    createEvent,
+    createEventError
   };
 };
 

@@ -11,20 +11,20 @@ import CustomErrorMessage from './components/CustomErrorMessage';
 import FormHeader from './components/FormHeader';
 import DatePickerField from './components/DatepickerField';
 
-interface ICreateTeamFormProps {
-  onSubmit: (values: ICreateTeamEventFormValues) => Promise<any>;
+interface ICreateEventFormProps {
+  onSubmit: (values: ICreateEventFormValues) => Promise<any>;
   error?: string;
 }
 
-export interface ICreateTeamEventFormValues {
+export interface ICreateEventFormValues {
   name: string;
   description?: string;
   start: Date;
   end: Date;
 }
 
-const CreateEventForm = ({ onSubmit, error }: ICreateTeamFormProps) => {
-  const initialValues: ICreateTeamEventFormValues = {
+const CreateEventForm = ({ onSubmit, error }: ICreateEventFormProps) => {
+  const initialValues: ICreateEventFormValues = {
     name: '',
     description: '',
     start: new Date(),
