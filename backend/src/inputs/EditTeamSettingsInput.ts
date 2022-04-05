@@ -7,4 +7,7 @@ export class EditTeamSettingsInput {
 
   @Field(() => Boolean, { nullable: false })
   discordNotificationsOn: boolean;
+
+  @Field(() => Boolean, { nullable: false })
+  trollMessages: boolean;
 }

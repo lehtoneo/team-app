@@ -1,3 +1,4 @@
+import { TeamDiscordService } from './../services/teamDiscordService';
 import { GetByIdArgs } from './../args/GetByIdArgs';
 import { FilterEventsInput } from '../inputs/FilterEventsInput';
 import { MyAuthContext, MyContext } from './../types/MyContext';
@@ -93,6 +94,16 @@ export class EventResolver {
 
     const savedEvent = await eventRepository.save(newEvent);
 
+    try {
+      const team = await teamRepository.findOneByOrFail({ id: data.teamId });
+      const teamSettings = await team.settings;
+      const teamDiscordService = new TeamDiscordService(teamSettings, ctx);
+
+      await teamDiscordService.trySendEventCreated(savedEvent);
+    } catch (e) {
+      // do nothing
+    }
+
     return savedEvent;
   }
 
@@ -116,7 +127,6 @@ export class EventResolver {
     event.end = data.end;
     event.start = data.start;
     const savedEvent = await eventRepository.save(event);
-
     return savedEvent;
   }
 

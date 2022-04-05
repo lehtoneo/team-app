@@ -5,6 +5,7 @@ import { gql } from '@apollo/client';
 interface EditTeamSettingsInput {
   discordWebhookUrl?: string | null;
   discordNotificationsOn: boolean;
+  trollMessages: boolean;
 }
 
 export interface EditTeamInput {

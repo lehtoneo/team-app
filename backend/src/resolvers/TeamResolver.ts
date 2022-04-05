@@ -11,8 +11,7 @@ import {
   UseMiddleware,
   Ctx,
   FieldResolver,
-  Root,
-  ID
+  Root
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -50,7 +49,6 @@ export class TeamResolver {
     @Root() team: Team,
     @Ctx() ctx: MyContext
   ): Promise<TeamSettings | null> {
-    console.log('here');
     if (!ctx.payload.user) {
       return null;
     }
@@ -60,16 +58,12 @@ export class TeamResolver {
       teamId: team.id
     });
 
-    console.log({ userTeamMembership });
-
     if (userTeamMembership && userTeamMembership.role === UserTeamRole.OWNER) {
       const res = await teamSettingsRepository.findOneBy({
         id: (await team.settings).id
       });
-      console.log({ res });
       return res;
     } else {
-      console.log('????');
       return null;
     }
   }
@@ -154,6 +148,7 @@ export class TeamResolver {
 
       settings.discordNotificationsOn = settingsInput.discordNotificationsOn;
       settings.discordWebhookUrl = settingsInput.discordWebhookUrl;
+      settings.trollMessages = settingsInput.trollMessages;
       await teamSettingsRepository.save(settings);
     }
 

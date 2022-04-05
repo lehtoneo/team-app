@@ -28,6 +28,7 @@ export interface TeamSettings {
   id: number;
   discordWebhookUrl: string | null;
   discordNotificationsOn: boolean;
+  trollMessages: boolean;
 }
 
 export interface Team {
@@ -74,6 +75,7 @@ export const TEAM_QUERY = gql`
         id
         discordWebhookUrl
         discordNotificationsOn
+        trollMessages
       }
       currentUserTeamMembership {
         id

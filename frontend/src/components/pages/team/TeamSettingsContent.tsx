@@ -39,7 +39,8 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
         onSubmit={handleSettingsSubmit}
         initialValues={{
           discordNotificationsOn: team.settings.discordNotificationsOn,
-          discordWebhookUrl: team.settings.discordWebhookUrl
+          discordWebhookUrl: team.settings.discordWebhookUrl,
+          trollMessages: team.settings.trollMessages
         }}
       />
     </div>

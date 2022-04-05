@@ -15,4 +15,8 @@ export class TeamSettings {
   @Field(() => Boolean, { nullable: false })
   @Column({ nullable: false, default: false })
   discordNotificationsOn: boolean;
+
+  @Field(() => Boolean, { nullable: false })
+  @Column({ nullable: false, default: false })
+  trollMessages: boolean;
 }

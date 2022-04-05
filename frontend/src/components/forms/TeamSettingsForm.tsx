@@ -7,6 +7,7 @@ import Label from './components/Label';
 export interface TeamSettingsFormValues {
   discordWebhookUrl: string | null;
   discordNotificationsOn: boolean;
+  trollMessages: boolean;
 }
 
 interface TeamSettingsFormProps {
@@ -30,14 +31,24 @@ const TeamSettingsForm: React.FC<TeamSettingsFormProps> = (props) => {
             name="discordWebhookUrl"
             value={values.discordWebhookUrl || ''}
           />
-
+          <div className="my-2"></div>
           <Label htmlFor="discordNotificationsOn">
             Discord notifications on
           </Label>
+
           <ReactSwitch
             name="discordNotificationsOn"
             checked={values.discordNotificationsOn}
             onChange={(v) => setFieldValue('discordNotificationsOn', v)}
+          />
+
+          <div className="my-2"></div>
+          <Label htmlFor="trollMessages">Troll messages</Label>
+
+          <ReactSwitch
+            name="trollMessages"
+            checked={values.trollMessages}
+            onChange={(v) => setFieldValue('trollMessages', v)}
           />
 
           <Button type="submit">Save</Button>

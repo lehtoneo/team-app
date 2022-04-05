@@ -1,3 +1,4 @@
+import { TeamDiscordService } from '../services/teamDiscordService';
 import { MyAuthContext } from './../types/MyContext';
 import { isAuth } from './../middleware/isAuth';
 import {
@@ -5,7 +6,6 @@ import {
   FieldResolver,
   Root,
   ID,
-  Query,
   Arg,
   UseMiddleware,
   Ctx,
@@ -16,7 +16,6 @@ import { UserEventAttendance } from '../models/UserEventAttendance';
 import AppDataSource from '../data-source';
 import { Team } from '../models/Team';
 import { Event } from '../models/Event';
-import discordService from '../services/discord';
 
 const eventAttendanceRepository =
   AppDataSource.getRepository(UserEventAttendance);
@@ -60,18 +59,15 @@ export default class UserEventAttendanceResolver {
       const event = await eventRepository.findOneByOrFail({ id: args.eventId });
       const team = await teamRepository.findOneByOrFail({ id: event.teamId });
       const teamSettings = await team.settings;
-      if (
-        teamSettings.discordWebhookUrl &&
-        teamSettings.discordNotificationsOn
-      ) {
-        await discordService.trySendEventAttendanceChanged(
-          teamSettings.discordWebhookUrl,
-          ctx,
-          savedAttendance,
-          event
-        );
-      }
-    } catch (e) {}
+      const teamDiscordService = new TeamDiscordService(teamSettings, ctx);
+
+      await teamDiscordService.trySendEventAttendanceChanged(
+        savedAttendance,
+        event
+      );
+    } catch (e) {
+      // do something?
+    }
     return savedAttendance;
   }
 }
