@@ -1,12 +1,13 @@
 import React from 'react';
 
 interface IHeaderProps {
-  size?: 4 | 3;
+  size?: 4 | 3 | 2;
 }
 
 const classNameConfig = {
   4: 'text-4xl',
-  3: 'text-3xl'
+  3: 'text-3xl',
+  2: 'text-2xl'
 };
 
 const Header: React.FC<IHeaderProps> = (props) => {

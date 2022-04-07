@@ -32,6 +32,7 @@ import { UserEventAttendance } from '../models/UserEventAttendance';
 import { EditEventInput } from '../inputs/event/EditEventInput';
 import teamAuthService from '../services/teamAuth';
 import { UserTeamRole } from '../models/TeamMembership';
+import dbUtils from '../util/db';
 
 const teamRepository = AppDataSource.getRepository(Team);
 const eventRepository = AppDataSource.getRepository(Event);
@@ -169,9 +170,14 @@ export class EventResolver {
         userTeamMemberships.map((teamMembership) => teamMembership.teamId)
       )
     };
+    if (filterArgs?.start) {
+      where.start = dbUtils.getWhereOperatorFromFilterDateInput(
+        filterArgs.start
+      );
+    }
 
-    if (filterArgs?.futureEventsOnly) {
-      where.end = MoreThan(new Date());
+    if (filterArgs?.end) {
+      where.end = dbUtils.getWhereOperatorFromFilterDateInput(filterArgs.end);
     }
 
     const eventDbResult = await eventRepository.find({
@@ -181,8 +187,6 @@ export class EventResolver {
       },
       take: first + 1
     });
-
-    console.log({ eventDbResult });
 
     const edges = eventDbResult
       .map((event) => {

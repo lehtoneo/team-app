@@ -22,6 +22,7 @@ const useEventConnection = (args?: EventConnectionInput) => {
   );
 
   return {
+    pageInfo: data?.eventConnection?.pageInfo,
     events: data?.eventConnection?.edges.map((edge) => edge.node) || [],
     loading
   };

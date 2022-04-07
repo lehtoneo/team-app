@@ -13,8 +13,15 @@ export type EventListInfo = Pick<
 
 type EventConnection = IConnection<EventListInfo>;
 
+interface FilterDateInput {
+  max?: Date;
+  min?: Date;
+}
+
 interface FilterEventsInput {
   futureEventsOnly?: boolean;
+  start?: FilterDateInput;
+  end?: FilterDateInput;
 }
 
 export interface EventConnectionInput {
