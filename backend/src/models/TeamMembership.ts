@@ -25,9 +25,9 @@ export class TeamMembership extends Dates {
   teamId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.teams, { lazy: true })
+  @ManyToOne(() => User, (user) => user.teams)
   @JoinColumn({ name: 'userId' })
-  user: Promise<User>;
+  user: User;
 
   @Field(() => Team)
   @ManyToOne(() => Team, (team) => team.memberships, { lazy: true })

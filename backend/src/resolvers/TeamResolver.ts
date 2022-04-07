@@ -29,6 +29,8 @@ import { GetOneTeamInput } from '../inputs/GetOneTeamInput';
 import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/EditTeamInput';
+import { TeamStatistics } from '../extra-graphql-types/TeamStatistics';
+import TeamStatisticsResolver from './TeamStatisticsResolver';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -44,7 +46,14 @@ const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 const teamSettingsRepository = AppDataSource.getRepository(TeamSettings);
 @Resolver(() => Team)
 export class TeamResolver {
-  @FieldResolver(() => String, { nullable: true })
+  @FieldResolver(() => TeamStatistics, { nullable: false })
+  async statistics(@Root() team: Team): Promise<TeamStatistics | null> {
+    const statistics = new TeamStatistics();
+    statistics.teamId = team.id;
+    return statistics;
+  }
+
+  @FieldResolver(() => TeamSettings, { nullable: true })
   async settings(
     @Root() team: Team,
     @Ctx() ctx: MyContext
