@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
-import { CreateTeamInput } from '../../graphql/mutations/createTeam';
+import { CreateTeamInput } from '../../graphql/mutations/team/createTeam';
 import useCreateTeam from '../../hooks/useTeam/useCreateTeam';
 import CreateTeamForm from '../forms/CreateTeamForm';
 

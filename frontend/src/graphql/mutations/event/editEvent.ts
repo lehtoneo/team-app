@@ -1,6 +1,6 @@
 import { CreateEventInput } from './createEvent';
 import { gql } from '@apollo/client';
-import { Event } from '../queries/event';
+import { Event } from '../../queries/event';
 
 export interface EditEventInput extends Omit<CreateEventInput, 'teamId'> {
   id: number;

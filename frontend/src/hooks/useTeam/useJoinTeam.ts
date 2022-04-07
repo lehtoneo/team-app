@@ -3,7 +3,7 @@ import {
   JoinedTeamMutationResult,
   JOIN_TEAM,
   JoinTeamInput
-} from './../../graphql/mutations/joinTeam';
+} from '../../graphql/mutations/team/joinTeam';
 import { useMutation, ApolloError } from '@apollo/client';
 import { unknownError, UnknownError } from '../../types';
 

@@ -1,10 +1,10 @@
-import { CreatedTeamMutationResult } from '../../graphql/mutations/createTeam';
+import { CreatedTeamMutationResult } from '../../graphql/mutations/team/createTeam';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
   CREATE_TEAM,
   CreateTeamInput,
   CreateTeamData
-} from '../../graphql/mutations/createTeam';
+} from '../../graphql/mutations/team/createTeam';
 
 type CreateTeamResult =
   | { success: true; team: CreatedTeamMutationResult }

@@ -1,4 +1,4 @@
-import { Event } from '../queries/event';
+import { Event } from '../../queries/event';
 import { gql } from '@apollo/client';
 
 export interface CreateEventInput {

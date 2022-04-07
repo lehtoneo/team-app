@@ -1,4 +1,4 @@
-import { Team } from '../queries/team';
+import { Team } from '../../queries/team';
 
 import { gql } from '@apollo/client';
 

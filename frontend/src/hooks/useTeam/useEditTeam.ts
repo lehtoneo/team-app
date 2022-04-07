@@ -3,7 +3,7 @@ import {
   EditTeamInput,
   EDIT_TEAM,
   EditTeamData
-} from './../../graphql/mutations/editTeam';
+} from '../../graphql/mutations/team/editTeam';
 import { useMutation, ApolloError } from '@apollo/client';
 const useEditTeam = () => {
   const [editTeamMutation, { error }] = useMutation<

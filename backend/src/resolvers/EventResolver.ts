@@ -150,6 +150,25 @@ export class EventResolver {
   }
 
   @UseMiddleware(isAuth)
+  @Mutation(() => Event, { nullable: true })
+  async deleteEvent(
+    @Ctx() ctx: MyAuthContext,
+    @Args() { id }: GetByIdArgs
+  ): Promise<Event | null> {
+    const event = await eventRepository.findOneBy({ id });
+    if (!event) {
+      throw new UserInputError('Event not found');
+    }
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user,
+      event.teamId,
+      UserTeamRole.OWNER
+    );
+    await eventRepository.delete({ id });
+    return event;
+  }
+
+  @UseMiddleware(isAuth)
   @Query(() => EventConnection)
   async eventConnection(
     @Ctx() ctx: MyAuthContext,

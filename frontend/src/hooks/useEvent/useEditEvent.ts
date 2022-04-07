@@ -4,7 +4,7 @@ import {
   EditEventInput,
   EditEventData,
   EDIT_EVENT
-} from './../../graphql/mutations/editEvent';
+} from '../../graphql/mutations/event/editEvent';
 import { ApolloError, useMutation } from '@apollo/client';
 import { TEAM_QUERY } from '../../graphql/queries/team';
 import { UnknownError } from '../../types';

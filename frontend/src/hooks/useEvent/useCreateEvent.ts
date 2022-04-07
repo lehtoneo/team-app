@@ -3,7 +3,7 @@ import {
   CreateEventData,
   CreateEventInput,
   CREATE_EVENT
-} from '../../graphql/mutations/createEvent';
+} from '../../graphql/mutations/event/createEvent';
 import { useMutation } from '@apollo/client';
 import { TEAM_QUERY } from '../../graphql/queries/team';
 
