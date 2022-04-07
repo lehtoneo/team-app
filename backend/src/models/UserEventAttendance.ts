@@ -17,11 +17,17 @@ export class UserEventAttendance extends Dates {
   eventId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.eventAttendances, { lazy: true })
+  @ManyToOne(() => User, (user) => user.eventAttendances, {
+    lazy: true,
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'userId' })
   user: Promise<User>;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  @ManyToOne(() => Event, (event) => event.userAttendances)
+  @ManyToOne(() => Event, (event) => event.userAttendances, {
+    lazy: true,
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'eventId' })
   event: Event;
 
