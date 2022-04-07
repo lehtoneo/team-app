@@ -25,7 +25,7 @@ export interface Event {
   userAttendances: UserEventAttendace[];
 }
 
-export interface EventInput {
+export interface OneEventInput {
   id: number;
 }
 

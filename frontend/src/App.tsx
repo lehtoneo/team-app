@@ -15,8 +15,11 @@ import SingleEventPage from './components/pages/team/team-events/SingleEventPage
 import TeamJoinPage from './components/pages/TeamJoinPage';
 import useSignIn from './hooks/useSignIn';
 import EditTeamEventContent from './components/pages/team/team-events/EditTeamEventContent';
+import useConfirm from './hooks/useConfirm';
+import ConfirmModal from './components/modals/ConfirmModal';
 
 function App() {
+  const { onConfirm, onCancel, confirmState } = useConfirm();
   const { userWantsToLogin, setUserWantsToLogin } = useSignIn();
   const { signOut } = useSignOut();
   const userState = useCurrentUser({ updateValues: true });
@@ -25,6 +28,12 @@ function App() {
   }
   return (
     <div className="flex-row bg-gray-200" id="app">
+      <ConfirmModal
+        confirmState={confirmState}
+        isOpen={confirmState.show}
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+      />
       <SignInUpModal
         isOpen={userWantsToLogin}
         onClose={() => setUserWantsToLogin(false)}

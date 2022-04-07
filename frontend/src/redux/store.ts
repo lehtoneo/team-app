@@ -1,11 +1,14 @@
-import signInReducer from './reducers/signInReducer';
 import { configureStore } from '@reduxjs/toolkit';
+
+import signInReducer from './reducers/signInReducer';
+import confirmDialogReducer from './reducers/confirmDialogReducer';
 import userReducer from './reducers/userReducer';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    signIn: signInReducer
+    signIn: signInReducer,
+    confirmDialog: confirmDialogReducer
   }
 });
 

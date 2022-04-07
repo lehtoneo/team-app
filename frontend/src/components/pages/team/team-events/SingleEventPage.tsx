@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import { UserEventAttendace } from '../../../../graphql/queries/event';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
 import useEvent from '../../../../hooks/useEvent';
@@ -16,6 +23,8 @@ import MarkAttendanceForm, {
   AttendanceFormValues
 } from '../../../forms/MarkAttendanceForm';
 import EditTeamEventContent from './EditTeamEventContent';
+import Header from '../../../Header';
+import useConfirm from '../../../../hooks/useConfirm';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -65,12 +74,15 @@ const UserEventAttendanceComponent: React.FC<
 };
 
 const EventPageContent = (props: ITeamPageContentProps) => {
+  const navigate = useNavigate();
+  const { confirm } = useConfirm();
   const { currentUser } = useCurrentUser();
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
   const {
     event,
     loading: loadingEvent,
-    saveAttendance
+    saveAttendance,
+    deleteEvent
   } = useEvent({ id: props.eventId });
 
   const handleAttendanceSubmit = async (
@@ -84,6 +96,26 @@ const EventPageContent = (props: ITeamPageContentProps) => {
     }
   };
 
+  const handleDeletePress = async () => {
+    const confirmed = await confirm(
+      'Are you sure you want to delete the event?'
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    const deleteResult = await deleteEvent({
+      id: props.eventId
+    });
+
+    if (deleteResult.success) {
+      toast('Event deleted', { type: 'success' });
+      navigate(`/teams/${props.teamId}/events`);
+    } else {
+      toast(deleteResult.error.message, { type: 'error' });
+    }
+  };
+
   if (loadingTeam || loadingEvent) {
     return <PageContainer>Loading....</PageContainer>;
   }
@@ -93,10 +125,18 @@ const EventPageContent = (props: ITeamPageContentProps) => {
 
   return (
     <div>
+      <Header size={3}>{event.name}</Header>
       {team.currentUserTeamMembership.role === 'OWNER' && (
-        <Link to="edit">
-          <Button>Edit</Button>
-        </Link>
+        <div className="flex">
+          <Link to="edit">
+            <Button>Edit</Button>
+          </Link>
+          <div className="mx-2">
+            <Button color="red" onClick={handleDeletePress}>
+              Delete{' '}
+            </Button>
+          </div>
+        </div>
       )}
       <InfoItem header="Starts" text={formatEventDate(event.start)} />
       <InfoItem header="Ends" text={formatEventDate(event.end)} />

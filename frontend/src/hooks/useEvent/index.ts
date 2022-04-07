@@ -3,21 +3,23 @@ import { TeamQueryData, TEAM_QUERY } from '../../graphql/queries/team';
 import { useQuery } from '@apollo/client';
 import { GetOneTeamInput } from '../../graphql/queries/team';
 import {
-  EventInput,
+  OneEventInput,
   EventQueryData,
   EVENT_QUERY
 } from '../../graphql/queries/event';
 import useSaveEventAttendance from './useSaveEventAttendance';
 import useCreateEvent from './useCreateEvent';
 import useEditEvent from './useEditEvent';
+import useDeleteEvent from './useDeleteEvent';
 
-const useEvent = (args: EventInput) => {
+const useEvent = (args: OneEventInput) => {
+  const { deleteEvent, error: deleteEventError } = useDeleteEvent();
   const { createEvent, error: createEventError } = useCreateEvent();
   const { editEvent, error: editEventError } = useEditEvent();
   const { saveAttendance, error: saveAttendanceError } = useSaveEventAttendance(
     { eventId: args.id }
   );
-  const { data, loading, error } = useQuery<EventQueryData, EventInput>(
+  const { data, loading, error } = useQuery<EventQueryData, OneEventInput>(
     EVENT_QUERY,
     {
       variables: {
@@ -33,7 +35,7 @@ const useEvent = (args: EventInput) => {
   );
   return {
     event: data?.oneEvent,
-    loading: data?.oneEvent === undefined,
+    loading: loading,
     found:
       data?.oneEvent === undefined
         ? undefined
@@ -46,7 +48,9 @@ const useEvent = (args: EventInput) => {
     createEvent,
     createEventError,
     editEvent,
-    editEventError
+    editEventError,
+    deleteEvent,
+    deleteEventError
   };
 };
 
