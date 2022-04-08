@@ -17,8 +17,9 @@
 | 1.4  | 4    | Implementation: some ui components, db models and grapqhl queries to backend                                                                                                                            |
 | 2.4  | 4    | Event page implementation: query to change event attendance + ui components                                                                                                                             |
 | 2.4  | 3    | Implement join team feature. Create hooks and ui components                                                                                                                                             |
-| 3.4 | 1.5 | Ui components |
-| 4.4 | 2.5 | Refactor, edit event feature |
-| 4.4 | 5.5 | Refactor, edit team feature, edit team settings feature, add discord webhooks to teams |
-| 5.4 | 1| Add troll messages to be sent to discord if enabled in team settings. Add message to be sent to discord on event creation |
-
+| 3.4  | 1.5  | Ui components                                                                                                                                                                                           |
+| 4.4  | 2.5  | Refactor, edit event feature                                                                                                                                                                            |
+| 4.4  | 5.5  | Refactor, edit team feature, edit team settings feature, add discord webhooks to teams                                                                                                                  |
+| 5.4  | 1    | Add troll messages to be sent to discord if enabled in team settings. Add message to be sent to discord on event creation                                                                               |
+| 7.4  | 4    | Delete event feature, refactoring, start working on team statistics feature                                                                                                                             |
+| 8.4  | 2.5  | Add team member stats to frontend                                                                                                                                                                       |
