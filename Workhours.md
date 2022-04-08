@@ -22,4 +22,4 @@
 | 4.4  | 5.5  | Refactor, edit team feature, edit team settings feature, add discord webhooks to teams                                                                                                                  |
 | 5.4  | 1    | Add troll messages to be sent to discord if enabled in team settings. Add message to be sent to discord on event creation                                                                               |
 | 7.4  | 4    | Delete event feature, refactoring, start working on team statistics feature                                                                                                                             |
-| 8.4  | 2.5  | Add team member stats to frontend                                                                                                                                                                       |
+| 8.4  | 4    | Add team member stats to frontend, validate event form                                                                                                                                                  |
