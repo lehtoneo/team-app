@@ -23,8 +23,8 @@ const MemberStatsTable: React.FC<MemberStatsTableProps> = (props) => {
   const membersCopy = [...members];
   const membersSorted = membersCopy.sort(
     (a, b) =>
-      b.statistics.pastEventsAttendanceCount -
-      a.statistics.pastEventsAttendanceCount
+      b.statistics.pastEventsAttendanceRatio -
+      a.statistics.pastEventsAttendanceRatio
   );
   return (
     <TableContainer>
@@ -38,15 +38,14 @@ const MemberStatsTable: React.FC<MemberStatsTableProps> = (props) => {
         </thead>
         <TBody>
           {membersSorted.map((member) => {
-            const attendanceRatio =
-              (member.statistics.pastEventsAttendanceCount /
-                props.pastEventCount) *
-              100;
+            const attendancePercent = Math.round(
+              member.statistics.pastEventsAttendanceRatio * 100
+            );
             return (
               <tr key={member.id}>
                 <TD>{member.user.firstname}</TD>
                 <TD>{member.statistics.pastEventsAttendanceCount}</TD>
-                <TD>{Math.round(attendanceRatio)} %</TD>
+                <TD>{attendancePercent} %</TD>
               </tr>
             );
           })}

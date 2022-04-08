@@ -18,6 +18,7 @@ type TeamMembershipRole = 'OWNER' | 'MEMBER';
 
 interface TeamMemberStatistics {
   pastEventsAttendanceCount: number;
+  pastEventsAttendanceRatio: number;
 }
 
 interface TeamMembership {
@@ -101,6 +102,7 @@ export const TEAM_QUERY = gql`
         }
         statistics {
           pastEventsAttendanceCount
+          pastEventsAttendanceRatio
         }
       }
       events {
