@@ -45,17 +45,8 @@ const UserEventAttendanceComponent: React.FC<
     reason: props.eventAttendance.reason || ''
   };
   const buttonText = props.eventAttendance ? 'Change' : 'Mark status';
-  const attendanceStatus = props.eventAttendance?.attendance;
-  const attendanceText =
-    attendanceStatus !== undefined
-      ? attendanceStatus
-        ? 'IN'
-        : 'OUT'
-      : 'not decided';
-
   return (
     <div>
-      <div>In/Out: {attendanceText}</div>
       <div className="my-2">
         <Button onClick={() => setShowMarkAttendance(!showMarkAttendance)}>
           {buttonText}
@@ -123,6 +114,16 @@ const EventPageContent = (props: ITeamPageContentProps) => {
     return <Navigate to="/not-found" />;
   }
 
+  const isPastEvent = new Date(event.end) < new Date();
+
+  const attendanceStatus = event.currentUserEventAttendance;
+  const attendanceText =
+    attendanceStatus !== undefined
+      ? attendanceStatus
+        ? 'IN'
+        : 'OUT'
+      : 'not decided';
+
   return (
     <div>
       <Header size={3}>{event.name}</Header>
@@ -138,16 +139,21 @@ const EventPageContent = (props: ITeamPageContentProps) => {
           </div>
         </div>
       )}
-      <InfoItem header="Starts" text={formatEventDate(event.start)} />
-      <InfoItem header="Ends" text={formatEventDate(event.end)} />
-      <InfoItem header="Your attendance">
-        {event.currentUserEventAttendance !== undefined && (
-          <UserEventAttendanceComponent
-            eventAttendance={event.currentUserEventAttendance}
-            onSubmit={handleAttendanceSubmit}
-          />
-        )}
-      </InfoItem>
+      <InfoItem
+        header={isPastEvent ? 'Started' : 'Starts'}
+        text={formatEventDate(event.start)}
+      />
+      <InfoItem
+        header={isPastEvent ? 'Ended' : 'Ends'}
+        text={formatEventDate(event.end)}
+      />
+      <InfoItem header="Your attendance">{attendanceText}</InfoItem>
+      {event.currentUserEventAttendance !== undefined && !isPastEvent && (
+        <UserEventAttendanceComponent
+          eventAttendance={event.currentUserEventAttendance}
+          onSubmit={handleAttendanceSubmit}
+        />
+      )}
       <InfoItem header="Member attendances">
         <MembersAttendances
           currentUserId={currentUser.id}

@@ -13,10 +13,6 @@ interface TeamMainPageContentProps {
   teamId: number;
 }
 
-interface TeamMemberProps {
-  member: TeamTeamMembership;
-}
-
 interface MemberStatsTableProps {
   members: TeamTeamMembership[];
   pastEventCount: number;
@@ -57,16 +53,6 @@ const MemberStatsTable: React.FC<MemberStatsTableProps> = (props) => {
         </TBody>
       </Table>
     </TableContainer>
-  );
-};
-
-const TeamMemberStatistics: React.FC<TeamMemberProps> = (props) => {
-  const { member } = props;
-  return (
-    <div>
-      <div>{member.user.firstname}</div>
-      <div>{member.statistics.pastEventsAttendanceCount}</div>
-    </div>
   );
 };
 
