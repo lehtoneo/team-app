@@ -1,6 +1,15 @@
+import { Between, In } from 'typeorm';
 import { TeamMemberStatistics } from '../extra-graphql-types/TeamMemberStatistics';
 import { TeamMembership } from './../models/TeamMembership';
 import { Resolver, FieldResolver, Root, ID } from 'type-graphql';
+
+import { UserEventAttendance } from '../models/UserEventAttendance';
+import AppDataSource from '../data-source';
+import { Event } from '../models/Event';
+
+const userAttendanceRepository =
+  AppDataSource.getRepository(UserEventAttendance);
+const eventRepository = AppDataSource.getRepository(Event);
 
 @Resolver(() => TeamMembership)
 export default class TeamMembershipResolver {
@@ -13,9 +22,33 @@ export default class TeamMembershipResolver {
   }
 
   @FieldResolver(() => TeamMemberStatistics)
-  async statistics(@Root() teamMembership: TeamMembership) {
-    const statistics = new TeamMemberStatistics();
-    statistics.membership = teamMembership;
-    return statistics;
+  async statistics(
+    @Root() membership: TeamMembership
+  ): Promise<TeamMemberStatistics> {
+    const teamId = membership.teamId;
+    const userId = membership.userId;
+    const teamPastEventsAfterUserJoin = await eventRepository.findBy({
+      teamId,
+      end: Between(new Date(membership.createdAt), new Date())
+    });
+
+    const teamPastEventsIds = teamPastEventsAfterUserJoin.map((e) => e.id);
+
+    const memberAttendanceCount = await userAttendanceRepository.countBy({
+      eventId: In(teamPastEventsIds),
+      userId,
+      attendance: true
+    });
+    const attendanceRatioDivider =
+      teamPastEventsAfterUserJoin.length === 0
+        ? 1
+        : teamPastEventsAfterUserJoin.length;
+    const result = {
+      membership,
+      pastEventsAttendanceCount: memberAttendanceCount,
+      pastEventsAttendanceRatio: memberAttendanceCount / attendanceRatioDivider
+    };
+
+    return result;
   }
 }

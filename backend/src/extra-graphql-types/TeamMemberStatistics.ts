@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from 'type-graphql';
+import { ObjectType, Field, Int, Float } from 'type-graphql';
 import { TeamMembership } from '../models/TeamMembership';
 
 @ObjectType()
@@ -7,4 +7,7 @@ export class TeamMemberStatistics {
 
   @Field(() => Int)
   pastEventsAttendanceCount: number;
+
+  @Field(() => Float)
+  pastEventsAttendanceRatio: number;
 }

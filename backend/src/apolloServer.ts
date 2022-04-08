@@ -10,7 +10,6 @@ import authService from './services/auth';
 import { EventResolver } from './resolvers/EventResolver';
 import TeamMembershipResolver from './resolvers/TeamMembershipResolver';
 import UserEventAttendanceResolver from './resolvers/UserEventAttendanceResolver';
-import TeamMemberStatisticsResolver from './resolvers/TeamMemberStatisticsResolver';
 
 export interface IContext {
   user?: User;
@@ -23,8 +22,7 @@ const getApolloServer = async () => {
       UserResolver,
       EventResolver,
       TeamMembershipResolver,
-      UserEventAttendanceResolver,
-      TeamMemberStatisticsResolver
+      UserEventAttendanceResolver
     ]
   });
   const server = new ApolloServer({
