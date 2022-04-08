@@ -8,10 +8,9 @@ import {
   OneToOne,
   JoinColumn
 } from 'typeorm';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { Event } from './Event';
-import { TeamStatistics } from '../extra-graphql-types/TeamStatistics';
 
 @Entity()
 @ObjectType()
@@ -47,6 +46,6 @@ export class Team extends IdAndDates {
   @JoinColumn({ name: 'settingsId' })
   settings: Promise<TeamSettings>;
 
-  @Field(() => TeamStatistics, { nullable: false })
-  statistics: Promise<TeamStatistics>;
+  @Field(() => Int, { nullable: false })
+  pastEventsCount: Promise<number>;
 }

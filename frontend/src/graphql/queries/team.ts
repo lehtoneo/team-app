@@ -16,14 +16,22 @@ export type TeamEvent = Pick<
 
 type TeamMembershipRole = 'OWNER' | 'MEMBER';
 
+interface TeamMemberStatistics {
+  pastEventsAttendanceCount: number;
+}
+
 interface TeamMembership {
   id: number;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
   role: TeamMembershipRole;
+  statistics: TeamMemberStatistics;
 }
 
-export type TeamTeamMembership = Pick<TeamMembership, 'id' | 'user' | 'role'>;
+export type TeamTeamMembership = Pick<
+  TeamMembership,
+  'id' | 'user' | 'role' | 'statistics'
+>;
 export interface TeamSettings {
   id: number;
   discordWebhookUrl: string | null;
@@ -40,6 +48,7 @@ export interface Team {
   currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;
   joinId: string | null;
   settings: TeamSettings | null;
+  pastEventsCount: number;
 }
 
 export type TeamQuerySuccessData = Pick<
@@ -52,6 +61,7 @@ export type TeamQuerySuccessData = Pick<
   | 'currentUserTeamMembership'
   | 'joinId'
   | 'settings'
+  | 'pastEventsCount'
 >;
 
 interface GetTeamById {
@@ -68,6 +78,7 @@ export const TEAM_QUERY = gql`
   query oneTeam($getOneTeamInput: GetOneTeamInput!) {
     oneTeam(getOneTeamInput: $getOneTeamInput) {
       id
+      pastEventsCount
       description
       name
       joinId
@@ -87,6 +98,9 @@ export const TEAM_QUERY = gql`
         user {
           id
           firstname
+        }
+        statistics {
+          pastEventsAttendanceCount
         }
       }
       events {

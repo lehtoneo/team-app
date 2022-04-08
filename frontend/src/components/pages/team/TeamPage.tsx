@@ -3,37 +3,8 @@ import useTeam from '../../../hooks/useTeam';
 import Button from '../../Button';
 import PageContainer from '../components/PageContainer';
 import TeamEventsPage from './team-events/TeamEventsPage';
+import TeamMainPageContent from './TeamMainPageContent';
 import TeamSettingsContent from './TeamSettingsContent';
-
-interface ITeamPageContentProps {
-  teamId: number;
-}
-
-const TeamPageContent = (props: ITeamPageContentProps) => {
-  const { team } = useTeam({ id: props.teamId });
-  const isOwner = team?.currentUserTeamMembership.role === 'OWNER';
-  const url = new URL(window.location.href);
-  // eslint-disable-next-line no-useless-concat
-  const joinLink = url.origin + '/#' + `/teams/join/${team?.joinId}`;
-
-  return (
-    <div>
-      {isOwner && team.joinId && (
-        <div className="flex my-3">
-          <Button onClick={() => navigator.clipboard.writeText(joinLink)}>
-            Copy join link
-          </Button>
-        </div>
-      )}
-      <div className="text-lg font-bold">Members</div>
-      {team?.memberships.map((teamMembership) => {
-        return (
-          <div key={teamMembership.id}>{teamMembership.user.firstname}</div>
-        );
-      })}
-    </div>
-  );
-};
 
 const TeamPage = () => {
   const { teamId: teamIdString } = useParams();
@@ -62,7 +33,7 @@ const TeamPage = () => {
         )}
       </div>
       <Routes>
-        <Route path="/" element={<TeamPageContent teamId={teamId} />} />
+        <Route path="/" element={<TeamMainPageContent teamId={teamId} />} />
         <Route
           path="/settings"
           element={<TeamSettingsContent teamId={teamId} />}

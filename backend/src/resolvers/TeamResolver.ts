@@ -11,7 +11,8 @@ import {
   UseMiddleware,
   Ctx,
   FieldResolver,
-  Root
+  Root,
+  Int
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -29,8 +30,7 @@ import { GetOneTeamInput } from '../inputs/GetOneTeamInput';
 import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/EditTeamInput';
-import { TeamStatistics } from '../extra-graphql-types/TeamStatistics';
-import TeamStatisticsResolver from './TeamStatisticsResolver';
+import { Event } from '../models/Event';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -44,13 +44,26 @@ export class TeamConnection extends ConnectionType<TeamEdge>(
 const teamRepository = AppDataSource.getRepository(Team);
 const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 const teamSettingsRepository = AppDataSource.getRepository(TeamSettings);
+const eventRepository = AppDataSource.getRepository(Event);
 @Resolver(() => Team)
 export class TeamResolver {
-  @FieldResolver(() => TeamStatistics, { nullable: false })
-  async statistics(@Root() team: Team): Promise<TeamStatistics | null> {
-    const statistics = new TeamStatistics();
-    statistics.teamId = team.id;
-    return statistics;
+  @FieldResolver(() => Int, { nullable: false })
+  async pastEventsCount(@Root() team: Team): Promise<number> {
+    const { id } = team;
+    const pastEventsCount = await eventRepository.countBy({
+      teamId: id,
+      end: LessThan(new Date())
+    });
+    return pastEventsCount;
+  }
+
+  @FieldResolver(() => TeamMembership, { nullable: false })
+  async memberships(@Root() team: Team) {
+    const { id } = team;
+    const memberships = await teamMembershipRepository.findBy({
+      teamId: id
+    });
+    return memberships;
   }
 
   @FieldResolver(() => TeamSettings, { nullable: true })
@@ -121,6 +134,7 @@ export class TeamResolver {
           id
         }
       });
+
       return res;
     } else if (joinId) {
       const res = await teamRepository.findOne({

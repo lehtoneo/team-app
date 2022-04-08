@@ -1,3 +1,4 @@
+import { TeamMemberStatistics } from '../extra-graphql-types/TeamMemberStatistics';
 import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
 import { Dates } from './IdAndDates';
 
@@ -25,9 +26,9 @@ export class TeamMembership extends Dates {
   teamId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.teams)
+  @ManyToOne(() => User, (user) => user.teams, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: Promise<User>;
 
   @Field(() => Team)
   @ManyToOne(() => Team, (team) => team.memberships, { lazy: true })
@@ -42,6 +43,6 @@ export class TeamMembership extends Dates {
   })
   role: UserTeamRole;
 
-  @Field(() => TeamMembership, { nullable: true })
-  currentUserTeamMembership?: TeamMembership;
+  @Field(() => TeamMemberStatistics)
+  statistics: Promise<TeamMemberStatistics>;
 }
