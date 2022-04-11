@@ -1,86 +1,46 @@
-import { TeamTeamMembership } from '../../../graphql/queries/team';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { TeamQuerySuccessData } from '../../../graphql/queries/team';
 import useTeam from '../../../hooks/useTeam';
 import Button from '../../Button';
 import Header from '../../Header';
 import InfoItem from '../../InfoItem';
-import Table from '../../tableComps/Table';
-import TableContainer from '../../tableComps/TableContainer';
-import TBody from '../../tableComps/TBody';
-import TD from '../../tableComps/TD';
-import TH from '../../tableComps/TH';
+import JoinLink from '../../JoinLink';
+import MemberList from '../../MemberList';
+import LoadingPage from '../LoadingPage';
 
 interface TeamMainPageContentProps {
   teamId: number;
 }
 
-interface MemberStatsTableProps {
-  members: TeamTeamMembership[];
-  pastEventCount: number;
-}
-
-const MemberStatsTable: React.FC<MemberStatsTableProps> = (props) => {
-  const { members } = props;
-  const membersCopy = [...members];
-  const membersSorted = membersCopy.sort(
-    (a, b) =>
-      b.statistics.pastEventsAttendanceRatio -
-      a.statistics.pastEventsAttendanceRatio
-  );
-  return (
-    <TableContainer>
-      <Table>
-        <thead>
-          <tr>
-            <TH>Member</TH>
-            <TH>Events attended</TH>
-            <TH>Event attendance ratio</TH>
-          </tr>
-        </thead>
-        <TBody>
-          {membersSorted.map((member) => {
-            const attendancePercent = Math.round(
-              member.statistics.pastEventsAttendanceRatio * 100
-            );
-            return (
-              <tr key={member.id}>
-                <TD>{member.user.firstname}</TD>
-                <TD>{member.statistics.pastEventsAttendanceCount}</TD>
-                <TD>{attendancePercent} %</TD>
-              </tr>
-            );
-          })}
-        </TBody>
-      </Table>
-    </TableContainer>
-  );
-};
-
 const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
   props: TeamMainPageContentProps
 ) => {
   const { team } = useTeam({ id: props.teamId });
-  const isOwner = team?.currentUserTeamMembership.role === 'OWNER';
+  if (team === null) {
+    return <Navigate to="/not-found" />;
+  }
+  if (team === undefined) {
+    return <LoadingPage />;
+  }
+
+  const isOwner = team.currentUserTeamMembership.role === 'OWNER';
   const url = new URL(window.location.href);
   // eslint-disable-next-line no-useless-concat
-  const joinLink = url.origin + '/#' + `/teams/join/${team?.joinId}`;
+  const joinLink = url.origin + '/#' + `/teams/join/${team.joinId}`;
 
   return (
     <div>
-      {isOwner && team.joinId && (
-        <div className="flex my-3">
-          <Button onClick={() => navigator.clipboard.writeText(joinLink)}>
-            Copy join link
-          </Button>
-        </div>
-      )}
-      <Header size={2}>Statistics</Header>
-      <InfoItem header="Past events count">{team?.pastEventsCount}</InfoItem>
-      <InfoItem header="Member attendances">
-        <MemberStatsTable
-          members={team?.memberships || []}
-          pastEventCount={team?.pastEventsCount || 1}
-        />
+      <InfoItem header="Description">{team.description}</InfoItem>
+
+      <InfoItem header="Members">
+        <MemberList users={team.memberships} />
       </InfoItem>
+      {isOwner && team.joinId && (
+        <InfoItem header="Join link">
+          <JoinLink joinLink={joinLink} />
+        </InfoItem>
+      )}
     </div>
   );
 };

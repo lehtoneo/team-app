@@ -1,15 +1,29 @@
+import { isAuth } from './../middleware/isAuth';
+import { EditTeamMembershipInput } from './../inputs/EditTeamMembership';
 import { Between, In } from 'typeorm';
 import { TeamMemberStatistics } from '../extra-graphql-types/TeamMemberStatistics';
-import { TeamMembership } from './../models/TeamMembership';
-import { Resolver, FieldResolver, Root, ID } from 'type-graphql';
+import { TeamMembership, UserTeamRole } from './../models/TeamMembership';
+import {
+  Resolver,
+  FieldResolver,
+  Root,
+  ID,
+  Mutation,
+  UseMiddleware,
+  Ctx,
+  Arg
+} from 'type-graphql';
 
 import { UserEventAttendance } from '../models/UserEventAttendance';
 import AppDataSource from '../data-source';
 import { Event } from '../models/Event';
+import { MyAuthContext } from '../types/MyContext';
+import teamAuthService from '../services/teamAuth';
 
 const userAttendanceRepository =
   AppDataSource.getRepository(UserEventAttendance);
 const eventRepository = AppDataSource.getRepository(Event);
+const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 
 @Resolver(() => TeamMembership)
 export default class TeamMembershipResolver {
@@ -50,5 +64,32 @@ export default class TeamMembershipResolver {
     };
 
     return result;
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => TeamMembership)
+  async editTeamMembership(
+    @Ctx() ctx: MyAuthContext,
+    @Arg('editTeamMembershipInput') args: EditTeamMembershipInput
+  ): Promise<TeamMembership> {
+    const currentUser = ctx.payload.user;
+    const { teamId, role } = args;
+
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      currentUser,
+      teamId,
+      UserTeamRole.OWNER
+    );
+
+    const editedMembership = await teamMembershipRepository.findOneByOrFail({
+      teamId: args.teamId,
+      userId: args.userId
+    });
+
+    editedMembership.role = role;
+
+    await teamMembershipRepository.save(editedMembership);
+
+    return editedMembership;
   }
 }

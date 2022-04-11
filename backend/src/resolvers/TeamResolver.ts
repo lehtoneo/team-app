@@ -31,6 +31,7 @@ import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/EditTeamInput';
 import { Event } from '../models/Event';
+import authService from '../services/auth';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -98,15 +99,16 @@ export class TeamResolver {
       return null;
     }
 
-    const userTeamMembership = await teamMembershipRepository.findOneBy({
-      userId: ctx.payload.user.id,
-      teamId: team.id
-    });
-
-    if (userTeamMembership && userTeamMembership.role === 'OWNER') {
+    try {
+      await teamAuthService.checkUserTeamRightsThrowsError(
+        ctx.payload.user,
+        team.id,
+        UserTeamRole.ADMIN
+      );
       return team.joinId;
+    } catch (e) {
+      return null;
     }
-    return null;
   }
   @FieldResolver(() => TeamMembership, { nullable: true })
   async currentUserTeamMembership(

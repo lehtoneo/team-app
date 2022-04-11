@@ -17,6 +17,16 @@ const userTeamRoleValues: { [key in UserTeamRole]: number } = {
   OWNER: 2
 };
 
+const isUserTeamRoleAtleast = (
+  userTeamRole: UserTeamRole,
+  minUserTeamRole: UserTeamRole
+) => {
+  const minUserRoleValue = userTeamRoleValues[minUserTeamRole];
+  const userTeamRoleValue = userTeamRoleValues[userTeamRole];
+
+  return userTeamRoleValue >= minUserRoleValue;
+};
+
 const checkUserTeamRightsThrowsError = async (
   user: User | number,
   team: Team | number,
@@ -24,7 +34,6 @@ const checkUserTeamRightsThrowsError = async (
 ) => {
   const userId = typeof user === 'number' ? user : user.id;
   const teamId = typeof team === 'number' ? team : team.id;
-  const minUserRoleValue = userTeamRoleValues[minUserRole];
 
   const userTeamMembership = await teamMembershipRepository.findOneBy({
     userId,
@@ -34,9 +43,8 @@ const checkUserTeamRightsThrowsError = async (
   if (!userTeamMembership) return throwUnAuthorized();
 
   const userTeamRole = userTeamMembership.role;
-  const userTeamRoleValue = userTeamRoleValues[userTeamRole];
 
-  if (userTeamRoleValue < minUserRoleValue) {
+  if (!isUserTeamRoleAtleast(userTeamRole, minUserRole)) {
     return throwUnAuthorized();
   } else {
     return 'authorized';

@@ -6,7 +6,7 @@ const userTeamRoleValues: { [key in UserTeamRole]: number } = {
   OWNER: 2
 };
 
-const isUserAuthorized = (
+const isUserRoleAtleast = (
   userTeamRole: UserTeamRole,
   minUserTeamRole: UserTeamRole
 ) => {
@@ -17,7 +17,7 @@ const isUserAuthorized = (
 };
 
 const teamAuthUtils = {
-  isUserAuthorized
+  isUserRoleAtleast
 };
 
 export default teamAuthUtils;

@@ -23,4 +23,4 @@
 | 5.4  | 1    | Add troll messages to be sent to discord if enabled in team settings. Add message to be sent to discord on event creation                                                                               |
 | 7.4  | 4    | Delete event feature, refactoring, start working on team statistics feature                                                                                                                             |
 | 8.4  | 4    | Add team member stats to frontend, validate event form                                                                                                                                                  |
-| 11.4  | x    | Fix access token bug,                                                                                                                                                 |
+| 11.4  | x    | Fix access token bug, add loading page                                                                                                                                                |
