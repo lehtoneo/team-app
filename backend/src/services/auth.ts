@@ -75,14 +75,14 @@ const newAccessToken = async (refreshToken: string): Promise<string> => {
   }
 };
 
-const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE } = config;
+const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE_SECONDS } = config;
 
 const getAccessToken = (user: ITokenUser) => {
   const userForToken = getUserForToken(user);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const accessToken = sign(userForToken, ACCESS_TOKEN_SECRET, {
-    expiresIn: ACCESS_TOKEN_LIFE
+    expiresIn: ACCESS_TOKEN_LIFE_SECONDS
   });
 
   return accessToken;
@@ -128,7 +128,6 @@ const validateAccessToken = async (headers: any): Promise<User | null> => {
       return null;
     }
   }
-  console.log('???');
   return null;
 };
 

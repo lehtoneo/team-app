@@ -5,10 +5,11 @@ export const isTokenExpired = (token: any) => {
   if (!decoded || !decoded.exp) {
     return true;
   }
-  var dateNow = new Date();
+  const dateNow = new Date();
   const expNumber = Number(decoded.exp);
   if (isNaN(expNumber)) {
     return true;
   }
-  return expNumber < dateNow.getTime();
+  const expDate = new Date(expNumber * 1000);
+  return expDate < dateNow;
 };

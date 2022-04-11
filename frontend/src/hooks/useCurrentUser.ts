@@ -12,7 +12,6 @@ interface IParams {
 const useCurrentUser = (params?: IParams) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: _d } = useQuery<MeData>(ME, {
-    fetchPolicy: 'cache-and-network',
     onError: (e) => {
       if (e.message === 'Unauthorized' && params?.updateValues) {
         dispatch(

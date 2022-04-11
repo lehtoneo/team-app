@@ -8,14 +8,14 @@ const getRefreshToken = () => {
 
 const getAccessToken = async () => {
   const token = localStorage.getItem('accessToken');
-
-  if (!token || token === 'undefined' || isTokenExpired(token)) {
+  const isAccessTokenExpired = isTokenExpired(token);
+  console.log({ isAccessTokenExpired });
+  if (!token || token === 'undefined' || isAccessTokenExpired) {
     const refreshToken = getRefreshToken();
     if (!refreshToken) {
       return null;
     }
     const newAccessToken = await fetchNewAccessToken(refreshToken);
-
     if (newAccessToken) {
       setAccessToken(newAccessToken);
     }
