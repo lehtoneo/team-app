@@ -29,7 +29,7 @@ const buttonSizeConfig: { [key in ButtonSize]: string } = {
   normal: `font-medium rounded-lg text-sm px-5 py-2.5`
 };
 
-const buttonConfigCommon = `text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center`;
+const buttonConfigCommon = `text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-center`;
 
 const getClassName = (color: ButtonColor, size: ButtonSize, fullW: boolean) => {
   const fullWStyle = fullW ? 'w-full' : '';
