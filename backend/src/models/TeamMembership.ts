@@ -8,6 +8,7 @@ import { Team } from './Team';
 
 export enum UserTeamRole {
   MEMBER = 'MEMBER',
+  ADMIN = 'ADMIN',
   OWNER = 'OWNER'
 }
 

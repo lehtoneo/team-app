@@ -2,6 +2,7 @@ import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
 import Button from '../../Button';
 import PageContainer from '../components/PageContainer';
+import LoadingPage from '../LoadingPage';
 import TeamEventsPage from './team-events/TeamEventsPage';
 import TeamMainPageContent from './TeamMainPageContent';
 import TeamSettingsContent from './TeamSettingsContent';
@@ -9,11 +10,15 @@ import TeamSettingsContent from './TeamSettingsContent';
 const TeamPage = () => {
   const { teamId: teamIdString } = useParams();
   const { team } = useTeam({ id: Number(teamIdString) });
-  if (!teamIdString || isNaN(Number(teamIdString))) {
-    return <Navigate to="/" />;
+  const teamId = Number(teamIdString);
+  if (!teamIdString || isNaN(teamId) || team === null) {
+    return <Navigate to="/not-found" />;
   }
 
-  const teamId = Number(teamIdString);
+  if (team === undefined) {
+    console.log('loading');
+    return <LoadingPage />;
+  }
 
   return (
     <PageContainer header={`Team ${team?.name || ''}`}>

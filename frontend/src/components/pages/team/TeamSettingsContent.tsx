@@ -6,6 +6,7 @@ import TeamSettingsForm, {
   TeamSettingsFormValues
 } from '../../forms/TeamSettingsForm';
 import Header from '../../Header';
+import LoadingPage from '../LoadingPage';
 
 interface TeamSettingsContentProps {
   teamId: number;
@@ -27,7 +28,7 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
     }
   };
   if (team === undefined) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
   if (team === null || team.settings === null) {
     return <Navigate to={`/teams/${props.teamId}`} />;

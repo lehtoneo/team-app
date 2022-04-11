@@ -17,6 +17,7 @@ import useSignIn from './hooks/useSignIn';
 import EditTeamEventContent from './components/pages/team/team-events/EditTeamEventContent';
 import useConfirm from './hooks/useConfirm';
 import ConfirmModal from './components/modals/ConfirmModal';
+import LoadingPage from './components/pages/LoadingPage';
 
 function App() {
   const { onConfirm, onCancel, confirmState } = useConfirm();
@@ -24,7 +25,7 @@ function App() {
   const { signOut } = useSignOut();
   const userState = useCurrentUser({ updateValues: true });
   if (userState.isLoggedIn === undefined) {
-    return <div>Loading</div>;
+    return <LoadingPage />;
   }
   return (
     <div className="flex-row bg-gray-200" id="app">

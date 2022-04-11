@@ -8,12 +8,13 @@ import { Team } from '../models/Team';
 const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 
 const throwUnAuthorized = (): never => {
-  throw new AuthenticationError('UnAuthorized');
+  throw new AuthenticationError('Unauthorized');
 };
 
 const userTeamRoleValues: { [key in UserTeamRole]: number } = {
   MEMBER: 0,
-  OWNER: 1
+  ADMIN: 1,
+  OWNER: 2
 };
 
 const checkUserTeamRightsThrowsError = async (

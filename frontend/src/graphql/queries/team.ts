@@ -14,7 +14,7 @@ export type TeamEvent = Pick<
   | 'currentUserEventAttendance'
 >;
 
-type TeamMembershipRole = 'OWNER' | 'MEMBER';
+export type UserTeamRole = 'OWNER' | 'MEMBER' | 'ADMIN';
 
 interface TeamMemberStatistics {
   pastEventsAttendanceCount: number;
@@ -25,7 +25,7 @@ interface TeamMembership {
   id: number;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
-  role: TeamMembershipRole;
+  role: UserTeamRole;
   statistics: TeamMemberStatistics;
 }
 

@@ -25,6 +25,7 @@ import MarkAttendanceForm, {
 import EditTeamEventContent from './EditTeamEventContent';
 import Header from '../../../Header';
 import useConfirm from '../../../../hooks/useConfirm';
+import LoadingPage from '../../LoadingPage';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -108,7 +109,7 @@ const EventPageContent = (props: ITeamPageContentProps) => {
   };
 
   if (loadingTeam || loadingEvent) {
-    return <PageContainer>Loading....</PageContainer>;
+    return <LoadingPage />;
   }
   if (!event || !currentUser || !team) {
     return <Navigate to="/not-found" />;
