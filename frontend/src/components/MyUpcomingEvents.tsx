@@ -45,11 +45,11 @@ const MyUpcomingEvents: React.FC = () => {
   return (
     <div>
       <Header size={3}>Your upcoming Events</Header>
+      <Header size={2}>Today</Header>
+      <EventList events={eventsToday} loading={loadingEventsToday} />
       {eventsToday.length === 0 && !loadingEventsToday && (
         <div className="text-lg">No events today</div>
       )}
-      <Header size={2}>Today</Header>
-      <EventList events={eventsToday} loading={loadingEventsToday} />
       {eventsTomorrow.length > 0 && (
         <>
           <Header size={2}>Tomorrow</Header>
