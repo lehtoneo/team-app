@@ -13,7 +13,9 @@ const EventSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   description: Yup.string().max(50, 'Too Long!'),
-  start: Yup.date().required(),
+  start: Yup.date()
+    .min(new Date(), "Start date can't be in the past")
+    .required(),
   end: Yup.date()
     .min(Yup.ref('start'), "End time can't be before start time")
     .required()
