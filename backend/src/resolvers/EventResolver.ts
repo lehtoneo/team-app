@@ -31,7 +31,7 @@ import { FindOptionsWhere, In, LessThan, MoreThan } from 'typeorm';
 import { UserEventAttendance } from '../models/UserEventAttendance';
 import { EditEventInput } from '../inputs/event/EditEventInput';
 import teamAuthService from '../services/teamAuth';
-import { UserTeamRole } from '../models/TeamMembership';
+import { TeamMemberRole } from '../models/TeamMembership';
 import dbUtils from '../util/db';
 
 const teamRepository = AppDataSource.getRepository(Team);
@@ -83,7 +83,7 @@ export class EventResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       ctx.payload.user,
       team,
-      UserTeamRole.OWNER
+      TeamMemberRole.ADMIN
     );
 
     const newEvent = new Event();
@@ -120,7 +120,7 @@ export class EventResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       currentUser,
       event.teamId,
-      UserTeamRole.OWNER
+      TeamMemberRole.ADMIN
     );
 
     event.name = data.name;
@@ -144,7 +144,7 @@ export class EventResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       ctx.payload.user,
       res.teamId,
-      UserTeamRole.MEMBER
+      TeamMemberRole.MEMBER
     );
     return res;
   }
@@ -162,7 +162,7 @@ export class EventResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       ctx.payload.user,
       event.teamId,
-      UserTeamRole.OWNER
+      TeamMemberRole.OWNER
     );
     await eventRepository.delete({ id });
     return event;

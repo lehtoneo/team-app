@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { EventListInfo } from '../graphql/queries/eventConnection';
 import moment from 'moment';
 import { formatEventDate } from '../utils/Dates';
+import LoadingIndicator from './LoadingIndicator';
 
 interface EventListProps {
   events: EventListInfo[];
@@ -75,6 +76,7 @@ const EventList = (props: EventListProps) => {
         props.events.map((event) => {
           return <EventItem event={event} key={event.id} />;
         })}
+      {props.loading && <LoadingIndicator />}
     </div>
   );
 };

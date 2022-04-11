@@ -31,6 +31,7 @@ const DatePickerField = ({ ...props }: IProps) => {
   return (
     <DatePicker
       {...field}
+      timeFormat="HH:mm"
       {...props.datePickerProps}
       calendarStartDay={1}
       className={fieldClassName}

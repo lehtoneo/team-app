@@ -1,5 +1,6 @@
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
+import teamAuthUtils from '../../../utils/teamAuth';
 import Button from '../../Button';
 import Header from '../../Header';
 import PageContainer from '../components/PageContainer';
@@ -18,9 +19,13 @@ const TeamPage = () => {
   }
 
   if (team === undefined) {
-    console.log('loading');
     return <LoadingPage />;
   }
+
+  const hasSettingsRights = teamAuthUtils.isUserTeamRoleAtleast(
+    team.currentUserTeamMembership.role,
+    'OWNER'
+  );
 
   return (
     <PageContainer>
@@ -37,7 +42,7 @@ const TeamPage = () => {
           <Button>Events</Button>
         </Link>
         <div className="mx-2"> </div>
-        {team?.currentUserTeamMembership.role === 'OWNER' && (
+        {hasSettingsRights && (
           <Link to="settings">
             <Button>Settings</Button>
           </Link>

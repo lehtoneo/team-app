@@ -14,7 +14,6 @@ import useEvent from '../../../../hooks/useEvent';
 import useTeam from '../../../../hooks/useTeam';
 import Button from '../../../Button';
 
-import PageContainer from '../../components/PageContainer';
 import { SaveAttendanceInput } from '../../../../graphql/mutations/saveAttendance';
 import { formatEventDate } from '../../../../utils/Dates';
 import InfoItem from '../../../InfoItem';
@@ -26,6 +25,7 @@ import EditTeamEventContent from './EditTeamEventContent';
 import Header from '../../../Header';
 import useConfirm from '../../../../hooks/useConfirm';
 import LoadingPage from '../../LoadingPage';
+import teamAuthUtils from '../../../../utils/teamAuth';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -124,22 +124,31 @@ const EventPageContent = (props: ITeamPageContentProps) => {
         ? 'IN'
         : 'OUT'
       : 'not decided';
-
+  const hasEditRights = teamAuthUtils.isUserTeamRoleAtleast(
+    team.currentUserTeamMembership.role,
+    'ADMIN'
+  );
+  const hasDeleteRights = teamAuthUtils.isUserTeamRoleAtleast(
+    team.currentUserTeamMembership.role,
+    'OWNER'
+  );
   return (
     <div>
       <Header size={3}>{event.name}</Header>
-      {team.currentUserTeamMembership.role === 'OWNER' && (
-        <div className="flex">
+      <div className="flex">
+        {hasEditRights && (
           <Link to="edit">
             <Button>Edit</Button>
           </Link>
+        )}
+        {hasDeleteRights && !isPastEvent && (
           <div className="mx-2">
             <Button color="red" onClick={handleDeletePress}>
               Delete{' '}
             </Button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       <InfoItem
         header={isPastEvent ? 'Started' : 'Starts'}
         text={formatEventDate(event.start)}

@@ -1,8 +1,9 @@
+import { UserInputError } from 'apollo-server-express';
 import { isAuth } from './../middleware/isAuth';
-import { EditTeamMembershipInput } from './../inputs/EditTeamMembership';
+import { EditTeamMembershipInput } from '../inputs/EditTeamMembershipInput';
 import { Between, In } from 'typeorm';
 import { TeamMemberStatistics } from '../extra-graphql-types/TeamMemberStatistics';
-import { TeamMembership, UserTeamRole } from './../models/TeamMembership';
+import { TeamMembership, TeamMemberRole } from './../models/TeamMembership';
 import {
   Resolver,
   FieldResolver,
@@ -78,15 +79,17 @@ export default class TeamMembershipResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       currentUser,
       teamId,
-      UserTeamRole.OWNER
+      TeamMemberRole.OWNER
     );
 
     const editedMembership = await teamMembershipRepository.findOneByOrFail({
       teamId: args.teamId,
       userId: args.userId
     });
-
-    editedMembership.role = role;
+    if (editedMembership.role === 'OWNER' && role && role !== 'OWNER') {
+      throw new UserInputError('Cannot edit owners role');
+    }
+    editedMembership.role = role ? role : editedMembership.role;
 
     await teamMembershipRepository.save(editedMembership);
 

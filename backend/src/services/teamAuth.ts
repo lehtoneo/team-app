@@ -1,6 +1,6 @@
 import { TeamMembership } from './../models/TeamMembership';
 import AppDataSource from '../data-source';
-import { UserTeamRole } from '../models/TeamMembership';
+import { TeamMemberRole } from '../models/TeamMembership';
 import { AuthenticationError } from 'apollo-server-express';
 import { User } from '../models/User';
 import { Team } from '../models/Team';
@@ -11,15 +11,15 @@ const throwUnAuthorized = (): never => {
   throw new AuthenticationError('Unauthorized');
 };
 
-const userTeamRoleValues: { [key in UserTeamRole]: number } = {
+const userTeamRoleValues: { [key in TeamMemberRole]: number } = {
   MEMBER: 0,
   ADMIN: 1,
   OWNER: 2
 };
 
 const isUserTeamRoleAtleast = (
-  userTeamRole: UserTeamRole,
-  minUserTeamRole: UserTeamRole
+  userTeamRole: TeamMemberRole,
+  minUserTeamRole: TeamMemberRole
 ) => {
   const minUserRoleValue = userTeamRoleValues[minUserTeamRole];
   const userTeamRoleValue = userTeamRoleValues[userTeamRole];
@@ -30,7 +30,7 @@ const isUserTeamRoleAtleast = (
 const checkUserTeamRightsThrowsError = async (
   user: User | number,
   team: Team | number,
-  minUserRole: UserTeamRole
+  minUserRole: TeamMemberRole
 ) => {
   const userId = typeof user === 'number' ? user : user.id;
   const teamId = typeof team === 'number' ? team : team.id;

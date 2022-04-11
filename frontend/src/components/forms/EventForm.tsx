@@ -35,7 +35,6 @@ export interface EventFormValues {
 const EventForm = (props: EventFormProps) => {
   const headerText = props.type === 'create' ? 'Create an Event' : 'Edit event';
   const submitText = props.type === 'create' ? 'Create' : 'Edit';
-  console.log(props.initialValues);
   const initialValues: EventFormValues = props.initialValues || {
     name: '',
     description: '',

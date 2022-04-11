@@ -18,7 +18,6 @@ const EditTeamEventContent = (props: EditEventPageContentProps) => {
   const { team } = useTeam({ id: props.teamId });
 
   const handleEditEventSubmit = async (formValues: EventFormValues) => {
-    console.log({ formValues });
     const result = await editEvent({
       ...formValues,
       start: new Date(formValues.start),

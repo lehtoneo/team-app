@@ -5,11 +5,14 @@ import { useQuery } from '@apollo/client';
 import useCreateTeam from './useCreateTeam';
 import useJoinTeam from './useJoinTeam';
 import useEditTeam from './useEditTeam';
+import useEditTeamMembership from './useEditTeamMembership';
 
 const useTeam = (args: GetOneTeamInput) => {
   const { editTeam, error: editTeamError } = useEditTeam();
   const { joinTeam, error: joinTeamError } = useJoinTeam();
   const { createTeam, error: createTeamError } = useCreateTeam();
+  const { editTeamMembership, error: editTeamMembershipError } =
+    useEditTeamMembership();
   const { data, loading, error } = useQuery<
     TeamQueryData,
     { getOneTeamInput: GetOneTeamInput }
@@ -33,7 +36,9 @@ const useTeam = (args: GetOneTeamInput) => {
     joinTeam,
     joinTeamError,
     editTeam,
-    editTeamError
+    editTeamError,
+    editTeamMembership,
+    editTeamMembershipError
   };
 };
 

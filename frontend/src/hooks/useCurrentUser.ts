@@ -13,7 +13,7 @@ const useCurrentUser = (params?: IParams) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: _d } = useQuery<MeData>(ME, {
     onError: (e) => {
-      if (e.message === 'Unauthorized' && params?.updateValues) {
+      if (params?.updateValues) {
         dispatch(
           setCurrentUserState({
             currentUser: null,

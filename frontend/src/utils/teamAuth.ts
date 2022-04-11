@@ -1,15 +1,18 @@
-import { UserTeamRole } from './../graphql/queries/team';
+import { TeamMemberRole } from './../graphql/queries/team';
 
-const userTeamRoleValues: { [key in UserTeamRole]: number } = {
+const userTeamRoleValues: { [key in TeamMemberRole]: number } = {
   MEMBER: 0,
   ADMIN: 1,
   OWNER: 2
 };
 
-const isUserRoleAtleast = (
-  userTeamRole: UserTeamRole,
-  minUserTeamRole: UserTeamRole
+const isUserTeamRoleAtleast = (
+  userTeamRole: TeamMemberRole | undefined,
+  minUserTeamRole: TeamMemberRole
 ) => {
+  if (!userTeamRole) {
+    return false;
+  }
   const minUserRoleValue = userTeamRoleValues[minUserTeamRole];
   const userTeamRoleValue = userTeamRoleValues[userTeamRole];
 
@@ -17,7 +20,7 @@ const isUserRoleAtleast = (
 };
 
 const teamAuthUtils = {
-  isUserRoleAtleast
+  isUserTeamRoleAtleast
 };
 
 export default teamAuthUtils;

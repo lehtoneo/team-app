@@ -14,7 +14,9 @@ export type TeamEvent = Pick<
   | 'currentUserEventAttendance'
 >;
 
-export type UserTeamRole = 'OWNER' | 'MEMBER' | 'ADMIN';
+export const teamMemberRoles = ['OWNER', 'MEMBER', 'ADMIN'] as const;
+
+export type TeamMemberRole = typeof teamMemberRoles[number];
 
 interface TeamMemberStatistics {
   pastEventsAttendanceCount: number;
@@ -25,7 +27,7 @@ interface TeamMembership {
   id: number;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
-  role: UserTeamRole;
+  role: TeamMemberRole;
   statistics: TeamMemberStatistics;
 }
 

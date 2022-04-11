@@ -1,4 +1,4 @@
-import { UserTeamRole } from './../models/TeamMembership';
+import { TeamMemberRole } from '../models/TeamMembership';
 import { InputType, Field, ID } from 'type-graphql';
 
 @InputType()
@@ -9,6 +9,6 @@ export class EditTeamMembershipInput {
   @Field(() => ID, { nullable: false })
   teamId: number;
 
-  @Field(() => UserTeamRole, { nullable: false })
-  role: UserTeamRole;
+  @Field(() => TeamMemberRole, { nullable: true })
+  role?: TeamMemberRole;
 }

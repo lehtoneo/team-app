@@ -1,4 +1,4 @@
-import { TeamMembership, UserTeamRole } from './../models/TeamMembership';
+import { TeamMembership, TeamMemberRole } from './../models/TeamMembership';
 import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
 import { CreateTeamInput } from '../inputs/CreateTeamInput';
@@ -81,7 +81,10 @@ export class TeamResolver {
       teamId: team.id
     });
 
-    if (userTeamMembership && userTeamMembership.role === UserTeamRole.OWNER) {
+    if (
+      userTeamMembership &&
+      userTeamMembership.role === TeamMemberRole.OWNER
+    ) {
       const res = await teamSettingsRepository.findOneBy({
         id: (await team.settings).id
       });
@@ -103,7 +106,7 @@ export class TeamResolver {
       await teamAuthService.checkUserTeamRightsThrowsError(
         ctx.payload.user,
         team.id,
-        UserTeamRole.ADMIN
+        TeamMemberRole.ADMIN
       );
       return team.joinId;
     } catch (e) {
@@ -162,7 +165,7 @@ export class TeamResolver {
     await teamAuthService.checkUserTeamRightsThrowsError(
       ctx.payload.user.id,
       teamId,
-      UserTeamRole.OWNER
+      TeamMemberRole.OWNER
     );
     const team = await teamRepository.findOneByOrFail({ id: teamId });
     if (editTeamInput.settings) {
@@ -276,7 +279,7 @@ export class TeamResolver {
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = newTeam.id;
-    newMembership.role = UserTeamRole.OWNER;
+    newMembership.role = TeamMemberRole.OWNER;
 
     await teamMembershipRepository.save(newMembership);
 
@@ -309,7 +312,7 @@ export class TeamResolver {
     const newMembership = new TeamMembership();
     newMembership.userId = ctx.payload.user.id;
     newMembership.teamId = team.id;
-    newMembership.role = UserTeamRole.MEMBER;
+    newMembership.role = TeamMemberRole.MEMBER;
 
     await teamMembershipRepository.save(newMembership);
     return team;

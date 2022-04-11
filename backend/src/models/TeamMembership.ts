@@ -6,14 +6,14 @@ import { User } from './User';
 import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import { Team } from './Team';
 
-export enum UserTeamRole {
+export enum TeamMemberRole {
   MEMBER = 'MEMBER',
   ADMIN = 'ADMIN',
   OWNER = 'OWNER'
 }
 
-registerEnumType(UserTeamRole, {
-  name: 'UserTeamRole', // this one is mandatory
+registerEnumType(TeamMemberRole, {
+  name: 'TeamMemberRole', // this one is mandatory
   description: 'The role of user in a team' // this one is optional
 });
 
@@ -36,13 +36,13 @@ export class TeamMembership extends Dates {
   @JoinColumn({ name: 'teamId' })
   team: Promise<Team>;
 
-  @Field(() => UserTeamRole, { nullable: true, defaultValue: 'MEMBER' })
+  @Field(() => TeamMemberRole, { nullable: true, defaultValue: 'MEMBER' })
   @Column({
     type: 'enum',
-    enum: UserTeamRole,
-    default: UserTeamRole.MEMBER
+    enum: TeamMemberRole,
+    default: TeamMemberRole.MEMBER
   })
-  role: UserTeamRole;
+  role: TeamMemberRole;
 
   @Field(() => TeamMemberStatistics)
   statistics: Promise<TeamMemberStatistics>;

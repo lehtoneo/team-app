@@ -9,7 +9,7 @@ const getRefreshToken = () => {
 const getAccessToken = async () => {
   const token = localStorage.getItem('accessToken');
   const isAccessTokenExpired = isTokenExpired(token);
-  console.log({ isAccessTokenExpired });
+
   if (!token || token === 'undefined' || isAccessTokenExpired) {
     const refreshToken = getRefreshToken();
     if (!refreshToken) {

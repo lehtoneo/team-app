@@ -7,6 +7,7 @@ import EventList from '../../../EventList';
 import useTeam from '../../../../hooks/useTeam';
 import Button from '../../../Button';
 import Header from '../../../Header';
+import teamAuthUtils from '../../../../utils/teamAuth';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -16,13 +17,16 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
   props
 ) => {
   const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
-  const isOwner = team?.currentUserTeamMembership.role === 'OWNER';
+  const hasEventCreationRights = teamAuthUtils.isUserTeamRoleAtleast(
+    team?.currentUserTeamMembership.role,
+    'ADMIN'
+  );
   const url = new URL(window.location.href);
 
   return (
     <div>
       <Header size={3}>Events </Header>
-      {isOwner && (
+      {hasEventCreationRights && (
         <div className="flex">
           <Link to="create">
             <Button>Create events</Button>

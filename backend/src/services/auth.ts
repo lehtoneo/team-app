@@ -38,7 +38,7 @@ const getAccessAndRefreshToken = async (user: User) => {
   const userForToken = getUserForToken(user);
 
   const accessToken = getAccessToken(user);
-
+  console.log({ REFRESH_TOKEN_LIFE });
   const refreshToken = sign(userForToken, REFRESH_TOKEN_SECRET, {
     expiresIn: REFRESH_TOKEN_LIFE
   });
@@ -79,7 +79,7 @@ const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE_SECONDS } = config;
 
 const getAccessToken = (user: ITokenUser) => {
   const userForToken = getUserForToken(user);
-
+  console.log({ ACCESS_TOKEN_LIFE_SECONDS });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const accessToken = sign(userForToken, ACCESS_TOKEN_SECRET, {
     expiresIn: ACCESS_TOKEN_LIFE_SECONDS
