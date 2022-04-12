@@ -11,7 +11,7 @@ import {
   Ctx,
   Mutation
 } from 'type-graphql';
-import { SaveAttendanceInput } from '../inputs/SaveAttendanceInput';
+import { SaveAttendanceInput } from '../inputs/event/SaveAttendanceInput';
 import { UserEventAttendance } from '../models/UserEventAttendance';
 import AppDataSource from '../data-source';
 import { Team } from '../models/Team';

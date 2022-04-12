@@ -1,7 +1,7 @@
 import { TeamMembership, TeamMemberRole } from './../models/TeamMembership';
 import { isAuth } from './../middleware/isAuth';
 import { UserInputError } from 'apollo-server-express';
-import { CreateTeamInput } from '../inputs/CreateTeamInput';
+import { CreateTeamInput } from '../inputs/team/CreateTeamInput';
 import {
   Resolver,
   Query,
@@ -23,13 +23,13 @@ import {
 } from '../relaySpec';
 import { MoreThan, LessThan, FindOptionsWhere, ILike } from 'typeorm';
 import { MyAuthContext, MyContext } from '../types/MyContext';
-import { FilterTeamsInput } from '../inputs/FilterTeamsInput';
+import { FilterTeamsInput } from '../inputs/team/FilterTeamsInput';
 import AppDataSource from '../data-source';
-import { JoinTeamInput } from '../inputs/JoinTeamInput';
-import { GetOneTeamInput } from '../inputs/GetOneTeamInput';
+import { JoinTeamInput } from '../inputs/team/JoinTeamInput';
+import { GetOneTeamInput } from '../inputs/team/GetOneTeamInput';
 import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
-import { EditTeamInput } from '../inputs/EditTeamInput';
+import { EditTeamInput } from '../inputs/team/EditTeamInput';
 import { Event } from '../models/Event';
 import authService from '../services/auth';
 

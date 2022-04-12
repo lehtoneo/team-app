@@ -1,5 +1,5 @@
 import { Between, MoreThan, LessThan } from 'typeorm';
-import { FilterDateInput } from '../inputs/FilterEventsInput';
+import { FilterDateInput } from '../inputs/event/FilterEventsInput';
 
 const getWhereOperatorFromFilterDateInput = (
   filterDateInput: FilterDateInput

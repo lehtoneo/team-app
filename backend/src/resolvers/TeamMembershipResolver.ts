@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-express';
 import { isAuth } from './../middleware/isAuth';
-import { EditTeamMembershipInput } from '../inputs/EditTeamMembershipInput';
+import { EditTeamMembershipInput } from '../inputs/team/EditTeamMembershipInput';
 import { Between, In } from 'typeorm';
 import { TeamMemberStatistics } from '../extra-graphql-types/TeamMemberStatistics';
 import { TeamMembership, TeamMemberRole } from './../models/TeamMembership';

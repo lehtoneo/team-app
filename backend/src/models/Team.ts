@@ -12,9 +12,14 @@ import { ObjectType, Field, Int } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { Event } from './Event';
 
+export interface TeamBaseInfo {
+  name: string;
+  description?: string;
+}
+
 @Entity()
 @ObjectType()
-export class Team extends IdAndDates {
+export class Team extends IdAndDates implements TeamBaseInfo {
   @Field(() => String)
   @Column()
   name: string;

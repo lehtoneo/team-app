@@ -1,4 +1,4 @@
-import { TeamMemberRole } from '../models/TeamMembership';
+import { TeamMemberRole } from '../../models/TeamMembership';
 import { InputType, Field, ID } from 'type-graphql';
 
 @InputType()

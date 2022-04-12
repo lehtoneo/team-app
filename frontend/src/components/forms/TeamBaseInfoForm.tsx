@@ -3,16 +3,14 @@ import Modal from 'react-modal';
 import Button from '../Button';
 import Field from './components/Field';
 import Label from './components/Label';
-import { Form, Formik, ErrorMessage } from 'formik';
-import { SignInInput } from '../../graphql/mutations/signIn';
-import { string } from 'yup';
-import { printIntrospectionSchema } from 'graphql';
+import { Form, Formik } from 'formik';
 import CustomErrorMessage from './components/CustomErrorMessage';
 import FormHeader from './components/FormHeader';
 
 interface ICreateTeamFormProps {
   onSubmit: (values: ICreateTeamFormValues) => Promise<any>;
   error?: string;
+  type?: 'create' | 'edit';
 }
 
 interface ICreateTeamFormValues {
@@ -20,8 +18,8 @@ interface ICreateTeamFormValues {
   description?: string;
 }
 
-const CreateTeamForm = ({ onSubmit, error }: ICreateTeamFormProps) => {
-  const [submitting, setSubmitting] = useState(false);
+const TeamBaseInfoForm = (props: ICreateTeamFormProps) => {
+  const type = props.type || 'create';
   const initialValues: ICreateTeamFormValues = {
     name: '',
     description: ''
@@ -30,12 +28,12 @@ const CreateTeamForm = ({ onSubmit, error }: ICreateTeamFormProps) => {
     <Formik
       initialValues={initialValues}
       onSubmit={async (values) => {
-        await onSubmit(values);
+        await props.onSubmit(values);
       }}
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
         <FormHeader>Create a new Team</FormHeader>
-        <CustomErrorMessage message={error} />
+        <CustomErrorMessage message={props.error} />
         <div>
           <Label>Name</Label>
           <Field name="name" id="name" placeholder="My new Team" required />
@@ -58,4 +56,4 @@ const CreateTeamForm = ({ onSubmit, error }: ICreateTeamFormProps) => {
   );
 };
 
-export default CreateTeamForm;
+export default TeamBaseInfoForm;

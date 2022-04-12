@@ -1,6 +1,6 @@
 import { TeamDiscordService } from './../services/teamDiscordService';
 import { GetByIdArgs } from './../args/GetByIdArgs';
-import { FilterEventsInput } from '../inputs/FilterEventsInput';
+import { FilterEventsInput } from '../inputs/event/FilterEventsInput';
 import { MyAuthContext, MyContext } from './../types/MyContext';
 import { isAuth } from './../middleware/isAuth';
 import {

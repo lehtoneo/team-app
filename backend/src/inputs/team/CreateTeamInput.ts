@@ -1,8 +1,8 @@
-import { Team } from '../models/Team';
+import { TeamBaseInfo } from '../../models/Team';
 import { InputType, Field } from 'type-graphql';
 
 @InputType()
-export class CreateTeamInput implements Partial<Team> {
+export class CreateTeamInput implements TeamBaseInfo {
   @Field(() => String)
   name: string;
 
