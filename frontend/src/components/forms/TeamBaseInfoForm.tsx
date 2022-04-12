@@ -7,20 +7,24 @@ import { Form, Formik } from 'formik';
 import CustomErrorMessage from './components/CustomErrorMessage';
 import FormHeader from './components/FormHeader';
 
-interface ICreateTeamFormProps {
-  onSubmit: (values: ICreateTeamFormValues) => Promise<any>;
+interface TeamBaseInfoFormProps {
+  onSubmit: (values: TeamBaseInfoFormValues) => Promise<any>;
   error?: string;
   type?: 'create' | 'edit';
+  initialValues?: TeamBaseInfoFormValues;
 }
 
-interface ICreateTeamFormValues {
+export interface TeamBaseInfoFormValues {
   name: string;
   description?: string;
 }
 
-const TeamBaseInfoForm = (props: ICreateTeamFormProps) => {
+const TeamBaseInfoForm = (props: TeamBaseInfoFormProps) => {
   const type = props.type || 'create';
-  const initialValues: ICreateTeamFormValues = {
+  const headerText =
+    type === 'edit' ? 'Edit team base info' : 'Create a new Team';
+  const submitButtonText = type === 'edit' ? 'Save' : 'Create';
+  const initialValues: TeamBaseInfoFormValues = props.initialValues || {
     name: '',
     description: ''
   };
@@ -32,7 +36,7 @@ const TeamBaseInfoForm = (props: ICreateTeamFormProps) => {
       }}
     >
       <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-        <FormHeader>Create a new Team</FormHeader>
+        <FormHeader>{headerText}</FormHeader>
         <CustomErrorMessage message={props.error} />
         <div>
           <Label>Name</Label>
@@ -49,7 +53,7 @@ const TeamBaseInfoForm = (props: ICreateTeamFormProps) => {
           />
         </div>
         <Button id="submit" type="submit" color="green">
-          Create
+          {submitButtonText}
         </Button>
       </Form>
     </Formik>

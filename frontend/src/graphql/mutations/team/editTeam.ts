@@ -1,6 +1,6 @@
-import { Team } from '../../queries/team';
+import { Team, TeamBaseInfo } from '../../queries/team';
 
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 
 interface EditTeamSettingsInput {
   discordWebhookUrl?: string | null;
@@ -8,9 +8,12 @@ interface EditTeamSettingsInput {
   trollMessages: boolean;
 }
 
+interface EditTeamBaseInfoInput extends TeamBaseInfo {}
+
 export interface EditTeamInput {
   id: number;
   settings?: EditTeamSettingsInput;
+  baseInfo?: EditTeamBaseInfoInput;
 }
 
 export type EditedTeamMutationResult = Pick<
@@ -33,6 +36,12 @@ export const EDIT_TEAM = gql`
   }
 `;
 
-export interface EditTeamData {
+export interface EditTeamResponse {
   editTeam: EditedTeamMutationResult | null;
+}
+
+export function useEditTeamMutation() {
+  return useMutation<EditTeamResponse, { editTeamInput: EditTeamInput }>(
+    EDIT_TEAM
+  );
 }

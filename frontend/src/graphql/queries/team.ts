@@ -23,7 +23,7 @@ interface TeamMemberStatistics {
   pastEventsAttendanceRatio: number;
 }
 
-interface TeamMembership {
+export interface TeamMembership {
   id: number;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
@@ -42,10 +42,13 @@ export interface TeamSettings {
   trollMessages: boolean;
 }
 
-export interface Team {
-  id: number;
+export interface TeamBaseInfo {
   description?: string;
   name: string;
+}
+
+export interface Team extends TeamBaseInfo {
+  id: number;
   memberships: TeamTeamMembership[];
   events: TeamEvent[];
   currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;

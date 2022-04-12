@@ -1,15 +1,11 @@
 import { unknownError } from './../../types/index';
 import {
   EditTeamInput,
-  EDIT_TEAM,
-  EditTeamData
+  useEditTeamMutation
 } from '../../graphql/mutations/team/editTeam';
-import { useMutation, ApolloError } from '@apollo/client';
+import { ApolloError } from '@apollo/client';
 const useEditTeam = () => {
-  const [editTeamMutation, { error }] = useMutation<
-    EditTeamData,
-    { editTeamInput: EditTeamInput }
-  >(EDIT_TEAM);
+  const [editTeamMutation, { error }] = useEditTeamMutation();
 
   const editTeam = async (params: EditTeamInput) => {
     try {

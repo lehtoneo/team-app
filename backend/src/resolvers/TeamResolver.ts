@@ -31,7 +31,6 @@ import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/team/EditTeamInput';
 import { Event } from '../models/Event';
-import authService from '../services/auth';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -149,7 +148,7 @@ export class TeamResolver {
       });
       return res;
     } else {
-      throw new UserInputError('QUERY NEED EITHER JOINID OR USERID');
+      throw new UserInputError('QUERY NEEDS EITHER JOINID OR USERID');
     }
   }
 
@@ -178,6 +177,13 @@ export class TeamResolver {
       settings.discordWebhookUrl = settingsInput.discordWebhookUrl;
       settings.trollMessages = settingsInput.trollMessages;
       await teamSettingsRepository.save(settings);
+    }
+
+    if (editTeamInput.baseInfo) {
+      const baseInfoInput = editTeamInput.baseInfo;
+      team.name = baseInfoInput.name;
+      team.description = baseInfoInput.description;
+      await teamRepository.save(team);
     }
 
     return team;

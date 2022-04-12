@@ -5,7 +5,9 @@ import Button from '../../Button';
 import Header from '../../Header';
 import PageContainer from '../components/PageContainer';
 import LoadingPage from '../LoadingPage';
+import RequireTeamAuthPage from './RequireTeamAuthPage';
 import TeamEventsPage from './team-events/TeamEventsPage';
+import TeamEditBaseInfoContent from './TeamEditBaseInfoContent';
 import TeamMainPageContent from './TeamMainPageContent';
 import TeamSettingsContent from './TeamSettingsContent';
 import TeamStatisticsPageContent from './TeamStatisticsPageContent';
@@ -53,6 +55,17 @@ const TeamPage = () => {
       </div>
       <Routes>
         <Route path="/" element={<TeamMainPageContent teamId={teamId} />} />
+        <Route
+          path="/edit"
+          element={
+            <RequireTeamAuthPage
+              currentUserTeamMembership={team.currentUserTeamMembership}
+              minTeamRole={'OWNER'}
+            >
+              <TeamEditBaseInfoContent teamId={teamId} />
+            </RequireTeamAuthPage>
+          }
+        />
         <Route
           path="/statistics"
           element={<TeamStatisticsPageContent teamId={teamId} />}

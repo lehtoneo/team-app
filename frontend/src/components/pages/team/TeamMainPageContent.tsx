@@ -1,11 +1,8 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { TeamQuerySuccessData } from '../../../graphql/queries/team';
-import useCurrentUser from '../../../hooks/useCurrentUser';
+import { Link, Navigate } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
 import teamAuthUtils from '../../../utils/teamAuth';
 import Button from '../../Button';
-import Header from '../../Header';
 import InfoItem from '../../InfoItem';
 import JoinLink from '../../JoinLink';
 import MemberList from '../../MemberList';
@@ -19,7 +16,6 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
   props: TeamMainPageContentProps
 ) => {
   const { team } = useTeam({ id: props.teamId });
-  const { currentUser } = useCurrentUser();
   if (team === null) {
     return <Navigate to="/not-found" />;
   }
@@ -31,14 +27,29 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
     team.currentUserTeamMembership.role,
     'ADMIN'
   );
+
+  const hasEditTeamBaseInfoRights = teamAuthUtils.isUserTeamRoleAtleast(
+    team.currentUserTeamMembership.role,
+    'OWNER'
+  );
   const url = new URL(window.location.href);
   // eslint-disable-next-line no-useless-concat
   const joinLink = url.origin + '/#' + `/teams/join/${team.joinId}`;
 
   return (
     <div>
-      <InfoItem header="Description">{team.description}</InfoItem>
-
+      {team.description && (
+        <InfoItem header="Description">{team.description}</InfoItem>
+      )}
+      {hasEditTeamBaseInfoRights && (
+        <div>
+          <Link to="edit">
+            <Button size="sm" fullW={false}>
+              Edit base info
+            </Button>
+          </Link>
+        </div>
+      )}
       <InfoItem header="Members">
         <MemberList users={team.memberships} />
       </InfoItem>
