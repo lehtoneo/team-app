@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
-import teamAuthUtils from '../../../utils/teamAuth';
 import Button from '../../Button';
 import InfoItem from '../../InfoItem';
 import JoinLink from '../../JoinLink';
@@ -15,7 +14,7 @@ interface TeamMainPageContentProps {
 const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
   props: TeamMainPageContentProps
 ) => {
-  const { team } = useTeam({ id: props.teamId });
+  const { team, teamAuth } = useTeam({ id: props.teamId });
   if (team === null) {
     return <Navigate to="/not-found" />;
   }
@@ -23,15 +22,6 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
     return <LoadingPage />;
   }
 
-  const hasJoinLinkRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team.currentUserTeamMembership.role,
-    'ADMIN'
-  );
-
-  const hasEditTeamBaseInfoRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team.currentUserTeamMembership.role,
-    'OWNER'
-  );
   const url = new URL(window.location.href);
   // eslint-disable-next-line no-useless-concat
   const joinLink = url.origin + '/#' + `/teams/join/${team.joinId}`;
@@ -41,7 +31,7 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
       {team.description && (
         <InfoItem header="Description">{team.description}</InfoItem>
       )}
-      {hasEditTeamBaseInfoRights && (
+      {teamAuth.baseInfo.writeRights && (
         <div>
           <Link to="edit">
             <Button size="sm" fullW={false}>
@@ -53,7 +43,7 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
       <InfoItem header="Members">
         <MemberList users={team.memberships} />
       </InfoItem>
-      {hasJoinLinkRights && team.joinId && (
+      {teamAuth.joinLink.readRights && team.joinId && (
         <InfoItem header="Join link">
           <JoinLink joinLink={joinLink} />
         </InfoItem>

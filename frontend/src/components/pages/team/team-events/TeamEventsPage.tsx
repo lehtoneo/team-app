@@ -2,12 +2,12 @@ import React from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import SingleEventPage from './SingleEventPage';
 import CreateTeamEventContent from './CreateTeamEventContent';
-import EditTeamEventContent from './EditTeamEventContent';
 import EventList from '../../../EventList';
 import useTeam from '../../../../hooks/useTeam';
 import Button from '../../../Button';
 import Header from '../../../Header';
-import teamAuthUtils from '../../../../utils/teamAuth';
+import LoadingPage from '../../LoadingPage';
+import RequireTeamAuthPage from '../RequireTeamAuthPage';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -16,17 +16,12 @@ interface TeamEventsMainPageContentProps {
 const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
   props
 ) => {
-  const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
-  const hasEventCreationRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team?.currentUserTeamMembership.role,
-    'ADMIN'
-  );
-  const url = new URL(window.location.href);
+  const { team, teamAuth } = useTeam({ id: props.teamId });
 
   return (
     <div>
       <Header size={3}>Events </Header>
-      {hasEventCreationRights && (
+      {teamAuth.event.writeRights && (
         <div className="flex">
           <Link to="create">
             <Button>Create events</Button>
@@ -39,23 +34,36 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
 };
 
 const TeamEventsPage = () => {
-  const { teamId } = useParams();
-
-  if (!teamId || isNaN(Number(teamId))) {
+  const { teamId: teamIdString } = useParams();
+  const teamId = Number(teamIdString);
+  const { team, teamAuth } = useTeam({ id: teamId });
+  if (!teamId || isNaN(teamId)) {
     return <Navigate to="/" />;
+  }
+
+  if (!team) {
+    return <LoadingPage />;
   }
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<TeamEventsMainPageContent teamId={Number(teamId)} />}
-      />
+      <Route path="/" element={<TeamEventsMainPageContent teamId={teamId} />} />
       <Route
         path="/create"
-        element={<CreateTeamEventContent teamId={Number(teamId)} />}
+        element={
+          <RequireTeamAuthPage isAuthorized={teamAuth.event.writeRights}>
+            <CreateTeamEventContent teamId={teamId} />
+          </RequireTeamAuthPage>
+        }
       />
-      <Route path="/:eventId/*" element={<SingleEventPage />} />
+      <Route
+        path="/:eventId/*"
+        element={
+          <RequireTeamAuthPage isAuthorized={teamAuth.event.readRights}>
+            <SingleEventPage />
+          </RequireTeamAuthPage>
+        }
+      />
     </Routes>
   );
 };

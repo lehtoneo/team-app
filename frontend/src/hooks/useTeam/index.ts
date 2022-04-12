@@ -6,6 +6,7 @@ import useCreateTeam from './useCreateTeam';
 import useJoinTeam from './useJoinTeam';
 import useEditTeam from './useEditTeam';
 import useEditTeamMembership from './useEditTeamMembership';
+import useTeamAuth from './useTeamAuth';
 
 const useTeam = (args: GetOneTeamInput) => {
   const { editTeam, error: editTeamError } = useEditTeam();
@@ -13,7 +14,7 @@ const useTeam = (args: GetOneTeamInput) => {
   const { createTeam, error: createTeamError } = useCreateTeam();
   const { editTeamMembership, error: editTeamMembershipError } =
     useEditTeamMembership();
-  const { data, loading, error } = useQuery<
+  const { data, error } = useQuery<
     TeamQueryData,
     { getOneTeamInput: GetOneTeamInput }
   >(TEAM_QUERY, {
@@ -27,6 +28,8 @@ const useTeam = (args: GetOneTeamInput) => {
       // console.log({ d });
     }
   });
+
+  const { teamAuth } = useTeamAuth(data?.oneTeam?.currentUserTeamMembership);
   return {
     team: data?.oneTeam,
     loading: data?.oneTeam === undefined,
@@ -38,7 +41,8 @@ const useTeam = (args: GetOneTeamInput) => {
     editTeam,
     editTeamError,
     editTeamMembership,
-    editTeamMembershipError
+    editTeamMembershipError,
+    teamAuth
   };
 };
 

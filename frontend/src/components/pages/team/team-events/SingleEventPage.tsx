@@ -25,7 +25,6 @@ import EditTeamEventContent from './EditTeamEventContent';
 import Header from '../../../Header';
 import useConfirm from '../../../../hooks/useConfirm';
 import LoadingPage from '../../LoadingPage';
-import teamAuthUtils from '../../../../utils/teamAuth';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -69,7 +68,11 @@ const EventPageContent = (props: ITeamPageContentProps) => {
   const navigate = useNavigate();
   const { confirm } = useConfirm();
   const { currentUser } = useCurrentUser();
-  const { team, loading: loadingTeam } = useTeam({ id: props.teamId });
+  const {
+    team,
+    loading: loadingTeam,
+    teamAuth
+  } = useTeam({ id: props.teamId });
   const {
     event,
     loading: loadingEvent,
@@ -124,24 +127,16 @@ const EventPageContent = (props: ITeamPageContentProps) => {
         ? 'IN'
         : 'OUT'
       : 'not decided';
-  const hasEditRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team.currentUserTeamMembership.role,
-    'ADMIN'
-  );
-  const hasDeleteRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team.currentUserTeamMembership.role,
-    'OWNER'
-  );
   return (
     <div>
       <Header size={3}>{event.name}</Header>
       <div className="flex">
-        {hasEditRights && (
+        {teamAuth.event.writeRights && (
           <Link to="edit">
             <Button>Edit</Button>
           </Link>
         )}
-        {hasDeleteRights && !isPastEvent && (
+        {teamAuth.event.writeRights && (
           <div className="mx-2">
             <Button color="red" onClick={handleDeletePress}>
               Delete{' '}

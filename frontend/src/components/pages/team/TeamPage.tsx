@@ -14,7 +14,7 @@ import TeamStatisticsPageContent from './TeamStatisticsPageContent';
 
 const TeamPage = () => {
   const { teamId: teamIdString } = useParams();
-  const { team } = useTeam({ id: Number(teamIdString) });
+  const { team, teamAuth } = useTeam({ id: Number(teamIdString) });
   const teamId = Number(teamIdString);
   if (!teamIdString || isNaN(teamId) || team === null) {
     return <Navigate to="/not-found" />;
@@ -23,11 +23,6 @@ const TeamPage = () => {
   if (team === undefined) {
     return <LoadingPage />;
   }
-
-  const hasSettingsRights = teamAuthUtils.isUserTeamRoleAtleast(
-    team.currentUserTeamMembership.role,
-    'OWNER'
-  );
 
   return (
     <PageContainer>
@@ -44,7 +39,7 @@ const TeamPage = () => {
           <Button>Events</Button>
         </Link>
         <div className="mx-2"> </div>
-        {hasSettingsRights && (
+        {teamAuth.settings.readRights && (
           <Link to="settings">
             <Button>Settings</Button>
           </Link>
@@ -58,10 +53,7 @@ const TeamPage = () => {
         <Route
           path="/edit"
           element={
-            <RequireTeamAuthPage
-              currentUserTeamMembership={team.currentUserTeamMembership}
-              minTeamRole={'OWNER'}
-            >
+            <RequireTeamAuthPage isAuthorized={teamAuth.event.writeRights}>
               <TeamEditBaseInfoContent teamId={teamId} />
             </RequireTeamAuthPage>
           }
@@ -72,9 +64,20 @@ const TeamPage = () => {
         />
         <Route
           path="/settings"
-          element={<TeamSettingsContent teamId={teamId} />}
+          element={
+            <RequireTeamAuthPage isAuthorized={teamAuth.settings.readRights}>
+              <TeamSettingsContent teamId={teamId} />
+            </RequireTeamAuthPage>
+          }
         />
-        <Route path="/events/*" element={<TeamEventsPage />} />
+        <Route
+          path="/events/*"
+          element={
+            <RequireTeamAuthPage isAuthorized={teamAuth.event.readRights}>
+              <TeamEventsPage />
+            </RequireTeamAuthPage>
+          }
+        />
       </Routes>
     </PageContainer>
   );
