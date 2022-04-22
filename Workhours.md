@@ -24,4 +24,5 @@
 | 7.4  | 4     | Delete event feature, refactoring, start working on team statistics feature                                                                                                                             |
 | 8.4  | 4     | Add team member stats to frontend, validate event form                                                                                                                                                  |
 | 11.4 | 6     | Fix access token bug, add loading page, implement edit user team role to backend, implement edit user team role to frontend. Allow admin users to edit and create team events                           |
-| 12.4 | 2.5?? | Owner can edit team base info, add useTeamAuth hook                                                                                                                                                     |
+| 12.4 | 2.5 | Owner can edit team base info, add useTeamAuth hook                                                                                                                                                     |
+| 22.4 | 3.5 | Clean repo, rewrite dev env instructions. Fix some bugs, styling, refactoring and start creating event pagintation |
