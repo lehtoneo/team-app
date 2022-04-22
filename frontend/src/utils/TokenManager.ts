@@ -18,6 +18,8 @@ const getAccessToken = async () => {
     const newAccessToken = await fetchNewAccessToken(refreshToken);
     if (newAccessToken) {
       setAccessToken(newAccessToken);
+    } else {
+      removeTokens();
     }
     return newAccessToken;
   } else {

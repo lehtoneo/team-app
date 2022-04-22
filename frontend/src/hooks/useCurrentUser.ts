@@ -12,6 +12,7 @@ const useCurrentUser = (params?: IParams) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: _d } = useQuery<MeData>(ME, {
     onError: (e) => {
+      console.log({ e });
       if (params?.updateValues) {
         dispatch(
           setCurrentUserState({
