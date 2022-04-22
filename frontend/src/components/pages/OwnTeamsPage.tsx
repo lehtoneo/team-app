@@ -1,12 +1,17 @@
 import React from 'react';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import useTeamConnection from '../../hooks/useTeamConnection';
+import LoadingIndicator from '../LoadingIndicator';
 import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
 
+const NoOwnTeamsInformation: React.FC = () => {
+  return <div>You are not a member of any team.</div>;
+};
+
 const OwnTeamsPage = () => {
   const { currentUser } = useCurrentUser();
-  const { teams } = useTeamConnection({
+  const { teams, loading } = useTeamConnection({
     teamFilters: {
       ownTeamsOnly: true
     }
@@ -17,7 +22,8 @@ const OwnTeamsPage = () => {
   return (
     <PageContainer header="My teams">
       <div className="my-2"></div>
-      <TeamList teams={teams} />
+      {loading ? <LoadingIndicator /> : <TeamList teams={teams} />}
+      {!loading && teams.length === 0 && <NoOwnTeamsInformation />}
     </PageContainer>
   );
 };

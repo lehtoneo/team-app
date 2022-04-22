@@ -1,5 +1,6 @@
+import { unknownError, UnknownError } from './../../types/index';
 import { CreatedTeamMutationResult } from '../../graphql/mutations/team/createTeam';
-import { useMutation } from '@apollo/client';
+import { ApolloError, useMutation } from '@apollo/client';
 import {
   CREATE_TEAM,
   CreateTeamInput,
@@ -8,7 +9,7 @@ import {
 
 type CreateTeamResult =
   | { success: true; team: CreatedTeamMutationResult }
-  | { success: false; team?: null };
+  | { success: false; team?: null; error: ApolloError | UnknownError };
 
 const useCreateTeam = () => {
   const [createTeamMutation, { error }] = useMutation<
@@ -27,7 +28,8 @@ const useCreateTeam = () => {
 
       if (!res.data?.createTeam) {
         return {
-          success: false
+          success: false,
+          error: unknownError
         };
       } else {
         return {
@@ -36,8 +38,15 @@ const useCreateTeam = () => {
         };
       }
     } catch (e) {
+      if (e instanceof ApolloError) {
+        return {
+          success: false,
+          error: e
+        };
+      }
       return {
-        success: false
+        success: false,
+        error: unknownError
       };
     }
   };

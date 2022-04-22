@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
@@ -7,44 +6,26 @@ import { toast } from 'react-toastify';
 import { CreateTeamInput } from '../../graphql/mutations/team/createTeam';
 import useCreateTeam from '../../hooks/useTeam/useCreateTeam';
 import TeamBaseInfoForm from '../forms/TeamBaseInfoForm';
+import PageContainer from './components/PageContainer';
 
-import ModalHeader from './ModalHeader';
-
-export type SignInUpModalState = 'sign-in' | 'sign-up';
-
-interface IModalProps {
-  isOpen: boolean;
-  onClose: () => any;
-  onSignUpCompleted?: () => any;
-}
-
-interface ILoginModalProps extends IModalProps {
-  onCreateAccountClick?: () => any;
-}
-
-const CreateTeamModal = ({ isOpen, onClose }: ILoginModalProps) => {
+const CreateTeamPage = () => {
   const navigate = useNavigate();
   const { createTeam, error } = useCreateTeam();
   const handleSubmit = async (values: CreateTeamInput) => {
-    const { success, team } = await createTeam(values);
-
+    const result = await createTeam(values);
+    const { success, team } = result;
     if (success) {
       toast(`Team "${team.name}" created!`, { type: 'success' });
-      onClose();
       navigate(`/teams/${team.id}`);
     } else {
+      toast(result.error.message, { type: 'error' });
     }
   };
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      appElement={document.getElementById('root') as HTMLElement}
-    >
-      <ModalHeader onClose={onClose} />
+    <PageContainer>
       <TeamBaseInfoForm onSubmit={handleSubmit} error={error?.message} />
-    </Modal>
+    </PageContainer>
   );
 };
 
-export default CreateTeamModal;
+export default CreateTeamPage;

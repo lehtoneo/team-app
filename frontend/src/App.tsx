@@ -16,6 +16,7 @@ import useSignIn from './hooks/useSignIn';
 import useConfirm from './hooks/useConfirm';
 import ConfirmModal from './components/modals/ConfirmModal';
 import LoadingPage from './components/pages/LoadingPage';
+import CreateTeamPage from './components/pages/CreateTeamPage';
 
 function App() {
   const { onConfirm, onCancel, confirmState } = useConfirm();
@@ -53,6 +54,14 @@ function App() {
             element={
               <RequireAuthPage userState={userState}>
                 <TeamsMainPage />
+              </RequireAuthPage>
+            }
+          />
+          <Route
+            path="/teams/create"
+            element={
+              <RequireAuthPage userState={userState}>
+                <CreateTeamPage />
               </RequireAuthPage>
             }
           />
