@@ -1,4 +1,6 @@
-# My workout planner app
+# My team management app
+
+The initial idea was to use python for the backend, but I changed it in to the beginning to node. Hence there is some small amount of hours used to a Python backend, which is now non-existing.
 
 Backend is Graphql API and frontend is a React app (create-react-app)
 
