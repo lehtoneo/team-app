@@ -1,10 +1,18 @@
 import React from 'react';
 
+type HeaderSize = 4 | 3 | 2;
+
 interface IHeaderProps {
-  size?: 4 | 3 | 2;
+  size?: HeaderSize;
+  center?: boolean;
 }
 
-const classNameConfig = {
+const centerConfig: { [key in 'true' | 'false']: string } = {
+  true: 'justify-center',
+  false: ''
+};
+
+const classNameConfig: { [key in HeaderSize]: string } = {
   4: 'text-4xl',
   3: 'text-3xl',
   2: 'text-2xl'
@@ -12,8 +20,9 @@ const classNameConfig = {
 
 const Header: React.FC<IHeaderProps> = (props) => {
   const size = props.size || 4;
+  const center = props.center !== undefined ? props.center : true;
   return (
-    <div className="flex justify-center">
+    <div className={`flex ${centerConfig[`${center}`]}`}>
       <h1 className={classNameConfig[size]}>{props.children}</h1>
     </div>
   );

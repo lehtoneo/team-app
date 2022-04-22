@@ -24,7 +24,7 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
       {teamAuth.event.writeRights && (
         <div className="flex">
           <Link to="create">
-            <Button>Create events</Button>
+            <Button color="green">Create events</Button>
           </Link>
         </div>
       )}

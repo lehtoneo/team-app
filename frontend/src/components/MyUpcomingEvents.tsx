@@ -43,20 +43,26 @@ const MyUpcomingEvents: React.FC = () => {
   return (
     <div>
       <Header size={3}>Your upcoming Events</Header>
-      <Header size={2}>Today</Header>
+      <Header size={2} center={false}>
+        Today
+      </Header>
       <EventList events={eventsToday} loading={loadingEventsToday} />
       {eventsToday.length === 0 && !loadingEventsToday && (
         <div className="text-lg">No events today</div>
       )}
       {eventsTomorrow.length > 0 && (
         <>
-          <Header size={2}>Tomorrow</Header>
+          <Header size={2} center={false}>
+            Tomorrow
+          </Header>
           <EventList events={eventsTomorrow} loading={loadingEventsToday} />
         </>
       )}
       {restOfUpcomingEvents.length > 0 && (
         <>
-          <Header size={2}>Rest of upcoming events</Header>
+          <Header size={2} center={false}>
+            Rest of upcoming events
+          </Header>
           <EventList events={restOfUpcomingEvents} />
         </>
       )}

@@ -26,7 +26,7 @@ interface MemberShipSettingsProps {
   teamId: number;
 }
 
-const MemberShipSettings: React.FC<MemberShipSettingsProps> = (props) => {
+const MembershipSettings: React.FC<MemberShipSettingsProps> = (props) => {
   const { membership } = props;
   const { currentUser } = useCurrentUser();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -99,7 +99,9 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
   return (
     <div>
       <Header size={3}>Settings</Header>
-      <Header size={2}>Basic settings</Header>
+      <Header size={2} center={false}>
+        Basic settings
+      </Header>
       <TeamSettingsForm
         onSubmit={handleSettingsSubmit}
         initialValues={{
@@ -109,11 +111,13 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
         }}
       />
       <div className="my-2">
-        <Header size={2}>Member settings</Header>
+        <Header size={2} center={false}>
+          Member settings
+        </Header>
         <div className="w-1/2 p-1">
           {team.memberships.map((membership) => {
             return (
-              <MemberShipSettings
+              <MembershipSettings
                 membership={membership}
                 key={membership.id}
                 teamId={team.id}
