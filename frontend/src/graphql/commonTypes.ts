@@ -5,6 +5,7 @@ export interface Tokens {
 
 export interface PaginationInput {
   after?: string;
+  before?: string;
   first?: number;
 }
 

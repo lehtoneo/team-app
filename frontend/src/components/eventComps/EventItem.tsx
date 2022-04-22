@@ -1,13 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { EventListInfo } from '../graphql/queries/eventConnection';
-import { formatEventDate } from '../utils/Dates';
-import LoadingIndicator from './LoadingIndicator';
-
-interface EventListProps {
-  events: EventListInfo[];
-  loading?: boolean;
-}
+import { EventListInfo } from '../../graphql/queries/eventConnection';
+import { formatEventDate } from '../../utils/Dates';
 
 interface EventProps {
   event: EventListInfo;
@@ -68,16 +62,4 @@ const EventItem = (props: EventProps) => {
   );
 };
 
-const EventList = (props: EventListProps) => {
-  return (
-    <div>
-      {!props.loading &&
-        props.events.map((event) => {
-          return <EventItem event={event} key={event.id} />;
-        })}
-      {props.loading && <LoadingIndicator />}
-    </div>
-  );
-};
-
-export default EventList;
+export default EventItem;

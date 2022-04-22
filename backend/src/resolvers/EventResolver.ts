@@ -179,7 +179,7 @@ export class EventResolver {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
     const userTeamMemberships = await ctx.payload.user.teams;
-
+    console.log({ connArgs });
     const afterIsDate = !isNaN(Date.parse(after));
     if (!afterIsDate) {
       throw new UserInputError('Arg after should be a date string');
@@ -199,12 +199,19 @@ export class EventResolver {
       where.end = dbUtils.getWhereOperatorFromFilterDateInput(filterArgs.end);
     }
 
+    if (connArgs?.after) {
+      where.createdAt = MoreThan(new Date(after));
+    }
+
+    if (connArgs?.before) {
+      where.createdAt = LessThan(new Date(connArgs.before));
+    }
+
     const eventDbResult = await eventRepository.find({
       where,
       order: {
         start: 'ASC'
-      },
-      take: first + 1
+      }
     });
 
     const edges = eventDbResult
@@ -225,7 +232,7 @@ export class EventResolver {
       eventDbResult.length > 0
         ? eventDbResult[0].createdAt.toISOString()
         : null;
-
+    console.log({ startCursor });
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
@@ -235,19 +242,19 @@ export class EventResolver {
         where: {
           ...where,
           createdAt: LessThan(new Date(startCursor))
-        },
-        order: {
-          updatedAt: 'DESC'
         }
       });
+      console.log({ previousInDb });
 
-      return previousInDb !== undefined;
+      return previousInDb !== null;
     };
+    const hasPreviousPage = await getHasPreviousPage();
+
     const pageInfo: PageInfo = {
       hasNextPage: eventDbResult.length > first,
       endCursor,
       startCursor,
-      hasPreviousPage: await getHasPreviousPage()
+      hasPreviousPage: hasPreviousPage
     };
 
     return {

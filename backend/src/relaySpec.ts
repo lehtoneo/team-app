@@ -15,6 +15,12 @@ export class PaginationInput {
   })
   after?: string;
 
+  @Field((type) => String, {
+    nullable: true,
+    description: 'Paginate before opaque cursor'
+  })
+  before?: string;
+
   @Field((type) => Number, { nullable: true, description: 'Paginate first' })
   @Min(1)
   @Max(20)

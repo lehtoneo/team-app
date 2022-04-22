@@ -18,7 +18,7 @@ interface FilterDateInput {
   min?: Date;
 }
 
-interface FilterEventsInput {
+export interface FilterEventsInput {
   futureEventsOnly?: boolean;
   start?: FilterDateInput;
   end?: FilterDateInput;
