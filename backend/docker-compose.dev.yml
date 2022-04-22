@@ -11,13 +11,13 @@ services:
       retries: 5
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: workout-db
-    container_name: workoutplanner-app-postgres-dev
+      POSTGRES_DB: team-db
+    container_name: team-app-postgres-dev
     volumes:
       - ./postgres_dev_data:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: workoutplanner-pgadmin-dev
+    container_name: team-pgadmin-dev
     image: dpage/pgadmin4
     restart: always
 

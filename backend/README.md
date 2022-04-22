@@ -16,7 +16,7 @@ npm install
 
 Set env variables (e.g to an .env file):
 
-DATABASE_URL=postgresql://postgres:password@localhost:5432/workout-db
+DATABASE_URL=postgresql://postgres:password@localhost:5432/team-db
 
 run:
 
