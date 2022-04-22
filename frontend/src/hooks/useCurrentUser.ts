@@ -1,5 +1,4 @@
 import { useAppSelector, useAppDispatch } from './redux';
-import { useEffect } from 'react';
 
 import { useQuery } from '@apollo/client';
 import { ME, MeData } from '../graphql/queries/me';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import LandingPage from './components/pages/LandingPage';
 import NavBar from './components/NavBar';
@@ -10,11 +10,9 @@ import RequireAuthPage from './components/RequireAuth';
 import TeamsMainPage from './components/pages/TeamsPage';
 import OwnTeamsPage from './components/pages/OwnTeamsPage';
 import TeamPage from './components/pages/team/TeamPage';
-import CreateTeamEventPage from './components/pages/team/team-events/CreateTeamEventContent';
 import SingleEventPage from './components/pages/team/team-events/SingleEventPage';
 import TeamJoinPage from './components/pages/TeamJoinPage';
 import useSignIn from './hooks/useSignIn';
-import EditTeamEventContent from './components/pages/team/team-events/EditTeamEventContent';
 import useConfirm from './hooks/useConfirm';
 import ConfirmModal from './components/modals/ConfirmModal';
 import LoadingPage from './components/pages/LoadingPage';

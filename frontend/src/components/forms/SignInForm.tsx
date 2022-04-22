@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
 import Button from '../Button';
 import Field from './components/Field';
 import Label from './components/Label';
-import { Form, Formik, ErrorMessage } from 'formik';
+import { Form, Formik } from 'formik';
 import { SignInInput } from '../../graphql/mutations/signIn';
-import { string } from 'yup';
-import { printIntrospectionSchema } from 'graphql';
 import CustomErrorMessage from './components/CustomErrorMessage';
 import FormHeader from './components/FormHeader';
 
@@ -20,7 +17,6 @@ const SignInForm = ({
   onCreateAccountClick: onSignInClick,
   onSubmit
 }: ISignInFormProps) => {
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
   const initialValues = {
     email: '',
@@ -32,7 +28,6 @@ const SignInForm = ({
       onSubmit={async (values) => {
         try {
           setError(undefined);
-          setSubmitting(true);
           await onSubmit(values);
         } catch (e: any) {
           setError(e.message);

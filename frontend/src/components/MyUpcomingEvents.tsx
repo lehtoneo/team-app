@@ -6,7 +6,6 @@ import Header from './Header';
 
 const MyUpcomingEvents: React.FC = () => {
   const today = moment();
-  const now = moment();
   const todayStart = new Date(today.startOf('day').toISOString());
   const todayEnd = new Date(today.endOf('day').toISOString());
   const { events: eventsToday, loading: loadingEventsToday } =
@@ -24,16 +23,15 @@ const MyUpcomingEvents: React.FC = () => {
   const tomorrowStart = new Date(tomorrow.startOf('day').toString());
   const tomorrowEnd = new Date(tomorrow.endOf('day').toString());
 
-  const { events: eventsTomorrow, loading: loadingEventsTomorrow } =
-    useEventConnection({
-      paginationInput: { first: 20 },
-      eventFilters: {
-        start: {
-          min: tomorrowStart,
-          max: tomorrowEnd
-        }
+  const { events: eventsTomorrow } = useEventConnection({
+    paginationInput: { first: 20 },
+    eventFilters: {
+      start: {
+        min: tomorrowStart,
+        max: tomorrowEnd
       }
-    });
+    }
+  });
   const { events: restOfUpcomingEvents } = useEventConnection({
     paginationInput: { first: 20 },
     eventFilters: {

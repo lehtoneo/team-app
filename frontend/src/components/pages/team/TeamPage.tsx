@@ -1,6 +1,5 @@
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
-import teamAuthUtils from '../../../utils/teamAuth';
 import Button from '../../Button';
 import Header from '../../Header';
 import PageContainer from '../components/PageContainer';

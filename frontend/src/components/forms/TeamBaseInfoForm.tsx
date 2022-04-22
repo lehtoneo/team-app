@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import React from 'react';
 import Button from '../Button';
 import Field from './components/Field';
 import Label from './components/Label';

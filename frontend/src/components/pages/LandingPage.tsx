@@ -1,11 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import useCurrentUser from '../../hooks/useCurrentUser';
-import useTeamConnection from '../../hooks/useTeamConnection';
 import Button from '../Button';
-import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
-import Header from '../Header';
 import MyUpcomingEvents from '../MyUpcomingEvents';
 import useSignIn from '../../hooks/useSignIn';
 const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {

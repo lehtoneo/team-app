@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Link,
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams
-} from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import useSignIn from '../../hooks/useSignIn';
 import useTeam from '../../hooks/useTeam';
 import Button from '../Button';
-import EventList from '../EventList';
-import Header from '../Header';
 import PageContainer from './components/PageContainer';
 
 interface TeamJoinPageContentProps {

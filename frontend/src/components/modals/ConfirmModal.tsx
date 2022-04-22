@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
-import { CreateUserInput } from '../../graphql/mutations/createUser';
-import { SignInInput } from '../../graphql/mutations/signIn';
-import useCreateUser from '../../hooks/useCreateUser';
-import useSignIn from '../../hooks/useSignIn';
 import { ConfirmState } from '../../redux/reducers/confirmDialogReducer';
 import Button from '../Button';
-import SignInForm from '../forms/SignInForm';
-import SignUpForm from '../forms/SignUpForm';
-import Header from '../Header';
-import ModalHeader from './ModalHeader';
 
 export type SignInUpModalState = 'sign-in' | 'sign-up';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { EventListInfo } from '../graphql/queries/eventConnection';
-import moment from 'moment';
 import { formatEventDate } from '../utils/Dates';
 import LoadingIndicator from './LoadingIndicator';
 

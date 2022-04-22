@@ -1,5 +1,3 @@
-import { Tokens } from './../commonTypes';
-
 import { gql } from '@apollo/client';
 
 export interface SignOutInput {

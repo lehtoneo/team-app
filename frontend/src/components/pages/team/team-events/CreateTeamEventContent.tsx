@@ -1,9 +1,7 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useCreateEvent from '../../../../hooks/useEvent/useCreateEvent';
-import useTeam from '../../../../hooks/useTeam';
 import EventForm, { EventFormValues } from '../../../forms/EventForm';
-import PageContainer from '../../components/PageContainer';
 
 interface ITeamPageContentProps {
   teamId: number;
@@ -11,7 +9,6 @@ interface ITeamPageContentProps {
 
 const CreateTeamEventContent = (props: ITeamPageContentProps) => {
   const navigate = useNavigate();
-  const { team } = useTeam({ id: props.teamId });
   const { createEvent, error } = useCreateEvent();
 
   const handleCreateEventSubmit = async (formValues: EventFormValues) => {

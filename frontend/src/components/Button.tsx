@@ -1,6 +1,4 @@
-import { printIntrospectionSchema } from 'graphql';
 import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
-import { Props } from 'react-modal';
 
 type ButtonColor = 'green' | 'blue' | 'red';
 type ButtonSize = 'sm' | 'normal';

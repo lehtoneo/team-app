@@ -1,5 +1,4 @@
 import { TeamConnectionInput } from './../graphql/queries/teamConnection';
-import React from 'react';
 import {
   TeamConnectionData,
   TEAM_CONNECTION

@@ -1,7 +1,4 @@
-import { TeamQueryData, TEAM_QUERY } from '../../graphql/queries/team';
-
 import { useQuery } from '@apollo/client';
-import { GetOneTeamInput } from '../../graphql/queries/team';
 import {
   OneEventInput,
   EventQueryData,

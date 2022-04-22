@@ -1,6 +1,5 @@
 import { TeamTeamMembership } from '../../../graphql/queries/team';
 import useTeam from '../../../hooks/useTeam';
-import Button from '../../Button';
 import Header from '../../Header';
 import InfoItem from '../../InfoItem';
 import Table from '../../tableComps/Table';

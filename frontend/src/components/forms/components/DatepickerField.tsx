@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Formik, useField, useFormikContext, FieldHookConfig } from 'formik';
+import { useField, useFormikContext, FieldHookConfig } from 'formik';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { fieldClassName } from './Field';
@@ -25,6 +25,7 @@ const DatePickerField = ({ ...props }: IProps) => {
 
   useEffect(() => {
     handleChange(new Date(field.value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {}, []);

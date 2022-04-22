@@ -1,5 +1,4 @@
-import { TEAM_QUERY } from './../../graphql/queries/team';
-import { Event, EVENT_QUERY } from './../../graphql/queries/event';
+import { EVENT_QUERY } from './../../graphql/queries/event';
 import {
   SaveAttendanceData,
   SaveAttendanceInput

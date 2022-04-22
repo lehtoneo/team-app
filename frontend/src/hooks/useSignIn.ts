@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from './redux';
-import { useMutation, ApolloClient, useApolloClient } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client';
 import { setUserWantsToLogin as setUserWantsToLoginAction } from '../redux/reducers/signInReducer';
 import tokenManager from '../utils/TokenManager';
 import {
