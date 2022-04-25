@@ -8,6 +8,8 @@ import Button from '../../../Button';
 import Header from '../../../Header';
 import LoadingPage from '../../LoadingPage';
 import RequireTeamAuthPage from '../RequireTeamAuthPage';
+import useEventConnection from '../../../../hooks/useEventConnection';
+import EventPaginatedList from '../../../eventComps/EventPaginatedList';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -16,11 +18,10 @@ interface TeamEventsMainPageContentProps {
 const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
   props
 ) => {
-  const { team, teamAuth } = useTeam({ id: props.teamId });
-
+  const { teamAuth } = useTeam({ id: props.teamId });
   return (
     <div>
-      <Header size={3}>Events </Header>
+      <Header size={2}>Events</Header>
       {teamAuth.event.writeRights && (
         <div className="flex">
           <Link to="create">
@@ -28,7 +29,9 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
           </Link>
         </div>
       )}
-      <EventList events={team?.events || []} />
+      <div className="my-2">
+        <EventPaginatedList eventFilters={{ teamId: props.teamId }} />
+      </div>
     </div>
   );
 };

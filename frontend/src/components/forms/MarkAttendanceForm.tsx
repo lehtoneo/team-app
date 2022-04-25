@@ -39,7 +39,9 @@ const MarkAttendanceForm: React.FC<MarkAttendanceFormProps> = (props) => {
               </div>
             )}
             <div className="my-2">
-              <Button type="submit">Save</Button>
+              <Button type="submit" color="green">
+                Save
+              </Button>
             </div>
           </div>
         </Form>

@@ -25,6 +25,8 @@ import EditTeamEventContent from './EditTeamEventContent';
 import Header from '../../../Header';
 import useConfirm from '../../../../hooks/useConfirm';
 import LoadingPage from '../../LoadingPage';
+import ReactModal from 'react-modal';
+import ModalHeader from '../../../modals/ModalHeader';
 
 interface ITeamPageContentProps {
   eventId: number;
@@ -35,34 +37,6 @@ interface IUserEventAttendanceComponentProps {
   onSubmit: (values: AttendanceFormValues) => any;
   eventAttendance: UserEventAttendace | null;
 }
-
-const UserEventAttendanceComponent: React.FC<
-  IUserEventAttendanceComponentProps
-> = (props) => {
-  const [showMarkAttendance, setShowMarkAttendance] = useState<boolean>(false);
-  const initialValues = props.eventAttendance && {
-    attendance: props.eventAttendance.attendance,
-    reason: props.eventAttendance.reason || ''
-  };
-  const buttonText = props.eventAttendance ? 'Change' : 'Mark status';
-  return (
-    <div>
-      <div className="my-2">
-        <Button onClick={() => setShowMarkAttendance(!showMarkAttendance)}>
-          {buttonText}
-        </Button>
-      </div>
-      {showMarkAttendance && (
-        <div>
-          <MarkAttendanceForm
-            onSubmit={props.onSubmit}
-            initialValues={initialValues || undefined}
-          ></MarkAttendanceForm>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const EventPageContent = (props: ITeamPageContentProps) => {
   const navigate = useNavigate();
@@ -79,13 +53,15 @@ const EventPageContent = (props: ITeamPageContentProps) => {
     saveAttendance,
     deleteEvent
   } = useEvent({ id: props.eventId });
-
+  const [showAttendanceFormModal, setShowAttendanceFormModal] =
+    useState<boolean>(false);
   const handleAttendanceSubmit = async (
     values: Omit<SaveAttendanceInput, 'eventId'>
   ) => {
     const result = await saveAttendance(values);
     if (result.success) {
       toast('Event attendance status updated', { type: 'success' });
+      setShowAttendanceFormModal(false);
     } else {
       toast('Something went wrong', { type: 'error' });
     }
@@ -120,15 +96,33 @@ const EventPageContent = (props: ITeamPageContentProps) => {
 
   const isPastEvent = new Date(event.end) < new Date();
 
-  const attendanceStatus = event.currentUserEventAttendance;
-  const attendanceText =
-    attendanceStatus !== undefined
-      ? attendanceStatus
-        ? 'IN'
-        : 'OUT'
-      : 'not decided';
+  const hasMarkedAttendance = !!event.currentUserEventAttendance;
+  const attendanceText = hasMarkedAttendance
+    ? event.currentUserEventAttendance?.attendance
+      ? 'IN'
+      : 'OUT'
+    : 'Not decided';
+  const initialMarkAttendanceFormValues = event.currentUserEventAttendance
+    ? {
+        attendance: event.currentUserEventAttendance.attendance,
+        reason: event.currentUserEventAttendance.reason || ''
+      }
+    : undefined;
   return (
     <div>
+      <ReactModal
+        className="mx-auto xs:w-3/4 md:w-2/4 fixed inset-x-0 top-10 bg-white border-2 border-gray"
+        isOpen={showAttendanceFormModal}
+        appElement={document.getElementById('root') as HTMLElement}
+      >
+        <ModalHeader onClose={() => setShowAttendanceFormModal(false)} />
+        <div className="p-2 py-0">
+          <MarkAttendanceForm
+            onSubmit={handleAttendanceSubmit}
+            initialValues={initialMarkAttendanceFormValues}
+          ></MarkAttendanceForm>
+        </div>
+      </ReactModal>
       <Header size={3}>{event.name}</Header>
       <div className="flex">
         {teamAuth.event.writeRights && (
@@ -153,12 +147,15 @@ const EventPageContent = (props: ITeamPageContentProps) => {
         text={formatEventDate(event.end)}
       />
       <InfoItem header="Your attendance">{attendanceText}</InfoItem>
-      {event.currentUserEventAttendance !== undefined && !isPastEvent && (
-        <UserEventAttendanceComponent
-          eventAttendance={event.currentUserEventAttendance}
-          onSubmit={handleAttendanceSubmit}
-        />
-      )}
+      <div className="my-2">
+        <Button
+          onClick={() => setShowAttendanceFormModal(!showAttendanceFormModal)}
+          size="sm"
+          fullW={false}
+        >
+          Change attendance
+        </Button>
+      </div>
       <InfoItem header="Member attendances">
         <MembersAttendances
           currentUserId={currentUser.id}

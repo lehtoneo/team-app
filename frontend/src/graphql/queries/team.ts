@@ -3,17 +3,6 @@ import { gql } from '@apollo/client';
 import { Event } from './event';
 import { User } from './me';
 
-export type TeamEvent = Pick<
-  Event,
-  | 'id'
-  | 'description'
-  | 'start'
-  | 'end'
-  | 'name'
-  | 'team'
-  | 'currentUserEventAttendance'
->;
-
 export const teamMemberRoles = ['OWNER', 'MEMBER', 'ADMIN'] as const;
 
 export type TeamMemberRole = typeof teamMemberRoles[number];
@@ -50,7 +39,6 @@ export interface TeamBaseInfo {
 export interface Team extends TeamBaseInfo {
   id: number;
   memberships: TeamTeamMembership[];
-  events: TeamEvent[];
   currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;
   joinId: string | null;
   settings: TeamSettings | null;
@@ -63,7 +51,6 @@ export type TeamQuerySuccessData = Pick<
   | 'id'
   | 'name'
   | 'memberships'
-  | 'events'
   | 'currentUserTeamMembership'
   | 'joinId'
   | 'settings'
@@ -108,23 +95,6 @@ export const TEAM_QUERY = gql`
         statistics {
           pastEventsAttendanceCount
           pastEventsAttendanceRatio
-        }
-      }
-      events {
-        id
-        name
-        description
-        start
-        end
-        team {
-          id
-        }
-        currentUserEventAttendance {
-          id
-          createdAt
-          attendance
-          userId
-          reason
         }
       }
     }

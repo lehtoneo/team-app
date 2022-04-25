@@ -14,21 +14,15 @@ const getWhereOperatorFromFilterDateInput = (
     return undefined;
   }
   const { min, max } = filterDateInput;
-  if (max && min) {
-    if (limitParams?.excludeMin) {
-      min.setMilliseconds(min.getMilliseconds() + 1);
-    }
-    if (limitParams?.excludeMax) {
-      max.setMilliseconds(max.getMilliseconds() - 1);
-    }
-    return Between(min, max);
-  } else if (min) {
-    return MoreThan(min);
-  } else if (max) {
-    return LessThan(max);
-  } else {
-    return undefined;
+  const usedMin = min || new Date('1800-01-01');
+  const usedMax = max || new Date('2500-01-01');
+  if (limitParams?.excludeMin) {
+    usedMin.setMilliseconds(usedMin.getMilliseconds() + 1);
   }
+  if (limitParams?.excludeMax) {
+    usedMax.setMilliseconds(usedMax.getMilliseconds() - 1);
+  }
+  return Between(usedMin, usedMax);
 };
 
 const dbUtils = {

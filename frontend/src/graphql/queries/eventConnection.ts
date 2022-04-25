@@ -19,7 +19,7 @@ interface FilterDateInput {
 }
 
 export interface FilterEventsInput {
-  futureEventsOnly?: boolean;
+  teamId?: number;
   start?: FilterDateInput;
   end?: FilterDateInput;
 }

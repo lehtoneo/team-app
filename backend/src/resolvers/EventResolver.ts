@@ -185,9 +185,9 @@ export class EventResolver {
       throw new UserInputError('Arg after should be a date string');
     }
     const where: FindOptionsWhere<Event> = {
-      teamId: In(
-        userTeamMemberships.map((teamMembership) => teamMembership.teamId)
-      )
+      teamId:
+        filterArgs?.teamId ||
+        In(userTeamMemberships.map((teamMembership) => teamMembership.teamId))
     };
 
     if (connArgs?.after) {
@@ -201,10 +201,9 @@ export class EventResolver {
         { excludeMin: true }
       );
     } else if (connArgs?.before) {
-      // remove 1 millisecond from before date to exlude last
       const beforeDate = new Date(connArgs.before);
       where.start = dbUtils.getWhereOperatorFromFilterDateInput({
-        min: filterArgs?.start?.min,
+        min: filterArgs?.start?.min || new Date('1800-01-01'),
         max: beforeDate
       });
     } else {
