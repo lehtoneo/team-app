@@ -27,7 +27,7 @@ import {
 } from '../relaySpec';
 
 import { UserInputError } from 'apollo-server-express';
-import { FindOptionsWhere, In, LessThan, MoreThan } from 'typeorm';
+import { FindOptionsOrder, FindOptionsWhere, In } from 'typeorm';
 import { UserEventAttendance } from '../models/UserEventAttendance';
 import { EditEventInput } from '../inputs/event/EditEventInput';
 import teamAuthService from '../services/teamAuth';
@@ -193,15 +193,16 @@ export class EventResolver {
     if (connArgs?.after) {
       // add 1 millisecond to after to exlude first
       const afterDate = new Date(connArgs.after);
-      afterDate.setMilliseconds(afterDate.getMilliseconds() + 1);
-      where.start = dbUtils.getWhereOperatorFromFilterDateInput({
-        min: afterDate,
-        max: filterArgs?.start?.max
-      });
+      where.start = dbUtils.getWhereOperatorFromFilterDateInput(
+        {
+          min: afterDate,
+          max: filterArgs?.start?.max
+        },
+        { excludeMin: true }
+      );
     } else if (connArgs?.before) {
       // remove 1 millisecond from before date to exlude last
       const beforeDate = new Date(connArgs.before);
-      beforeDate.setMilliseconds(beforeDate.getMilliseconds() - 1);
       where.start = dbUtils.getWhereOperatorFromFilterDateInput({
         min: filterArgs?.start?.min,
         max: beforeDate
@@ -213,16 +214,21 @@ export class EventResolver {
     }
 
     where.end = dbUtils.getWhereOperatorFromFilterDateInput(filterArgs?.end);
-
-    const eventDbResult = await eventRepository.find({
+    const order: FindOptionsOrder<Event> = {
+      start: connArgs?.before ? 'DESC' : 'ASC'
+    };
+    let eventDbResult = await eventRepository.find({
       where,
-      order: {
-        start: 'ASC'
-      },
-      take: first
+      order,
+      take: first + 1
     });
-    console.log({ eventDbResult });
+    if (connArgs?.before) {
+      eventDbResult = eventDbResult.reverse();
+    }
+    const eventDbResultLength = eventDbResult.length;
+    console.log({ eventDbResultLength });
 
+    console.log({ eventDbResult });
     const edges = eventDbResult
       .map((event) => {
         return {
@@ -231,32 +237,12 @@ export class EventResolver {
         };
       })
       .slice(0, first);
+    const edgesLength = edges.length;
+    console.log({ edgesLength });
     const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
 
     const startCursor = edges.length > 0 ? edges[0].cursor : null;
-    const getHasNextPage = async () => {
-      if (!endCursor) {
-        return false;
-      }
-      const minStart = new Date(endCursor);
-      const maxStart = filterArgs?.start?.max
-        ? new Date(filterArgs.start.max)
-        : undefined;
-      const startParams = dbUtils.getWhereOperatorFromFilterDateInput(
-        {
-          min: minStart,
-          max: maxStart
-        },
-        { excludeMin: true }
-      );
-      const nextInDb = await eventRepository.findOne({
-        where: {
-          ...where,
-          start: startParams
-        }
-      });
-      return nextInDb !== null;
-    };
+
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
@@ -272,6 +258,7 @@ export class EventResolver {
         { excludeMax: true }
       );
       const previousInDb = await eventRepository.findOne({
+        order,
         where: {
           ...where,
           start: startParams
@@ -281,9 +268,9 @@ export class EventResolver {
       return previousInDb !== null;
     };
     const hasPreviousPage = await getHasPreviousPage();
-    const hasNextPage = await getHasNextPage();
+
     const pageInfo: PageInfo = {
-      hasNextPage: hasNextPage,
+      hasNextPage: eventDbResult.length > first,
       endCursor,
       startCursor,
       hasPreviousPage: hasPreviousPage

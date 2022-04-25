@@ -61,6 +61,7 @@ const useEventConnection = (
     setArgs({
       ...args,
       paginationInput: {
+        ...initialArgs?.paginationInput,
         after: undefined,
         before: data?.eventConnection?.pageInfo.startCursor
       }
