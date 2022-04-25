@@ -25,11 +25,13 @@ const useEventConnection = (
       }
     }
   );
-
+  useEffect(() => {
+    console.log({ args });
+  }, [args]);
   useEffect(() => {
     if (data?.eventConnection?.edges) {
       const connection = data.eventConnection;
-      console.log({ connection });
+      // console.log({ connection });
     }
   }, [data]);
   const canFetchMore = !loading && data?.eventConnection?.pageInfo;
@@ -55,6 +57,7 @@ const useEventConnection = (
     if (!canFetchPreviousPage) {
       return;
     }
+
     setArgs({
       ...args,
       paginationInput: {

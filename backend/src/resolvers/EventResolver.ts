@@ -189,68 +189,101 @@ export class EventResolver {
         userTeamMemberships.map((teamMembership) => teamMembership.teamId)
       )
     };
-    if (filterArgs?.start) {
+
+    if (connArgs?.after) {
+      // add 1 millisecond to after to exlude first
+      const afterDate = new Date(connArgs.after);
+      afterDate.setMilliseconds(afterDate.getMilliseconds() + 1);
+      where.start = dbUtils.getWhereOperatorFromFilterDateInput({
+        min: afterDate,
+        max: filterArgs?.start?.max
+      });
+    } else if (connArgs?.before) {
+      // remove 1 millisecond from before date to exlude last
+      const beforeDate = new Date(connArgs.before);
+      beforeDate.setMilliseconds(beforeDate.getMilliseconds() - 1);
+      where.start = dbUtils.getWhereOperatorFromFilterDateInput({
+        min: filterArgs?.start?.min,
+        max: beforeDate
+      });
+    } else {
       where.start = dbUtils.getWhereOperatorFromFilterDateInput(
-        filterArgs.start
+        filterArgs?.start
       );
     }
 
-    if (filterArgs?.end) {
-      where.end = dbUtils.getWhereOperatorFromFilterDateInput(filterArgs.end);
-    }
-
-    if (connArgs?.after) {
-      where.createdAt = MoreThan(new Date(after));
-    }
-
-    if (connArgs?.before) {
-      where.createdAt = LessThan(new Date(connArgs.before));
-    }
+    where.end = dbUtils.getWhereOperatorFromFilterDateInput(filterArgs?.end);
 
     const eventDbResult = await eventRepository.find({
       where,
       order: {
         start: 'ASC'
-      }
+      },
+      take: first
     });
+    console.log({ eventDbResult });
 
     const edges = eventDbResult
       .map((event) => {
         return {
           node: event,
-          cursor: event.createdAt.toISOString()
+          cursor: event.start.toISOString()
         };
       })
       .slice(0, first);
+    const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
 
-    const endCursor =
-      eventDbResult.length > 0
-        ? eventDbResult[eventDbResult.length - 1].createdAt.toISOString()
-        : null;
-
-    const startCursor =
-      eventDbResult.length > 0
-        ? eventDbResult[0].createdAt.toISOString()
-        : null;
-
+    const startCursor = edges.length > 0 ? edges[0].cursor : null;
+    const getHasNextPage = async () => {
+      if (!endCursor) {
+        return false;
+      }
+      const minStart = new Date(endCursor);
+      const maxStart = filterArgs?.start?.max
+        ? new Date(filterArgs.start.max)
+        : undefined;
+      const startParams = dbUtils.getWhereOperatorFromFilterDateInput(
+        {
+          min: minStart,
+          max: maxStart
+        },
+        { excludeMin: true }
+      );
+      const nextInDb = await eventRepository.findOne({
+        where: {
+          ...where,
+          start: startParams
+        }
+      });
+      return nextInDb !== null;
+    };
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
       }
-
+      const minStart = filterArgs?.start?.min
+        ? new Date(filterArgs.start.min)
+        : undefined;
+      const startParams = dbUtils.getWhereOperatorFromFilterDateInput(
+        {
+          min: minStart,
+          max: new Date(startCursor)
+        },
+        { excludeMax: true }
+      );
       const previousInDb = await eventRepository.findOne({
         where: {
           ...where,
-          createdAt: LessThan(new Date(startCursor))
+          start: startParams
         }
       });
 
       return previousInDb !== null;
     };
     const hasPreviousPage = await getHasPreviousPage();
-
+    const hasNextPage = await getHasNextPage();
     const pageInfo: PageInfo = {
-      hasNextPage: eventDbResult.length > first,
+      hasNextPage: hasNextPage,
       endCursor,
       startCursor,
       hasPreviousPage: hasPreviousPage
