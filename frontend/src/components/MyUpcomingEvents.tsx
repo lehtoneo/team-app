@@ -38,14 +38,14 @@ const MyUpcomingEvents: React.FC = () => {
         Today
       </Header>
       <EventPaginatedList eventFilters={todayEventFilters} />
-      {/* <Header size={2} center={false}>
+      <Header size={2} center={false}>
         Tomorrow
       </Header>
       <EventPaginatedList eventFilters={tomorrowFilters} />
       <Header size={2} center={false}>
         Rest of upcoming events
       </Header>
-      <EventPaginatedList eventFilters={restFilters} /> */}
+      <EventPaginatedList eventFilters={restFilters} />
     </div>
   );
 };

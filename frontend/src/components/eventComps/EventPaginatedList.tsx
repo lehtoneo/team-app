@@ -11,7 +11,7 @@ interface EventListConnectionProps {
 const EventPaginatedList: React.FC<EventListConnectionProps> = (props) => {
   const { events, loading, pageInfo, fetchNextPage, fetchPreviousPage } =
     useEventConnection({
-      paginationInput: { first: 3 },
+      paginationInput: { first: 2 },
       eventFilters: props.eventFilters
     });
   return (
