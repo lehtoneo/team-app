@@ -26,3 +26,4 @@
 | 11.4 | 6     | Fix access token bug, add loading page, implement edit user team role to backend, implement edit user team role to frontend. Allow admin users to edit and create team events                           |
 | 12.4 | 2.5 | Owner can edit team base info, add useTeamAuth hook                                                                                                                                                     |
 | 22.4 | 3.5 | Clean repo, rewrite dev env instructions. Fix some bugs, styling, refactoring and start creating event pagintation |
+| 25.4 | 3.5 | Fix event cursor based pagination. Use the new pagination both on main page and on team/events page. Implement some styling |
