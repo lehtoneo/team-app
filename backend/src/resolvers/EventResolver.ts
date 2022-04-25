@@ -225,10 +225,7 @@ export class EventResolver {
     if (connArgs?.before) {
       eventDbResult = eventDbResult.reverse();
     }
-    const eventDbResultLength = eventDbResult.length;
-    console.log({ eventDbResultLength });
 
-    console.log({ eventDbResult });
     const edges = eventDbResult
       .map((event) => {
         return {
@@ -237,10 +234,8 @@ export class EventResolver {
         };
       })
       .slice(0, first);
-    const edgesLength = edges.length;
-    console.log({ edgesLength });
-    const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
 
+    const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
     const startCursor = edges.length > 0 ? edges[0].cursor : null;
 
     const getHasPreviousPage = async () => {

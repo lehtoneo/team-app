@@ -54,7 +54,10 @@ const EventItem = (props: EventProps) => {
   return (
     <Link to={`/teams/${props.event.team.id}/events/${props.event.id}`}>
       <EventItemContainer color={getContainerBorderColor()}>
-        <div className="text-xl-1 font-bold">{props.event.name}</div>
+        <div className="flex-1 text-center text-xl font-bold">
+          {props.event.team.name}
+        </div>
+        <div className="flex-1 text-lg font-bold">{props.event.name}</div>
         <div>{formatEventDate(props.event.start)}</div>
         <div>In/Out: {attendanceText}</div>
       </EventItemContainer>

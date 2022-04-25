@@ -27,7 +27,7 @@ const buttonSizeConfig: { [key in ButtonSize]: string } = {
   normal: `font-medium rounded-lg text-sm px-5 py-2.5`
 };
 
-const buttonConfigCommon = `text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-center`;
+const buttonConfigCommon = `disabled:opacity-75 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-center`;
 
 const getClassName = (color: ButtonColor, size: ButtonSize, fullW: boolean) => {
   const fullWStyle = fullW ? 'w-full' : '';
@@ -62,7 +62,6 @@ const Button: React.FC<IButtonProps> = (props) => {
       {...buttonElementProps}
       className={usedClassName}
       onClick={handleClick}
-      disabled={props.loading}
     >
       {props.children}
     </button>

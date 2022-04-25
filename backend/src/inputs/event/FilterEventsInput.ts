@@ -18,4 +18,7 @@ export class FilterEventsInput {
 
   @Field({ nullable: true })
   end?: FilterDateInput;
+
+  @Field({ nullable: true })
+  teamId?: number;
 }

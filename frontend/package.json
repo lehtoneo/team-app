@@ -64,7 +64,7 @@
     "@types/react-modal": "^3.13.1",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
-    "autoprefixer": "^10.4.4",
+    "autoprefixer": "^10.4.5",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.2",
@@ -77,6 +77,6 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.12",
     "prettier": "^2.5.1",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.24"
   }
 }

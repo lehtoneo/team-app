@@ -46,6 +46,7 @@ export const EVENT_CONNECTION = gql`
           start
           team {
             id
+            name
           }
           currentUserEventAttendance {
             id

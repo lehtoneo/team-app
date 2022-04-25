@@ -11,25 +11,27 @@ interface EventListConnectionProps {
 const EventPaginatedList: React.FC<EventListConnectionProps> = (props) => {
   const { events, loading, pageInfo, fetchNextPage, fetchPreviousPage } =
     useEventConnection({
-      paginationInput: { first: 1 },
+      paginationInput: { first: 3 },
       eventFilters: props.eventFilters
     });
   return (
     <>
-      {events.length > 0 && (
-        <div className="flex">
-          <div>
-            <Button size="sm" onClick={fetchPreviousPage}>{`<`}</Button>
-          </div>
-          <div>
-            <Button
-              size="sm"
-              onClick={fetchNextPage}
-              disabled={pageInfo === undefined || !pageInfo.hasNextPage}
-            >{`>`}</Button>
-          </div>
+      <div className="flex">
+        <div>
+          <Button
+            size="sm"
+            onClick={fetchPreviousPage}
+            disabled={!pageInfo?.hasPreviousPage}
+          >{`<`}</Button>
         </div>
-      )}
+        <div>
+          <Button
+            size="sm"
+            onClick={fetchNextPage}
+            disabled={!pageInfo?.hasNextPage}
+          >{`>`}</Button>
+        </div>
+      </div>
       <EventList events={events} loading={loading} />
       {!loading && events.length === 0 && <div>No events</div>}
     </>
