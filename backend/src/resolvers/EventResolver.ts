@@ -179,7 +179,7 @@ export class EventResolver {
     const first = connArgs?.first || 10;
     const after = connArgs?.after || new Date('1800-01-01').toISOString();
     const userTeamMemberships = await ctx.payload.user.teams;
-    console.log({ connArgs });
+
     const afterIsDate = !isNaN(Date.parse(after));
     if (!afterIsDate) {
       throw new UserInputError('Arg after should be a date string');
@@ -232,7 +232,7 @@ export class EventResolver {
       eventDbResult.length > 0
         ? eventDbResult[0].createdAt.toISOString()
         : null;
-    console.log({ startCursor });
+
     const getHasPreviousPage = async () => {
       if (!startCursor) {
         return false;
@@ -244,7 +244,6 @@ export class EventResolver {
           createdAt: LessThan(new Date(startCursor))
         }
       });
-      console.log({ previousInDb });
 
       return previousInDb !== null;
     };

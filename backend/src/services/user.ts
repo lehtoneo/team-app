@@ -29,7 +29,6 @@ const createDevUserIfNotExists = async () => {
 };
 
 const createUser = async (userInput: CreateUserInput) => {
-  console.log('Creating user');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const passwordHash: string = await hash(userInput.password, 10);
 
@@ -38,7 +37,6 @@ const createUser = async (userInput: CreateUserInput) => {
 
   const user = User.create(newUserValues);
   const newUser = await user.save();
-  console.log('User created');
   return newUser;
 };
 
