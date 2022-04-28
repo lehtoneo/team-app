@@ -1,11 +1,10 @@
 import { TeamMembership } from './TeamMembership';
 import { UserEventAttendance } from './UserEventAttendance';
 import { RefreshToken } from './UserRefreshToken';
-import { Entity, Column, OneToMany, JoinTable } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { IsEmail } from 'class-validator';
-import { Team } from './Team';
 
 @Entity()
 @ObjectType()

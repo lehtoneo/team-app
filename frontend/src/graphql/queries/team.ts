@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-import { Event } from './event';
 import { User } from './me';
 
 export const teamMemberRoles = ['OWNER', 'MEMBER', 'ADMIN'] as const;

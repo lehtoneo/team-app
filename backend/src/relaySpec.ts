@@ -1,27 +1,20 @@
-import {
-  ObjectType,
-  Field,
-  ArgsType,
-  ClassType,
-  Int,
-  InputType
-} from 'type-graphql';
+import { ObjectType, Field, ClassType, InputType } from 'type-graphql';
 import { Min, Max } from 'class-validator';
 @InputType()
 export class PaginationInput {
-  @Field((type) => String, {
+  @Field(() => String, {
     nullable: true,
     description: 'Paginate after opaque cursor'
   })
   after?: string;
 
-  @Field((type) => String, {
+  @Field(() => String, {
     nullable: true,
     description: 'Paginate before opaque cursor'
   })
   before?: string;
 
-  @Field((type) => Number, { nullable: true, description: 'Paginate first' })
+  @Field(() => Number, { nullable: true, description: 'Paginate first' })
   @Min(1)
   @Max(20)
   first?: number;
@@ -29,16 +22,16 @@ export class PaginationInput {
 
 @ObjectType()
 export class PageInfo {
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
   hasNextPage: boolean;
 
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
   hasPreviousPage: boolean;
 
-  @Field((type) => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   startCursor: string | null;
 
-  @Field((type) => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   endCursor: string | null;
 }
 
@@ -48,10 +41,10 @@ export function EdgeType<NodeType>(
 ) {
   @ObjectType(`${nodeName}Edge`, { isAbstract: true })
   abstract class Edge {
-    @Field((type) => nodeType)
+    @Field(() => nodeType)
     node: NodeType;
 
-    @Field((type) => String, {
+    @Field(() => String, {
       description: 'Used in `before` and `after` args'
     })
     cursor: string;
@@ -62,16 +55,17 @@ export function EdgeType<NodeType>(
 
 type ExtractNodeType<EdgeType> = EdgeType;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ConnectionType<EdgeType, NodeType = ExtractNodeType<EdgeType>>(
   nodeName: string,
   edgeClass: ClassType<EdgeType>
 ) {
   @ObjectType(`${nodeName}Connection`, { isAbstract: true })
   abstract class Connection {
-    @Field((type) => PageInfo)
+    @Field(() => PageInfo)
     pageInfo: PageInfo;
 
-    @Field((type) => [edgeClass])
+    @Field(() => [edgeClass])
     edges: EdgeType[];
   }
 

@@ -2,13 +2,11 @@ import React from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import SingleEventPage from './SingleEventPage';
 import CreateTeamEventContent from './CreateTeamEventContent';
-import EventList from '../../../eventComps/EventList';
 import useTeam from '../../../../hooks/useTeam';
 import Button from '../../../Button';
 import Header from '../../../Header';
 import LoadingPage from '../../LoadingPage';
 import RequireTeamAuthPage from '../RequireTeamAuthPage';
-import useEventConnection from '../../../../hooks/useEventConnection';
 import EventPaginatedList from '../../../eventComps/EventPaginatedList';
 
 interface TeamEventsMainPageContentProps {

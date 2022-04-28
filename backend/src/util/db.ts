@@ -1,4 +1,4 @@
-import { Between, MoreThan, LessThan } from 'typeorm';
+import { Between } from 'typeorm';
 import { FilterDateInput } from '../inputs/event/FilterEventsInput';
 
 interface ExcludeLimitsParams {

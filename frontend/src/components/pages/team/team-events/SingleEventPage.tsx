@@ -8,7 +8,6 @@ import {
   useNavigate,
   useParams
 } from 'react-router-dom';
-import { UserEventAttendace } from '../../../../graphql/queries/event';
 import useCurrentUser from '../../../../hooks/useCurrentUser';
 import useEvent from '../../../../hooks/useEvent';
 import useTeam from '../../../../hooks/useTeam';
@@ -18,9 +17,7 @@ import { SaveAttendanceInput } from '../../../../graphql/mutations/saveAttendanc
 import { formatEventDate } from '../../../../utils/Dates';
 import InfoItem from '../../../InfoItem';
 import MembersAttendances from '../../../MembersAttendances';
-import MarkAttendanceForm, {
-  AttendanceFormValues
-} from '../../../forms/MarkAttendanceForm';
+import MarkAttendanceForm from '../../../forms/MarkAttendanceForm';
 import EditTeamEventContent from './EditTeamEventContent';
 import Header from '../../../Header';
 import useConfirm from '../../../../hooks/useConfirm';
@@ -31,11 +28,6 @@ import ModalHeader from '../../../modals/ModalHeader';
 interface ITeamPageContentProps {
   eventId: number;
   teamId: number;
-}
-
-interface IUserEventAttendanceComponentProps {
-  onSubmit: (values: AttendanceFormValues) => any;
-  eventAttendance: UserEventAttendace | null;
 }
 
 const EventPageContent = (props: ITeamPageContentProps) => {

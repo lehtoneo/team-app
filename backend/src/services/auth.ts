@@ -70,7 +70,7 @@ const newAccessToken = async (refreshToken: string): Promise<string> => {
     return getAccessToken({
       id: decodedToken.id
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     throw new AuthenticationError('invalid refresh token');
   }
 };
@@ -88,6 +88,7 @@ const getAccessToken = (user: ITokenUser) => {
   return accessToken;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validateTokenUser = (tokenUser: any): tokenUser is ITokenUser => {
   if (!tokenUser || !tokenUser.id || !isNumber(tokenUser.id)) {
     return false;
@@ -95,6 +96,7 @@ const validateTokenUser = (tokenUser: any): tokenUser is ITokenUser => {
   return true;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validateAccessToken = async (headers: any): Promise<User | null> => {
   if (!headers || !headers.authorization) {
     return null;
