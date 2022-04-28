@@ -26,3 +26,4 @@
 | 12.4 | 2.5 | Owner can edit team base info, add useTeamAuth hook                                                                                                                                                     |
 | 22.4 | 3.5 | Clean repo, rewrite dev env instructions. Fix some bugs, styling, refactoring and start creating event pagintation |
 | 25.4 | 3.5 | Fix event cursor based pagination. Use the new pagination both on main page and on team/events page. Implement some styling |
+| 28.4 | 2 | Write info about the app. Implement delete team feature. Fix all lint errors and warnings |
