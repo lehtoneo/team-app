@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { FaCrown } from 'react-icons/fa';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TeamTeamMembership } from '../../../graphql/queries/team';
+import useConfirm from '../../../hooks/useConfirm';
 import useCurrentUser from '../../../hooks/useCurrentUser';
 import useTeam from '../../../hooks/useTeam';
 import useEditTeamMembership from '../../../hooks/useTeam/useEditTeamMembership';
 import Button from '../../Button';
+import FieldInfo from '../../forms/components/FieldInfo';
 import TeamMembershipForm, {
   TeamMemberFormValues
 } from '../../forms/TeamMembershipForm';
@@ -76,7 +78,9 @@ const MembershipSettings: React.FC<MemberShipSettingsProps> = (props) => {
 };
 
 const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
-  const { team, editTeam } = useTeam({ id: props.teamId });
+  const { team, editTeam, deleteTeam } = useTeam({ id: props.teamId });
+  const { confirm } = useConfirm();
+  const navigate = useNavigate();
 
   const handleSettingsSubmit = async (values: TeamSettingsFormValues) => {
     const result = await editTeam({
@@ -88,6 +92,22 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
 
     if (result.success) {
       toast('Team settings saved', { type: 'success' });
+    }
+  };
+  const handleTeamDelete = async () => {
+    const confirmed = await confirm(
+      'Are you sure you want to delete the team? This cannot be undone!'
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    const res = await deleteTeam(props.teamId);
+    if (res.success) {
+      toast(`Team ${team?.name || ''} deleted`, { type: 'success' });
+      navigate('/teams/own');
+    } else {
+      toast(res.error?.message, { type: 'error' });
     }
   };
   if (team === undefined) {
@@ -124,6 +144,21 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
               />
             );
           })}
+        </div>
+      </div>
+
+      <div className="my-2">
+        <Header size={2} center={false}>
+          Delete team
+        </Header>
+        <div className="flex-row">
+          <FieldInfo>
+            This cannot be undone! All events, attendances and settings of the
+            team will be deleted.
+          </FieldInfo>
+          <Button color="red" fullW={false} onClick={handleTeamDelete}>
+            Delete
+          </Button>
         </div>
       </div>
     </div>

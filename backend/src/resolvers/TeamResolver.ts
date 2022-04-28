@@ -12,7 +12,9 @@ import {
   Ctx,
   FieldResolver,
   Root,
-  Int
+  Int,
+  Args,
+  ID
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -31,6 +33,7 @@ import { TeamSettings } from '../models/TeamSettings';
 import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/team/EditTeamInput';
 import { Event } from '../models/Event';
+import { GetByIdArgs } from '../args/GetByIdArgs';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -322,5 +325,32 @@ export class TeamResolver {
 
     await teamMembershipRepository.save(newMembership);
     return team;
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => ID)
+  async deleteTeam(
+    @Args() { id }: GetByIdArgs,
+    @Ctx() ctx: MyAuthContext
+  ): Promise<number> {
+    const team = await teamRepository.findOneBy({
+      id
+    });
+
+    if (!team) {
+      throw new UserInputError('Team not found');
+    }
+
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user,
+      team,
+      TeamMemberRole.OWNER
+    );
+
+    await teamRepository.delete({
+      id
+    });
+
+    return id;
   }
 }

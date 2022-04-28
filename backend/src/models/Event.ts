@@ -33,7 +33,7 @@ export class Event extends IdAndDates {
   userAttendances?: Promise<UserEventAttendance[]>;
 
   @Field(() => Team)
-  @ManyToOne(() => Team, { lazy: true, cascade: true })
+  @ManyToOne(() => Team, { lazy: true, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'teamId',
     referencedColumnName: 'id'

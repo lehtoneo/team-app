@@ -7,11 +7,13 @@ import useJoinTeam from './useJoinTeam';
 import useEditTeam from './useEditTeam';
 import useEditTeamMembership from './useEditTeamMembership';
 import useTeamAuth from './useTeamAuth';
+import useDeleteTeam from './useDeleteTeam';
 
 const useTeam = (args: GetOneTeamInput) => {
   const { editTeam, error: editTeamError } = useEditTeam();
   const { joinTeam, error: joinTeamError } = useJoinTeam();
   const { createTeam, error: createTeamError } = useCreateTeam();
+  const { deleteTeam, error: deleteTeamError } = useDeleteTeam();
   const { editTeamMembership, error: editTeamMembershipError } =
     useEditTeamMembership();
   const { data, error } = useQuery<
@@ -42,6 +44,8 @@ const useTeam = (args: GetOneTeamInput) => {
     editTeamError,
     editTeamMembership,
     editTeamMembershipError,
+    deleteTeam,
+    deleteTeamError,
     teamAuth
   };
 };

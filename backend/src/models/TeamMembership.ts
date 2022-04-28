@@ -32,7 +32,10 @@ export class TeamMembership extends Dates {
   user: Promise<User>;
 
   @Field(() => Team)
-  @ManyToOne(() => Team, (team) => team.memberships, { lazy: true })
+  @ManyToOne(() => Team, (team) => team.memberships, {
+    lazy: true,
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'teamId' })
   team: Promise<Team>;
 

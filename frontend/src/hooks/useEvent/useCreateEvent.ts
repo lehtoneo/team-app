@@ -1,3 +1,4 @@
+import { EVENT_CONNECTION } from './../../graphql/queries/eventConnection';
 import {
   CreatedEventMutationResult,
   CreateEventData,
@@ -5,7 +6,6 @@ import {
   CREATE_EVENT
 } from '../../graphql/mutations/event/createEvent';
 import { useMutation } from '@apollo/client';
-import { TEAM_QUERY } from '../../graphql/queries/team';
 
 type CreateEventResult =
   | { success: true; event: CreatedEventMutationResult }
@@ -15,7 +15,7 @@ const useCreateEvent = () => {
   const [createEventMutation, { error }] = useMutation<
     CreateEventData,
     { createEventInput: CreateEventInput }
-  >(CREATE_EVENT, { refetchQueries: [TEAM_QUERY] });
+  >(CREATE_EVENT, { refetchQueries: [EVENT_CONNECTION] });
 
   const createEvent = async (
     createEventInput: CreateEventInput

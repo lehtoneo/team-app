@@ -2,6 +2,7 @@ import { Form, Formik } from 'formik';
 import ReactSwitch from 'react-switch';
 import Button from '../Button';
 import Field from './components/Field';
+import FieldInfo from './components/FieldInfo';
 import Label from './components/Label';
 
 export interface TeamSettingsFormValues {
@@ -44,7 +45,10 @@ const TeamSettingsForm: React.FC<TeamSettingsFormProps> = (props) => {
 
           <div className="my-2"></div>
           <Label htmlFor="trollMessages">Troll messages</Label>
-
+          <FieldInfo>
+            If this setting is on. "Troll" messages, such as made up reasons,
+            are sent to discord if user marks their status to event as out.
+          </FieldInfo>
           <ReactSwitch
             name="trollMessages"
             checked={values.trollMessages}

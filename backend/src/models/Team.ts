@@ -47,7 +47,7 @@ export class Team extends IdAndDates implements TeamBaseInfo {
   settingsId?: number;
 
   @Field(() => TeamSettings, { nullable: true })
-  @OneToOne(() => TeamSettings, { lazy: true })
+  @OneToOne(() => TeamSettings, { lazy: true, cascade: true })
   @JoinColumn({ name: 'settingsId' })
   settings: Promise<TeamSettings>;
 
