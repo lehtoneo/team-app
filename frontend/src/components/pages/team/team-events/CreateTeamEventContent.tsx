@@ -21,7 +21,7 @@ const CreateTeamEventContent = (props: ITeamPageContentProps) => {
 
     if (result.success) {
       toast('Event created', { type: 'success' });
-      navigate(-1);
+      navigate(`/teams/${props.teamId}/events/${result.event.id}`);
     }
   };
 
