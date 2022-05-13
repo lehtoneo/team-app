@@ -16,6 +16,10 @@ The initial idea was to use python for the backend, but I changed it in to the b
 
 Backend is Graphql API and frontend is a React app (create-react-app)
 
+## Usage instructions
+
+Can be found from [here](./docs/usage_instructions.md)
+
 ## Prod build (locally)
 
 ### Build image
