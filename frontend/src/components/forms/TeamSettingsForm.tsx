@@ -37,6 +37,12 @@ const TeamSettingsForm: React.FC<TeamSettingsFormProps> = (props) => {
             Discord notifications on
           </Label>
 
+          <FieldInfo>
+            If this setting is on, notifications about events are sent to the
+            discord webhook. The notifications include members' attendance
+            status changes and new events.
+          </FieldInfo>
+
           <ReactSwitch
             name="discordNotificationsOn"
             checked={values.discordNotificationsOn}
@@ -46,7 +52,7 @@ const TeamSettingsForm: React.FC<TeamSettingsFormProps> = (props) => {
           <div className="my-2"></div>
           <Label htmlFor="trollMessages">Troll messages</Label>
           <FieldInfo>
-            If this setting is on. "Troll" messages, such as made up reasons,
+            If this setting is on, "Troll" messages, such as made up reasons,
             are sent to discord if user marks their status to event as out.
           </FieldInfo>
           <ReactSwitch

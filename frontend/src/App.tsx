@@ -73,6 +73,7 @@ function App() {
               </RequireAuthPage>
             }
           />
+          <Route path="/teams/join/:joinId" element={<TeamJoinPage />} />
           <Route
             path="/teams/:teamId/*"
             element={
@@ -89,7 +90,6 @@ function App() {
               </RequireAuthPage>
             }
           />
-          <Route path="/teams/join/:joinId" element={<TeamJoinPage />} />
           <Route path="/*" element={<div>Page Not found</div>} />
         </Routes>
       </div>
