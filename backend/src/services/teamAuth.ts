@@ -17,14 +17,36 @@ const userTeamRoleValues: { [key in TeamMemberRole]: number } = {
   OWNER: 2
 };
 
+type CompareResult = -1 | 0 | 1;
+
+/**
+ * @param {TeamMemberRole} role1 - Role 1 to be compared
+ * @param {TeamMemberRole} role2 - Role 2 to be compared
+ * @returns {CompareResult} - Returns -1 if role1 is bigger, 0 if equal and 1 if role2 is bigger
+ */
+const compareUserTeamRole = (
+  role1: TeamMemberRole,
+  role2: TeamMemberRole
+): CompareResult => {
+  const userTeamRoleValue1 = userTeamRoleValues[role1];
+  const userTeamRoleValue2 = userTeamRoleValues[role2];
+
+  if (userTeamRoleValue1 === userTeamRoleValue2) {
+    return 0;
+  } else if (userTeamRoleValue1 > userTeamRoleValue2) {
+    return -1;
+  } else {
+    return 1;
+  }
+};
+
 const isUserTeamRoleAtleast = (
   userTeamRole: TeamMemberRole,
   minUserTeamRole: TeamMemberRole
 ) => {
-  const minUserRoleValue = userTeamRoleValues[minUserTeamRole];
-  const userTeamRoleValue = userTeamRoleValues[userTeamRole];
+  const compareResult = compareUserTeamRole(userTeamRole, minUserTeamRole);
 
-  return userTeamRoleValue >= minUserRoleValue;
+  return compareResult <= 0;
 };
 
 const checkUserTeamRightsThrowsError = async (
@@ -52,7 +74,10 @@ const checkUserTeamRightsThrowsError = async (
 };
 
 const teamAuthService = {
-  checkUserTeamRightsThrowsError
+  checkUserTeamRightsThrowsError,
+  isUserTeamRoleAtleast,
+  compareUserTeamRole,
+  throwUnAuthorized
 };
 
 export default teamAuthService;

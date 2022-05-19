@@ -19,8 +19,25 @@ const isUserTeamRoleAtleast = (
   return userTeamRoleValue >= minUserRoleValue;
 };
 
+const isUserTeamRoleBigger = (
+  userTeamRole: TeamMemberRole | undefined,
+  otherUserTeamRole: TeamMemberRole | undefined
+) => {
+  if (!userTeamRole) {
+    return false;
+  }
+  if (!otherUserTeamRole) {
+    return false;
+  }
+  const otherUserTeamRoleValue = userTeamRoleValues[otherUserTeamRole];
+  const userTeamRoleValue = userTeamRoleValues[userTeamRole];
+
+  return userTeamRoleValue > otherUserTeamRoleValue;
+};
+
 const teamAuthUtils = {
-  isUserTeamRoleAtleast
+  isUserTeamRoleAtleast,
+  isUserTeamRoleBigger
 };
 
 export default teamAuthUtils;

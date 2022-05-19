@@ -8,6 +8,7 @@ import useEditTeam from './useEditTeam';
 import useEditTeamMembership from './useEditTeamMembership';
 import useTeamAuth from './useTeamAuth';
 import useDeleteTeam from './useDeleteTeam';
+import useDeleteTeamMembership from './useDeleteTeamMembership';
 
 const useTeam = (args: GetOneTeamInput) => {
   const { editTeam, error: editTeamError } = useEditTeam();
@@ -16,6 +17,9 @@ const useTeam = (args: GetOneTeamInput) => {
   const { deleteTeam, error: deleteTeamError } = useDeleteTeam();
   const { editTeamMembership, error: editTeamMembershipError } =
     useEditTeamMembership();
+  const { deleteTeamMembership, error: deleteTeamMembershipError } =
+    useDeleteTeamMembership();
+
   const { data, error } = useQuery<
     TeamQueryData,
     { getOneTeamInput: GetOneTeamInput }
@@ -31,7 +35,9 @@ const useTeam = (args: GetOneTeamInput) => {
     }
   });
 
-  const { teamAuth } = useTeamAuth(data?.oneTeam?.currentUserTeamMembership);
+  const { teamAuth } = useTeamAuth({
+    currentUserTeamMembership: data?.oneTeam?.currentUserTeamMembership
+  });
   return {
     team: data?.oneTeam,
     loading: data?.oneTeam === undefined,
@@ -46,6 +52,8 @@ const useTeam = (args: GetOneTeamInput) => {
     editTeamMembershipError,
     deleteTeam,
     deleteTeamError,
+    deleteTeamMembership,
+    deleteTeamMembershipError,
     teamAuth
   };
 };

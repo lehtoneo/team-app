@@ -1,10 +1,9 @@
+import { DeleteTeamMembershipInput } from './deleteTeamMembership';
 import { TeamMemberRole, TeamTeamMembership } from './../../queries/team';
 
 import { gql } from '@apollo/client';
 
-export interface EditTeamMembershipInput {
-  teamId: number;
-  userId: number;
+export interface EditTeamMembershipInput extends DeleteTeamMembershipInput {
   role: TeamMemberRole;
 }
 

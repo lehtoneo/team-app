@@ -1,3 +1,4 @@
+import { DeleteTeamMembershipInput } from './../inputs/team/EditTeamMembershipInput';
 import { UserInputError } from 'apollo-server-express';
 import { isAuth } from './../middleware/isAuth';
 import { EditTeamMembershipInput } from '../inputs/team/EditTeamMembershipInput';
@@ -69,30 +70,108 @@ export default class TeamMembershipResolver {
 
   @UseMiddleware(isAuth)
   @Mutation(() => TeamMembership)
+  async deleteTeamMembership(
+    @Ctx() ctx: MyAuthContext,
+    @Arg('deleteTeamMembershipInput') args: DeleteTeamMembershipInput
+  ): Promise<TeamMembership> {
+    const currentUser = ctx.payload.user;
+    const { teamId, userId } = args;
+    const toBeDeletedMembership =
+      await teamMembershipRepository.findOneByOrFail({
+        teamId,
+        userId
+      });
+    if (toBeDeletedMembership.role === 'OWNER') {
+      throw new UserInputError('Cannot delete OWNER');
+    }
+
+    // let the user delete themselves no matter what
+    if (userId === currentUser.id) {
+      await teamMembershipRepository.delete({
+        teamId,
+        userId
+      });
+
+      return toBeDeletedMembership;
+    }
+
+    // check that user is atleast member
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      currentUser,
+      teamId,
+      TeamMemberRole.MEMBER
+    );
+
+    const currentUserTeamMembership =
+      await teamMembershipRepository.findOneByOrFail({
+        teamId,
+        userId: currentUser.id
+      });
+    const currentUserTeamRole = currentUserTeamMembership.role;
+
+    const compareRolesResult = teamAuthService.compareUserTeamRole(
+      currentUserTeamRole,
+      toBeDeletedMembership.role
+    );
+
+    // if to be deleted has equal or bigger role, throw unauthorized
+    if (compareRolesResult >= 0) {
+      teamAuthService.throwUnAuthorized();
+    }
+
+    await teamMembershipRepository.delete({
+      teamId,
+      userId
+    });
+
+    return toBeDeletedMembership;
+  }
+  @UseMiddleware(isAuth)
+  @Mutation(() => TeamMembership)
   async editTeamMembership(
     @Ctx() ctx: MyAuthContext,
     @Arg('editTeamMembershipInput') args: EditTeamMembershipInput
   ): Promise<TeamMembership> {
     const currentUser = ctx.payload.user;
-    const { teamId, role } = args;
+    const { teamId, role, userId } = args;
 
+    // check that atleast member
     await teamAuthService.checkUserTeamRightsThrowsError(
       currentUser,
       teamId,
-      TeamMemberRole.OWNER
+      TeamMemberRole.MEMBER
     );
 
-    const editedMembership = await teamMembershipRepository.findOneByOrFail({
-      teamId: args.teamId,
-      userId: args.userId
-    });
-    if (editedMembership.role === 'OWNER' && role && role !== 'OWNER') {
+    const toBeEditedMembership = await teamMembershipRepository.findOneByOrFail(
+      {
+        teamId: args.teamId,
+        userId: args.userId
+      }
+    );
+    if (toBeEditedMembership.role === 'OWNER' && role && role !== 'OWNER') {
       throw new UserInputError('Cannot edit owners role');
     }
-    editedMembership.role = role ? role : editedMembership.role;
+    const currentUserTeamMembership =
+      await teamMembershipRepository.findOneByOrFail({
+        teamId,
+        userId: currentUser.id
+      });
+    const currentUserTeamRole = currentUserTeamMembership.role;
 
-    await teamMembershipRepository.save(editedMembership);
+    const compareRolesResult = teamAuthService.compareUserTeamRole(
+      currentUserTeamRole,
+      toBeEditedMembership.role
+    );
+    console.log({ compareRolesResult });
+    // if to be edited has equal or bigger role, throw unauthorized
+    if (compareRolesResult >= 0) {
+      teamAuthService.throwUnAuthorized();
+    }
 
-    return editedMembership;
+    toBeEditedMembership.role = role ? role : toBeEditedMembership.role;
+
+    await teamMembershipRepository.save(toBeEditedMembership);
+
+    return toBeEditedMembership;
   }
 }

@@ -85,7 +85,10 @@ export class TeamResolver {
 
     if (
       userTeamMembership &&
-      userTeamMembership.role === TeamMemberRole.OWNER
+      teamAuthService.isUserTeamRoleAtleast(
+        userTeamMembership.role,
+        TeamMemberRole.ADMIN
+      )
     ) {
       const res = await teamSettingsRepository.findOneBy({
         id: (await team.settings).id

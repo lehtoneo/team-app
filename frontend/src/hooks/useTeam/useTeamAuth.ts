@@ -5,7 +5,9 @@ const teamRightSubjects = [
   'baseInfo',
   'joinLink',
   'settings',
-  'event'
+  'event',
+  'membership',
+  'deleteTeam'
 ] as const;
 
 type TeamRightSubject = typeof teamRightSubjects[number];
@@ -17,13 +19,24 @@ type TeamAuth = {
   [key in TeamRightSubject]: { [key in TeamRightTypes]: boolean };
 };
 
-const useTeamAuth = (
-  currentUserTeamMembership?: Pick<TeamMembership, 'role'>
-) => {
+interface TeamAuthParams {
+  currentUserTeamMembership?: Pick<TeamMembership, 'role' | 'id'>;
+  otherUserTeamMembership?: Pick<TeamMembership, 'role' | 'id'>;
+}
+
+const useTeamAuth = (params: TeamAuthParams | undefined) => {
+  const currentUserTeamMembership = params?.currentUserTeamMembership;
+  const otherUserTeamMembership = params?.otherUserTeamMembership;
+
   const role = currentUserTeamMembership?.role;
   const isAtleastMember = teamAuthUtils.isUserTeamRoleAtleast(role, 'MEMBER');
   const isAtleastAdmin = teamAuthUtils.isUserTeamRoleAtleast(role, 'ADMIN');
   const isAtleastOwner = teamAuthUtils.isUserTeamRoleAtleast(role, 'OWNER');
+
+  const hasBiggerRoleThanOtherUser = teamAuthUtils.isUserTeamRoleBigger(
+    role,
+    otherUserTeamMembership?.role
+  );
 
   const teamAuth: TeamAuth = {
     baseInfo: {
@@ -35,12 +48,22 @@ const useTeamAuth = (
       writeRights: isAtleastOwner
     },
     settings: {
+      readRights: isAtleastAdmin,
+      writeRights: isAtleastOwner
+    },
+    deleteTeam: {
       readRights: isAtleastOwner,
       writeRights: isAtleastOwner
     },
     event: {
       readRights: isAtleastMember,
       writeRights: isAtleastAdmin
+    },
+    membership: {
+      readRights: isAtleastMember,
+      writeRights:
+        hasBiggerRoleThanOtherUser &&
+        !(otherUserTeamMembership?.role === 'OWNER')
     }
   };
 
