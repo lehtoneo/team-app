@@ -31,3 +31,4 @@
 | 13.5 | 1   | Write usage instructions |
 | 19.5 | 2.5   | Implement delete team membership feature, edit role management |
 | 19.5 | 3   | Edit landing page, add about page. Add App Open Stats to landing page. Implement edit join link feature |
+| Total | 89   |  |
