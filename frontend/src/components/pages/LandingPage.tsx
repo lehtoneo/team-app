@@ -3,15 +3,22 @@ import useCurrentUser from '../../hooks/useCurrentUser';
 import Button from '../Button';
 import PageContainer from './components/PageContainer';
 import useSignIn from '../../hooks/useSignIn';
-import Header from '../Header';
-const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
-  const headerText = `Team app`;
+import useAppOpenStatistics from '../../hooks/useAppOpenStatistics';
+const AppOpenStatistics = () => {
+  const { appOpenStatistics } = useAppOpenStatistics();
   return (
-    <PageContainer header={headerText}>
-      <Header size={3} center={false}>
-        Welcome
-      </Header>
-    </PageContainer>
+    <div>
+      <div className="text-xl">
+        There are already {appOpenStatistics?.teamCount} teams using the
+        application!
+      </div>
+      <div className="text-xl">
+        {appOpenStatistics?.userCount} registered users!
+      </div>
+      <div className="text-xl">
+        And {appOpenStatistics?.eventCount} events created!
+      </div>
+    </div>
   );
 };
 
@@ -21,16 +28,19 @@ const LandingPage = () => {
   if (isLoggedIn === undefined) {
     return <PageContainer></PageContainer>;
   }
-  if (isLoggedIn) {
-    return <LoggedInLandingPage userFirstName={currentUser?.firstname} />;
-  }
+  const headerText = isLoggedIn
+    ? `Hello ${currentUser.firstname}`
+    : `Welcome to Team app`;
   return (
-    <PageContainer header="Welcome to Team app">
-      <div className="my-2">
-        <Button onClick={() => setUserWantsToLogin(true)}>
-          Sign In to get started
-        </Button>
-      </div>
+    <PageContainer header={headerText}>
+      <AppOpenStatistics />
+      {!isLoggedIn && (
+        <div className="my-2">
+          <Button onClick={() => setUserWantsToLogin(true)}>
+            Sign In to get started
+          </Button>
+        </div>
+      )}
     </PageContainer>
   );
 };

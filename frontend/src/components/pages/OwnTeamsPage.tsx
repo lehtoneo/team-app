@@ -6,7 +6,7 @@ import TeamList from '../TeamList';
 import PageContainer from './components/PageContainer';
 
 const NoOwnTeamsInformation: React.FC = () => {
-  return <div>You are not a member of any team.</div>;
+  return <div>You are not a member of any team {`:(`}</div>;
 };
 
 const OwnTeamsPage = () => {

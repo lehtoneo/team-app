@@ -133,7 +133,7 @@ export default class TeamMembershipResolver {
     @Arg('editTeamMembershipInput') args: EditTeamMembershipInput
   ): Promise<TeamMembership> {
     const currentUser = ctx.payload.user;
-    const { teamId, role, userId } = args;
+    const { teamId, role } = args;
 
     // check that atleast member
     await teamAuthService.checkUserTeamRightsThrowsError(

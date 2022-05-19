@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PageContainer from './components/PageContainer';
 
 const AboutPage: React.FC = () => {

@@ -1,3 +1,4 @@
+import { AppOpenStatisticsResolver } from './resolvers/AppOpenStatisticsResolver';
 import { MyContext } from './types/MyContext';
 import { UserResolver } from './resolvers/UserResolver';
 import 'reflect-metadata';
@@ -22,7 +23,8 @@ const getApolloServer = async () => {
       UserResolver,
       EventResolver,
       TeamMembershipResolver,
-      UserEventAttendanceResolver
+      UserEventAttendanceResolver,
+      AppOpenStatisticsResolver
     ]
   });
   const server = new ApolloServer({
