@@ -2,13 +2,15 @@ import React from 'react';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import Button from '../Button';
 import PageContainer from './components/PageContainer';
-import MyUpcomingEvents from '../MyUpcomingEvents';
 import useSignIn from '../../hooks/useSignIn';
+import Header from '../Header';
 const LoggedInLandingPage = ({ userFirstName }: { userFirstName?: string }) => {
-  const headerText = `Hi ${userFirstName || ''}!`;
+  const headerText = `Team app`;
   return (
     <PageContainer header={headerText}>
-      <MyUpcomingEvents />
+      <Header size={3} center={false}>
+        Welcome
+      </Header>
     </PageContainer>
   );
 };

@@ -17,6 +17,8 @@ import useConfirm from './hooks/useConfirm';
 import ConfirmModal from './components/modals/ConfirmModal';
 import LoadingPage from './components/pages/LoadingPage';
 import CreateTeamPage from './components/pages/CreateTeamPage';
+import MyEventsPage from './components/pages/MyEventsPage';
+import AboutPage from './components/pages/AboutPage';
 
 function App() {
   const { onConfirm, onCancel, confirmState } = useConfirm();
@@ -48,7 +50,15 @@ function App() {
       <div className="p-5 container mx-auto bg-white min-h-screen rounded my-0">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-
+          <Route path="about" element={<AboutPage />} />
+          <Route
+            path="my-events"
+            element={
+              <RequireAuthPage userState={userState}>
+                <MyEventsPage />
+              </RequireAuthPage>
+            }
+          />
           <Route
             path="teams"
             element={

@@ -75,8 +75,19 @@ const NavBar = (props: INavBarProps) => {
                   Home
                 </Link>
               </li>
-              <li>
-                {props.isLoggedIn && (
+              {props.isLoggedIn && (
+                <li>
+                  <Link
+                    to="/my-events"
+                    className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                    aria-current="page"
+                  >
+                    My events
+                  </Link>
+                </li>
+              )}
+              {props.isLoggedIn && (
+                <li>
                   <Link
                     to="/teams"
                     className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
@@ -84,7 +95,16 @@ const NavBar = (props: INavBarProps) => {
                   >
                     Teams
                   </Link>
-                )}
+                </li>
+              )}
+              <li>
+                <Link
+                  to="/about"
+                  className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                  aria-current="page"
+                >
+                  About
+                </Link>
               </li>
               <li>
                 {notLoggedIn ? (
