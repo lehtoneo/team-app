@@ -29,3 +29,4 @@
 | 28.4 | 2 | Write info about the app. Implement delete team feature. Fix all lint errors and warnings |
 | 13.5 | 0.5 | Final touches: add info about how to join team. Add fieldinfo to discord notification settings |
 | 13.5 | 1   | Write usage instructions |
+| 19.5 | 2.5   | Implement delete team membership feature, edit role management |
