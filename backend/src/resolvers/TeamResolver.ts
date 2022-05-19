@@ -34,6 +34,7 @@ import teamAuthService from '../services/teamAuth';
 import { EditTeamInput } from '../inputs/team/EditTeamInput';
 import { Event } from '../models/Event';
 import { GetByIdArgs } from '../args/GetByIdArgs';
+import * as uuid from 'uuid';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -189,9 +190,11 @@ export class TeamResolver {
       const baseInfoInput = editTeamInput.baseInfo;
       team.name = baseInfoInput.name;
       team.description = baseInfoInput.description;
-      await teamRepository.save(team);
     }
-
+    if (editTeamInput.regenerateJoinId) {
+      team.joinId = uuid.v4();
+    }
+    await teamRepository.save(team);
     return team;
   }
 

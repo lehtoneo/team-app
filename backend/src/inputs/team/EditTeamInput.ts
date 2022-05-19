@@ -31,4 +31,7 @@ export class EditTeamInput {
 
   @Field(() => EditTeamSettingsInput, { nullable: true })
   settings?: EditTeamSettingsInput;
+
+  @Field(() => Boolean, { nullable: true })
+  regenerateJoinId?: boolean;
 }

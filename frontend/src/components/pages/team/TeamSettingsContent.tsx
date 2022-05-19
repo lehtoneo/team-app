@@ -19,6 +19,7 @@ import TeamSettingsForm, {
   TeamSettingsFormValues
 } from '../../forms/TeamSettingsForm';
 import Header from '../../Header';
+import JoinLink from '../../JoinLink';
 import LoadingPage from '../LoadingPage';
 
 interface TeamSettingsContentProps {
@@ -137,6 +138,23 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
       toast('Team settings saved', { type: 'success' });
     }
   };
+  const handleRegenerateJoinLink = async () => {
+    const confirmed = await confirm('Are you sure?');
+    if (!confirmed) {
+      return;
+    }
+
+    const result = await editTeam({
+      id: props.teamId,
+      regenerateJoinId: true
+    });
+
+    if (result.success) {
+      toast('Join link regenerated', { type: 'success' });
+    } else {
+      toast(result.error?.message, { type: 'error' });
+    }
+  };
   const handleTeamDelete = async () => {
     const confirmed = await confirm(
       'Are you sure you want to delete the team? This cannot be undone!'
@@ -159,11 +177,14 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
   if (team === null || team.settings === null) {
     return <Navigate to={`/teams/${props.teamId}`} />;
   }
+  const url = new URL(window.location.href);
+  // eslint-disable-next-line no-useless-concat
+  const joinLink = url.origin + '/#' + `/teams/join/${team.joinId}`;
   return (
     <div>
       <Header size={3}>Settings</Header>
       <Header size={2} center={false}>
-        Basic settings
+        Basic
       </Header>
       {teamAuth.settings.writeRights && (
         <TeamSettingsForm
@@ -178,12 +199,35 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
       )}
       {!teamAuth.settings.writeRights && (
         <FieldInfo>
-          You need to be owner to view and edit team settings
+          You need to be owner to view and edit team basic settings
         </FieldInfo>
       )}
       <div className="my-2">
         <Header size={2} center={false}>
-          Member settings
+          Join link
+        </Header>
+        {!teamAuth.settings.writeRights && (
+          <FieldInfo>
+            You need to be owner to view and edit the join link
+          </FieldInfo>
+        )}
+        {teamAuth.settings.writeRights && (
+          <>
+            <FieldInfo>
+              If you regenerate a new join link, old ones will not work anymore
+            </FieldInfo>
+            <JoinLink
+              joinLink={joinLink}
+              hideCopyButton={true}
+              showRegenerateButton
+              onRegenerateButtonClick={handleRegenerateJoinLink}
+            />
+          </>
+        )}
+      </div>
+      <div className="my-2">
+        <Header size={2} center={false}>
+          Members
         </Header>
         <FieldInfo>
           You need to have a bigger role than the member you want to edit.

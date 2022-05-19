@@ -14,11 +14,12 @@ export interface EditTeamInput {
   id: number;
   settings?: EditTeamSettingsInput;
   baseInfo?: EditTeamBaseInfoInput;
+  regenerateJoinId?: boolean;
 }
 
 export type EditedTeamMutationResult = Pick<
   Team,
-  'id' | 'description' | 'name' | 'settings'
+  'id' | 'description' | 'name' | 'settings' | 'joinId'
 >;
 
 export const EDIT_TEAM = gql`
@@ -27,6 +28,7 @@ export const EDIT_TEAM = gql`
       id
       name
       description
+      joinId
       settings {
         id
         discordWebhookUrl

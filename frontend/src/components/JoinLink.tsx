@@ -4,6 +4,9 @@ import Button from './Button';
 
 interface JoinLinkProps {
   joinLink: string;
+  showRegenerateButton?: boolean;
+  hideCopyButton?: boolean;
+  onRegenerateButtonClick?: () => any;
 }
 
 const JoinLink: React.FC<JoinLinkProps> = (props) => {
@@ -16,8 +19,19 @@ const JoinLink: React.FC<JoinLinkProps> = (props) => {
       <div className="text-sm border-2 border-gray-500 bg-gray-400 p-2 mb-2 rounded">
         {props.joinLink}
       </div>
-      <div className="flex px-20">
-        <Button onClick={handleClick}>Copy</Button>
+      <div className="flex px-0">
+        {!props.hideCopyButton && (
+          <div className="flex mr-2">
+            <Button onClick={handleClick} color="green">
+              Copy
+            </Button>
+          </div>
+        )}
+        {props.showRegenerateButton && (
+          <div className="flex w-50">
+            <Button onClick={props?.onRegenerateButtonClick}>Regenerate</Button>
+          </div>
+        )}
       </div>
     </div>
   );
