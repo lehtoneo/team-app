@@ -7,14 +7,13 @@ App can be fround from this address: https://lehtoneo-team-app.herokuapp.com/
 
 ### The purpose of the application
 
-The application is a simple team management app, targeted mainly to sport teams. Users can create teams to the application and invite other users to them. Events for teams can be created and users can mark whether they attend them or not. It is much like the Finnish application called "Nimenhuuto". There are other features aswell, such as the possibility to add a discord webhook for the team, in which notifications about new events and attendances are sent. 
-
+The application is a simple team management app, targeted mainly to sport teams. Users can create teams to the application and invite other users to them. Events for teams can be created and users can mark whether they attend them or not. It is much like the Finnish application called "Nimenhuuto". 
 
 ### Techs
 
-The initial idea was to use python for the backend, but I changed it in to the beginning to node. Hence there is some small amount of hours used to a Python backend, which is now non-existing.
+The initial idea was to use python for the backend, but I changed it in to the beginning to node.
 
-Backend is Graphql API and frontend is a React app (create-react-app)
+Backend is Graphql API created with TypeGraphql and TypeOrm. Frontend is a React app (create-react-app). The app is deployed as a containerized fullstack app to Heroku.
 
 ## Usage instructions
 
