@@ -60,5 +60,5 @@ One can edit member roles in the team settings page.
 
 There are some other features in the application, such as event editing and deleting, but I will not go through them in detail, as they are quite self explanatory. 
 
-Upcoming events can be viewed from the app's main page.
+Upcoming events can be viewed from /my-events page.
 
