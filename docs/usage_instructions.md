@@ -48,13 +48,18 @@ https://lehtoneo-team-app.herokuapp.com/#/teams/join/221d0c49-ae4d-4158-8bb4-152
 
 ### Team settings
 
-## Discord webhook
+#### Discord webhook
 
 A discord webhook can be saved for the team. When given a valid discord webhook and turning discord notifications on, information about events are sent to the webhook.
 
-## Roles
+#### Join link
 
-One can edit member roles in the team settings page. 
+One can regenerate join link. This makes the old link(s) invalid. 
+
+#### Roles
+
+One can edit member roles in the team settings page. One can also delete members from the team. Member can only edit and delete members that have lower role than themselves. The roles currently are MEMBER, ADMIN and OWNER. 
+
 
 ### Other features
 
