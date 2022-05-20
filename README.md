@@ -1,11 +1,8 @@
-# My team management app
+# Team app
 
 ## About the application
 
 App can be fround from this address: https://lehtoneo-team-app.herokuapp.com/
-
-
-### The purpose of the application
 
 The application is a simple team management app, targeted mainly to sport teams. Users can create teams to the application and invite other users to them. Events for teams can be created and users can mark whether they attend them or not. It is much like the Finnish application called "Nimenhuuto". 
 
