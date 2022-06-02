@@ -16,6 +16,10 @@ Backend is Graphql API created with TypeGraphql and TypeOrm. Frontend is a React
 
 Can be found from [here](./docs/usage_instructions.md)
 
+## Workhours
+
+Can be found from [here](./Workhours.md)
+
 ## Prod build (locally)
 
 ### Build image
