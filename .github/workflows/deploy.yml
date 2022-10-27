@@ -4,11 +4,53 @@ name: Deploy to heroku.
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
 
 # Your workflows jobs.
 jobs:
-  build:
+  test-frontend:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: npm install 
+        run: npm install  
+
+      - name: lint
+        run: npm run lint
+
+  test-backend:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: npm install 
+        run: npm install  
+
+      - name: lint
+        run: npm run lint
+        
+  test-docker-build:
+    runs-on: ubuntu-20.04
+    needs: [test-backend, test-frontend]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile
+
+
+  deploy:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    needs: [test-docker-build]
     steps:
       # Check-out your repository.
       - name: Checkout
