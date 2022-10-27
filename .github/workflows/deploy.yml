@@ -12,6 +12,9 @@ on:
 jobs:
   test-frontend:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -26,6 +29,9 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
