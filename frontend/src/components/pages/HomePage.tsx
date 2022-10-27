@@ -22,7 +22,7 @@ const AppOpenStatistics = () => {
   );
 };
 
-const LandingPage = () => {
+const HomePage = () => {
   const { isLoggedIn, currentUser } = useCurrentUser();
   const { setUserWantsToLogin } = useSignIn();
   if (isLoggedIn === undefined) {
@@ -45,4 +45,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default HomePage;
