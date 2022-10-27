@@ -1,4 +1,4 @@
-name: Deploy to heroku.
+name: Deployment
 
 # Run workflow on every push to master branch.
 on:
@@ -69,4 +69,17 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+
+  tag_release:
+    if: ${{ github.event_name == 'push' }}
+    needs: [deploy]
+    name: Tag release
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
