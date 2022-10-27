@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
+
 import SingleEventPage from './SingleEventPage';
 import CreateTeamEventContent from './CreateTeamEventContent';
 import useTeam from '../../../../hooks/useTeam';
@@ -8,6 +9,8 @@ import Header from '../../../Header';
 import LoadingPage from '../../LoadingPage';
 import RequireTeamAuthPage from '../RequireTeamAuthPage';
 import EventPaginatedList from '../../../eventComps/EventPaginatedList';
+import useEventConnection from '../../../../hooks/useEventConnection';
+import Calendar from '../../../Calendar';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -16,10 +19,18 @@ interface TeamEventsMainPageContentProps {
 const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
   props
 ) => {
-  const { teamAuth } = useTeam({ id: props.teamId });
+  const { teamAuth, team } = useTeam({ id: props.teamId });
+
+  const { events, error: eventFetchError } = useEventConnection({
+    paginationInput: { first: 10000 },
+    eventFilters: { teamId: props.teamId }
+  });
+  console.log({ events });
   return (
     <div>
       <Header size={2}>Events</Header>
+      {eventFetchError && <p>Error fetching events</p>}
+      <Calendar events={events} />
       {teamAuth.event.writeRights && (
         <div className="flex">
           <Link to="create">

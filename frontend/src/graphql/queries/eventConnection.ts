@@ -9,6 +9,7 @@ export type EventListInfo = Pick<
   | 'team'
   | 'currentUserEventAttendance'
   | 'start'
+  | 'end'
 >;
 
 type EventConnection = IConnection<EventListInfo>;
@@ -44,6 +45,7 @@ export const EVENT_CONNECTION = gql`
           description
           name
           start
+          end
           team {
             id
             name
