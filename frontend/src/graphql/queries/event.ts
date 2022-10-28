@@ -26,7 +26,7 @@ export interface Event {
 }
 
 export interface OneEventInput {
-  id: number;
+  id: string;
 }
 
 export const EVENT_QUERY = gql`

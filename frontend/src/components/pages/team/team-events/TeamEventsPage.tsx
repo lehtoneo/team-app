@@ -30,7 +30,11 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
     <div>
       <Header size={2}>Events</Header>
       {eventFetchError && <p>Error fetching events</p>}
-      <Calendar events={events} />
+      <Calendar
+        events={events}
+        editable={teamAuth.event.writeRights}
+        teamId={props.teamId}
+      />
       {teamAuth.event.writeRights && (
         <div className="flex">
           <Link to="create">

@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 import { Event } from '../../queries/event';
 
 export interface EditEventInput extends Omit<CreateEventInput, 'teamId'> {
-  id: number;
+  id: string;
 }
 
 export type EditedEventMutationResult = Pick<

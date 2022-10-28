@@ -32,6 +32,7 @@
 | 19.5 | 2.5  | Implement delete team membership feature, edit role management                                                                                                                |
 | 19.5 | 3    | Edit landing page, add about page. Add App Open Stats to landing page. Implement edit join link feature                                                                       |
 
-| 27.10 | 0.5 | Add better pipelines |
+| 27.10 | 3.5 | Add better pipelines, refactor, start working on calendar feature |
 
-| Total | 89.5 | |
+| 28.10 | 2.5 | Refactor, work on calendar feature |
+| Total | 90.5 | |

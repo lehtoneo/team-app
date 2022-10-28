@@ -26,7 +26,7 @@ import ReactModal from 'react-modal';
 import ModalHeader from '../../../modals/ModalHeader';
 
 interface ITeamPageContentProps {
-  eventId: number;
+  eventId: string;
   teamId: number;
 }
 
@@ -169,17 +169,12 @@ const SingleEventPage = () => {
     <Routes>
       <Route
         path="/"
-        element={
-          <EventPageContent eventId={Number(eventId)} teamId={Number(teamId)} />
-        }
+        element={<EventPageContent eventId={eventId} teamId={Number(teamId)} />}
       />
       <Route
         path="/edit"
         element={
-          <EditTeamEventContent
-            teamId={Number(teamId)}
-            eventId={Number(eventId)}
-          />
+          <EditTeamEventContent teamId={Number(teamId)} eventId={eventId} />
         }
       />
     </Routes>

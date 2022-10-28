@@ -16,7 +16,6 @@ export class PaginationInput {
 
   @Field(() => Number, { nullable: true, description: 'Paginate first' })
   @Min(1)
-  @Max(20)
   first?: number;
 }
 

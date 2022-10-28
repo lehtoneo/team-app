@@ -1,11 +1,15 @@
 import React from 'react';
 
-const ModalHeader = ({ onClose }: { onClose: (...args: any[]) => any }) => {
+interface IModalHeaderProps {
+  onClose?: (...args: any[]) => any;
+}
+
+const ModalHeader: React.FC<IModalHeaderProps> = (props) => {
   return (
     <div className="flex justify-end p-2">
       <button
         type="button"
-        onClick={onClose}
+        onClick={props.onClose}
         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
       >
         <svg

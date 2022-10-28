@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { Event } from '../../queries/event';
 
 export interface DeleteEventInput {
-  id: number;
+  id: string;
 }
 
 export type DeletedEventMutationResult = Pick<Event, 'id'>;

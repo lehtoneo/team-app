@@ -10,9 +10,11 @@ interface IProps {
   fieldProps: FieldHookConfig<string>;
   datePickerProps?: CustomDatePickerProps;
   initialTime?: Date;
+  disabled?: boolean;
 }
 
 const DatePickerField = ({ ...props }: IProps) => {
+  const disabled = props.disabled === undefined ? false : props.disabled;
   const { setFieldValue } = useFormikContext();
   const [field] = useField(props.fieldProps);
   const handleChange = (val: Date | null) => {
@@ -32,6 +34,7 @@ const DatePickerField = ({ ...props }: IProps) => {
   return (
     <DatePicker
       {...field}
+      disabled={disabled}
       timeFormat="HH:mm"
       {...props.datePickerProps}
       calendarStartDay={1}
