@@ -124,6 +124,7 @@ export class TeamResolver {
     @Root() team: Team,
     @Ctx() ctx: MyContext
   ): Promise<TeamMembership | null> {
+    console.log('laalaa');
     if (!ctx.payload.user) {
       return null;
     }

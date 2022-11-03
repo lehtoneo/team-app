@@ -12,7 +12,7 @@ export interface UserEventAttendace {
   user: EventAttendanceUser;
 }
 
-export type EventTeam = Pick<Team, 'id' | 'name'>;
+export type EventTeam = Pick<Team, 'id' | 'name' | 'currentUserTeamMembership'>;
 
 export interface Event {
   id: string;
@@ -40,6 +40,10 @@ export const EVENT_QUERY = gql`
       team {
         id
         name
+        currentUserTeamMembership {
+          id
+          role
+        }
       }
       userAttendances {
         id

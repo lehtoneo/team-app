@@ -238,7 +238,7 @@ const TeamSettingsContent: React.FC<TeamSettingsContentProps> = (props) => {
               <MembershipSettings
                 membership={membership}
                 key={membership.id}
-                teamId={team.id}
+                teamId={Number(team.id)}
               />
             );
           })}

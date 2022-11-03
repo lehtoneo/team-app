@@ -138,6 +138,7 @@ export class EventResolver {
     @Args() { id }: GetByIdArgs
   ): Promise<Event | null> {
     const res = await eventRepository.findOneBy({ id });
+
     if (!res) {
       throw new UserInputError('Event not found');
     }

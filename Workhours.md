@@ -35,4 +35,6 @@
 | 27.10 | 3.5 | Add better pipelines, refactor, start working on calendar feature |
 
 | 28.10 | 2.5 | Refactor, work on calendar feature |
-| Total | 90.5 | |
+
+| 3.11 | 3 | Work on calendar features |
+| Total | 92.5 | |

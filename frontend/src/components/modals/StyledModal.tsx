@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import ModalHeader from './ModalHeader';
 
-interface StyledModalProps extends Modal.Props {}
+export interface StyledModalProps extends Modal.Props {}
 
 const StyledModal: React.FC<StyledModalProps> = (props) => {
   return (

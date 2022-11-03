@@ -10,7 +10,8 @@ import LoadingPage from '../../LoadingPage';
 import RequireTeamAuthPage from '../RequireTeamAuthPage';
 import EventPaginatedList from '../../../eventComps/EventPaginatedList';
 import useEventConnection from '../../../../hooks/useEventConnection';
-import Calendar from '../../../Calendar';
+import Calendar from '../../../calendar/Calendar';
+import CalendarContainer from '../../../calendar/CalendarContainer';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -30,8 +31,7 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
     <div>
       <Header size={2}>Events</Header>
       {eventFetchError && <p>Error fetching events</p>}
-      <Calendar
-        events={events}
+      <CalendarContainer
         editable={teamAuth.event.writeRights}
         teamId={props.teamId}
       />
