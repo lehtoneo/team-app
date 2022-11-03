@@ -37,4 +37,4 @@
 | 28.10 | 2.5 | Refactor, work on calendar feature |
 
 | 3.11 | 3 | Work on calendar features |
-| Total | 92.5 | |
+| Total | 93.5 | |
