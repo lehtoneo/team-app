@@ -32,8 +32,6 @@ const MyUpcomingEvents: React.FC = () => {
 
   return (
     <div>
-      <Header size={3}>Your upcoming Events</Header>
-
       <Header size={2} center={false}>
         Today
       </Header>

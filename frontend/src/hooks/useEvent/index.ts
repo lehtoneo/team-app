@@ -8,20 +8,22 @@ import useSaveEventAttendance from './useSaveEventAttendance';
 import useCreateEvent from './useCreateEvent';
 import useEditEvent from './useEditEvent';
 import useDeleteEvent from './useDeleteEvent';
+import { EditEventInput } from '../../graphql/mutations/event/editEvent';
+import { CreateEventInput } from '../../graphql/mutations/event/createEvent';
 
-const useEvent = (args: OneEventInput) => {
+const useEvent = (args?: OneEventInput) => {
   const { deleteEvent, error: deleteEventError } = useDeleteEvent();
   const { createEvent, error: createEventError } = useCreateEvent();
   const { editEvent, error: editEventError } = useEditEvent();
   const { saveAttendance, error: saveAttendanceError } = useSaveEventAttendance(
-    { eventId: args.id }
+    { eventId: args?.id || '-1' }
   );
+
   const { data, loading, error } = useQuery<EventQueryData, OneEventInput>(
     EVENT_QUERY,
     {
-      variables: {
-        ...args
-      },
+      skip: !args,
+      variables: args ? { ...args } : { id: '-1' },
       onError: (e) => {
         console.log(e);
       },

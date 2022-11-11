@@ -1,7 +1,7 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { ConfirmState } from '../../redux/reducers/confirmDialogReducer';
 import Button from '../Button';
+import StyledModal from './StyledModal';
 
 export type SignInUpModalState = 'sign-in' | 'sign-up';
 
@@ -14,9 +14,11 @@ interface ConfirmModalProps {
 
 const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
   return (
-    <Modal
-      className="mx-auto xs:w-3/4 md:w-2/4 fixed inset-x-0 top-10 bg-white border-2 border-gray"
+    <StyledModal
+      style={{ overlay: { zIndex: 5000 } }}
+      className="mx-auto xs:w-3/4 md:w-2/4 fixed inset-x-0 top-10 bg-white border-2 border-gray z-5000"
       isOpen={props.isOpen}
+      onRequestClose={props.onCancel}
       appElement={document.getElementById('root') as HTMLElement}
     >
       <div className="p-5">
@@ -33,7 +35,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
           </div>
         </div>
       </div>
-    </Modal>
+    </StyledModal>
   );
 };
 

@@ -11,20 +11,20 @@ const useEventConnection = (
   log?: boolean
 ) => {
   const [args, setArgs] = useState<EventConnectionInput>({ ...initialArgs });
-  const { data, loading } = useQuery<EventConnectionData, EventConnectionInput>(
-    EVENT_CONNECTION,
-    {
-      variables: {
-        ...args
-      },
-      onError: (e) => {
-        console.log(e);
-      },
-      onCompleted: (d) => {
-        // console.log({ d });
-      }
+  const { data, loading, error } = useQuery<
+    EventConnectionData,
+    EventConnectionInput
+  >(EVENT_CONNECTION, {
+    variables: {
+      ...args
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+    onCompleted: (d) => {
+      // console.log({ d });
     }
-  );
+  });
 
   const canFetchMore = !loading && data?.eventConnection?.pageInfo;
   const fetchNextPage = async () => {
@@ -64,6 +64,7 @@ const useEventConnection = (
     pageInfo: data?.eventConnection?.pageInfo,
     events: data?.eventConnection?.edges.map((edge) => edge.node) || [],
     loading,
+    error,
     fetchNextPage,
     fetchPreviousPage
   };

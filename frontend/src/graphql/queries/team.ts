@@ -36,7 +36,7 @@ export interface TeamBaseInfo {
 }
 
 export interface Team extends TeamBaseInfo {
-  id: number;
+  id: string;
   memberships: TeamTeamMembership[];
   currentUserTeamMembership: Pick<TeamMembership, 'id' | 'role'>;
   joinId: string | null;

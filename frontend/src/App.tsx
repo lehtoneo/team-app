@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LandingPage from './components/pages/LandingPage';
+import HomePage from './components/pages/HomePage';
 import NavBar from './components/NavBar';
 import { Route, Routes } from 'react-router-dom';
 import SignInUpModal from './components/modals/SignInUpModal';
@@ -49,7 +49,7 @@ function App() {
       </div>
       <div className="p-5 container mx-auto bg-white min-h-screen rounded my-0">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
           <Route
             path="my-events"

@@ -12,7 +12,7 @@ const EventSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  description: Yup.string().max(50, 'Too Long!'),
+  description: Yup.string().max(50, 'Too Long!').nullable(),
   start: Yup.date()
     .min(new Date(), "Start date can't be in the past")
     .required(),
@@ -25,6 +25,8 @@ interface EventFormProps {
   error?: string;
   type: 'edit' | 'create';
   initialValues?: EventFormValues;
+
+  disabled?: boolean;
 }
 
 export interface EventFormValues {
@@ -35,6 +37,7 @@ export interface EventFormValues {
 }
 
 const EventForm = (props: EventFormProps) => {
+  const disabled = props.disabled === undefined ? false : props.disabled;
   const headerText = props.type === 'create' ? 'Create an Event' : 'Edit event';
   const submitText = props.type === 'create' ? 'Create' : 'Edit';
   const initialValues: EventFormValues = props.initialValues || {
@@ -59,7 +62,13 @@ const EventForm = (props: EventFormProps) => {
           <div>
             <Label>Name</Label>
             <FormError touched={touched.name} error={errors.name} />
-            <Field name="name" id="name" placeholder="Event name" required />
+            <Field
+              name="name"
+              id="name"
+              placeholder="Event name"
+              required
+              disabled={disabled}
+            />
           </div>
           <div>
             <Label htmlFor="description">Description</Label>
@@ -73,12 +82,14 @@ const EventForm = (props: EventFormProps) => {
               id="description"
               required={false}
               placeholder=""
+              disabled={disabled}
             />
           </div>
           <div>
             <Label htmlFor="start">Start time</Label>
             <FormError touched={touched.start} error={errors.start} />
             <DatePickerField
+              disabled={disabled}
               fieldProps={{
                 name: 'start'
               }}
@@ -91,6 +102,7 @@ const EventForm = (props: EventFormProps) => {
             <Label htmlFor="end">End time</Label>
             <FormError touched={touched.end} error={errors.end} />
             <DatePickerField
+              disabled={disabled}
               fieldProps={{
                 name: 'end'
               }}
@@ -99,9 +111,11 @@ const EventForm = (props: EventFormProps) => {
               }}
             />
           </div>
-          <Button id="submit" type="submit" color="green">
-            {submitText}
-          </Button>
+          {!disabled && (
+            <Button id="submit" type="submit" color="green">
+              {submitText}
+            </Button>
+          )}
         </Form>
       )}
     </Formik>

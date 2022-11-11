@@ -17,20 +17,24 @@ const EventPaginatedList: React.FC<EventListConnectionProps> = (props) => {
   return (
     <>
       <div className="flex">
-        <div>
-          <Button
-            size="sm"
-            onClick={fetchPreviousPage}
-            disabled={!pageInfo?.hasPreviousPage}
-          >{`<`}</Button>
-        </div>
-        <div>
-          <Button
-            size="sm"
-            onClick={fetchNextPage}
-            disabled={!pageInfo?.hasNextPage}
-          >{`>`}</Button>
-        </div>
+        {!loading && events.length > 0 && (
+          <>
+            <div>
+              <Button
+                size="sm"
+                onClick={fetchPreviousPage}
+                disabled={!pageInfo?.hasPreviousPage}
+              >{`<`}</Button>
+            </div>
+            <div>
+              <Button
+                size="sm"
+                onClick={fetchNextPage}
+                disabled={!pageInfo?.hasNextPage}
+              >{`>`}</Button>
+            </div>
+          </>
+        )}
       </div>
       <EventList events={events} loading={loading} />
       {!loading && events.length === 0 && <div>No events</div>}

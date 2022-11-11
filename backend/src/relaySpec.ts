@@ -1,5 +1,5 @@
 import { ObjectType, Field, ClassType, InputType } from 'type-graphql';
-import { Min, Max } from 'class-validator';
+import { Min } from 'class-validator';
 @InputType()
 export class PaginationInput {
   @Field(() => String, {
@@ -16,7 +16,6 @@ export class PaginationInput {
 
   @Field(() => Number, { nullable: true, description: 'Paginate first' })
   @Min(1)
-  @Max(20)
   first?: number;
 }
 

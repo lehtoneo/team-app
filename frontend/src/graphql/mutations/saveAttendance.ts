@@ -3,7 +3,7 @@ import { UserEventAttendace } from '../queries/event';
 
 export interface SaveAttendanceInput {
   userId?: number;
-  eventId: number;
+  eventId: string;
   attendance: boolean;
   reason?: string;
 }
