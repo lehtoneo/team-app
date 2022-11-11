@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import FullCalendar, { EventClickArg, EventInput } from '@fullcalendar/react'; // must go before plugins
+import FullCalendar, {
+  EventClickArg,
+  EventDropArg,
+  EventInput
+} from '@fullcalendar/react'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 
@@ -9,6 +13,7 @@ interface ICalendarProps {
   events: EventListInfo[];
   onEventClick: (eventId: string) => any;
   onDateClick: (date: Date) => any;
+  onDropped?: (newStart: Date, newEnd: Date) => any;
   editable?: boolean;
   teamId?: number;
 }
@@ -24,13 +29,14 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
   });
 
   const handleEventClick = (e: EventClickArg) => {
-    console.log(e);
     props.onEventClick(e.event.id);
   };
 
   const handleDateClick = (d: DateClickArg) => {
     props.onDateClick(d.date);
   };
+
+  const handleDrop = (arg: EventDropArg) => {};
 
   return (
     <FullCalendar
@@ -39,6 +45,9 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
       dateClick={handleDateClick}
       // editable=true because it sets cursor hovering events
       editable
+      eventDrop={(e) => console.log(e)}
+      droppable={false}
+      selectable={false}
       events={fullCalendarEvents}
     />
   );

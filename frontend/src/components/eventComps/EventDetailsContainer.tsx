@@ -45,15 +45,14 @@ const EventDetailsContainer = (props: IEventDetails) => {
     saveAttendance,
     deleteEvent
   } = useEvent({ id: props.eventId });
-  const [showAttendanceFormModal, setShowAttendanceFormModal] =
-    useState<boolean>(false);
+  const [showAttendanceForm, setShowAttendanceForm] = useState<boolean>(false);
   const handleAttendanceSubmit = async (
     values: Omit<SaveAttendanceInput, 'eventId'>
   ) => {
     const result = await saveAttendance(values);
     if (result.success) {
       toast('Event attendance status updated', { type: 'success' });
-      setShowAttendanceFormModal(false);
+      setShowAttendanceForm(false);
     } else {
       toast('Something went wrong', { type: 'error' });
     }
@@ -80,14 +79,10 @@ const EventDetailsContainer = (props: IEventDetails) => {
   };
 
   if (loadingEvent || loadingTeam) {
-    <LoadingIndicator />;
+    return <LoadingIndicator />;
   }
   if (!event || !currentUser || !team) {
-    console.log('here');
-    console.log(event);
-    console.log(currentUser);
-    console.log(team);
-    return <Navigate to="/not-found" />;
+    return <div>Event not found</div>;
   }
 
   const isPastEvent = new Date(event.end) < new Date();
@@ -106,23 +101,10 @@ const EventDetailsContainer = (props: IEventDetails) => {
     : undefined;
   return (
     <div>
-      <ReactModal
-        className="mx-auto xs:w-3/4 md:w-2/4 fixed inset-x-0 top-10 bg-white border-2 border-gray"
-        isOpen={showAttendanceFormModal}
-        appElement={document.getElementById('root') as HTMLElement}
-      >
-        <ModalHeader onClose={() => setShowAttendanceFormModal(false)} />
-        <div className="p-2 py-0">
-          <MarkAttendanceForm
-            onSubmit={handleAttendanceSubmit}
-            initialValues={initialMarkAttendanceFormValues}
-          ></MarkAttendanceForm>
-        </div>
-      </ReactModal>
       <Header size={3}>{event.name}</Header>
       <div className="flex">
         {teamAuth.event.writeRights && (
-          <Link to="edit">
+          <Link to={`/teams/${team.id}/events/${event.id}/edit`}>
             <Button>Edit</Button>
           </Link>
         )}
@@ -145,12 +127,20 @@ const EventDetailsContainer = (props: IEventDetails) => {
       <InfoItem header="Your attendance">{attendanceText}</InfoItem>
       <div className="my-2">
         <Button
-          onClick={() => setShowAttendanceFormModal(!showAttendanceFormModal)}
+          onClick={() => setShowAttendanceForm(!showAttendanceForm)}
           size="sm"
           fullW={false}
         >
-          Change attendance
+          Change attendance {showAttendanceForm ? '^' : 'v'}
         </Button>
+        {showAttendanceForm && (
+          <div className="p-2 py-0">
+            <MarkAttendanceForm
+              onSubmit={handleAttendanceSubmit}
+              initialValues={initialMarkAttendanceFormValues}
+            ></MarkAttendanceForm>
+          </div>
+        )}
       </div>
       <InfoItem header="Member attendances">
         <MembersAttendances

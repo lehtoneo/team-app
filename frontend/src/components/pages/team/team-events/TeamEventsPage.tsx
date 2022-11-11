@@ -12,6 +12,7 @@ import EventPaginatedList from '../../../eventComps/EventPaginatedList';
 import useEventConnection from '../../../../hooks/useEventConnection';
 import Calendar from '../../../calendar/Calendar';
 import CalendarContainer from '../../../calendar/CalendarContainer';
+import FieldInfo from '../../../forms/components/FieldInfo';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -26,25 +27,16 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
     paginationInput: { first: 10000 },
     eventFilters: { teamId: props.teamId }
   });
-  console.log({ events });
+
   return (
     <div>
       <Header size={2}>Events</Header>
       {eventFetchError && <p>Error fetching events</p>}
+      <FieldInfo>Create events by pressing a date in the calendar</FieldInfo>
       <CalendarContainer
         editable={teamAuth.event.writeRights}
         teamId={props.teamId}
       />
-      {teamAuth.event.writeRights && (
-        <div className="flex">
-          <Link to="create">
-            <Button color="green">Create events</Button>
-          </Link>
-        </div>
-      )}
-      <div className="my-2">
-        <EventPaginatedList eventFilters={{ teamId: props.teamId }} />
-      </div>
     </div>
   );
 };

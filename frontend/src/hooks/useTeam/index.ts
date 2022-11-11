@@ -20,7 +20,7 @@ const useTeam = (args: GetOneTeamInput) => {
   const { deleteTeamMembership, error: deleteTeamMembershipError } =
     useDeleteTeamMembership();
 
-  const { data, error } = useQuery<
+  const { data, error, loading } = useQuery<
     TeamQueryData,
     { getOneTeamInput: GetOneTeamInput }
   >(TEAM_QUERY, {
@@ -30,9 +30,7 @@ const useTeam = (args: GetOneTeamInput) => {
     onError: (e) => {
       console.log(e);
     },
-    onCompleted: (d) => {
-      // console.log({ d });
-    }
+    onCompleted: (d) => {}
   });
 
   const { teamAuth } = useTeamAuth({
@@ -40,7 +38,7 @@ const useTeam = (args: GetOneTeamInput) => {
   });
   return {
     team: data?.oneTeam,
-    loading: data?.oneTeam === undefined,
+    loading: loading,
     error,
     createTeam,
     createTeamError,

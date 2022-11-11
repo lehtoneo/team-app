@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { EventListInfo } from '../../graphql/queries/eventConnection';
 import StyledModal from '../modals/StyledModal';
@@ -6,7 +6,7 @@ import EventFormContainer from '../forms/EventFormContainer';
 import Calendar from './Calendar';
 import useEventConnection from '../../hooks/useEventConnection';
 import EventDetailsModal from '../modals/EventDetailsModal';
-import EventDetailsContainer from '../eventComps/EventDetailsContainer';
+import { useSearchParams } from 'react-router-dom';
 
 interface ICalendarProps {
   editable?: boolean;
@@ -14,6 +14,7 @@ interface ICalendarProps {
 }
 
 const CalendarContainer: React.FC<ICalendarProps> = (props) => {
+  let [searchParams, setSearchParams] = useSearchParams();
   const calendarEventConnection = useEventConnection(
     props.teamId
       ? {
@@ -23,15 +24,22 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
         }
       : undefined
   );
-  const [eventDetailsModalOpen, setEventDetailsModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState<string | undefined>();
+  const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
+    searchParams.get('eventId') || undefined
+  );
   const [initialDate, setInitialDate] = useState<Date | undefined>();
-
+  useEffect(() => {
+    setSelectedEventId(searchParams.get('eventId') || undefined);
+  }, [searchParams]);
   const handleEventClick = (eventId: string) => {
     // open modal in which
-    setSelectedEventId(eventId);
-    setEventDetailsModalOpen(true);
+    setSearchParams({ eventId });
+  };
+
+  const handleEventClose = () => {
+    searchParams.delete('eventId');
+    setSearchParams(searchParams);
   };
 
   const handleDateClick = (d: Date) => {
@@ -61,9 +69,9 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       </StyledModal>
       {selectedEventId && (
         <EventDetailsModal
-          eventId={selectedEventId || '-1'}
-          isOpen={eventDetailsModalOpen && selectedEventId !== undefined}
-          onRequestClose={() => setEventDetailsModalOpen(false)}
+          eventId={selectedEventId}
+          isOpen={selectedEventId !== undefined}
+          onRequestClose={handleEventClose}
         />
       )}
       {
