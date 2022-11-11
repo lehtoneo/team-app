@@ -6,6 +6,7 @@ import {
 import { useMutation, ApolloError } from '@apollo/client';
 import { DeleteEventInput } from '../../graphql/mutations/event/deleteEvent';
 import { UnknownError, unknownError } from '../../types';
+import { EVENT_CONNECTION } from '../../graphql/queries/eventConnection';
 
 type DeleteEventResult =
   | { success: true; event: DeletedEventMutationResult }
@@ -24,6 +25,14 @@ const useDeleteEvent = () => {
       const result = await deleteEventMutation({
         variables: {
           ...params
+        },
+        update(cache) {
+          const normalizedId = cache.identify({
+            id: params.id,
+            __typename: 'Event'
+          });
+          cache.evict({ id: normalizedId });
+          cache.gc();
         }
       });
 
