@@ -17,7 +17,14 @@ const EventSchema = Yup.object().shape({
     .min(new Date(), "Start date can't be in the past")
     .required(),
   end: Yup.date()
-    .min(Yup.ref('start'), "End time can't be before start time")
+    .when('start', (start_time: Date, schema) => {
+      if (start_time) {
+        const startPlusSecond = new Date(start_time.getTime() + 1000);
+        return schema.min(startPlusSecond, 'End time must be after start time');
+      } else {
+        return schema;
+      }
+    })
     .required()
 });
 interface EventFormProps {

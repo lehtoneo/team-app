@@ -7,13 +7,16 @@ import Calendar from './Calendar';
 import useEventConnection from '../../hooks/useEventConnection';
 import EventDetailsModal from '../modals/EventDetailsModal';
 import { useSearchParams } from 'react-router-dom';
-
+import useEvent from '../../hooks/useEvent';
+import useConfirm from '../../hooks/useConfirm';
+import { toast } from 'react-toastify';
 interface ICalendarProps {
   editable?: boolean;
   teamId?: number;
 }
 
 const CalendarContainer: React.FC<ICalendarProps> = (props) => {
+  const confirm = useConfirm();
   let [searchParams, setSearchParams] = useSearchParams();
   const calendarEventConnection = useEventConnection(
     props.teamId
@@ -29,6 +32,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
     searchParams.get('eventId') || undefined
   );
   const [initialDate, setInitialDate] = useState<Date | undefined>();
+  const { editEvent } = useEvent();
   useEffect(() => {
     setSelectedEventId(searchParams.get('eventId') || undefined);
   }, [searchParams]);
@@ -40,6 +44,26 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
   const handleEventClose = () => {
     searchParams.delete('eventId');
     setSearchParams(searchParams);
+  };
+
+  const handleDropped = async (
+    eventId: string,
+    newStart: Date,
+    newEnd: Date
+  ) => {
+    const confirmed = await confirm.confirm(
+      'Are you sure you want to edit the event?'
+    );
+    if (!confirmed) {
+      return;
+    }
+    try {
+      await editEvent({ id: eventId, start: newStart, end: newEnd });
+
+      toast('Event edited', { type: 'success' });
+    } catch (e) {
+      toast('Something went wrong', { type: 'error' });
+    }
   };
 
   const handleDateClick = (d: Date) => {
@@ -78,6 +102,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
         <Calendar
           onEventClick={handleEventClick}
           onDateClick={handleDateClick}
+          onDropped={handleDropped}
           editable={props.editable}
           events={calendarEventConnection.events}
         />

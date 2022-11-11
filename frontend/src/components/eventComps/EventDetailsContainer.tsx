@@ -20,8 +20,7 @@ import MembersAttendances from '../MembersAttendances';
 import MarkAttendanceForm from '../forms/MarkAttendanceForm';
 import Header from '../Header';
 import useConfirm from '../../hooks/useConfirm';
-import ReactModal from 'react-modal';
-import ModalHeader from '../modals/ModalHeader';
+
 import LoadingIndicator from '../LoadingIndicator';
 
 interface IEventDetails {
@@ -33,7 +32,6 @@ const EventDetailsContainer = (props: IEventDetails) => {
   const navigate = useNavigate();
   const { confirm } = useConfirm();
   const { currentUser } = useCurrentUser();
-  console.log(`Team id: ${props.teamId}`);
   const {
     team,
     loading: loadingTeam,

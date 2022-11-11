@@ -123,8 +123,12 @@ export class EventResolver {
       TeamMemberRole.ADMIN
     );
 
-    event.name = data.name;
-    event.description = data.description;
+    if (data.name) {
+      event.name = data.name;
+    }
+    if (data.description) {
+      event.description = data.description;
+    }
     event.end = data.end;
     event.start = data.start;
     const savedEvent = await eventRepository.save(event);
