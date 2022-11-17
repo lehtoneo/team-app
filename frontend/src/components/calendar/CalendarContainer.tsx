@@ -52,7 +52,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
     newEnd: Date
   ) => {
     const confirmed = await confirm.confirm(
-      'Are you sure you want to edit the event?'
+      'Are you sure you want to edit the event time?'
     );
     if (!confirmed) {
       return;

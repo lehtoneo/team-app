@@ -8,8 +8,8 @@ import PageContainer from './components/PageContainer';
 
 const MyEventsPage: React.FC = () => {
   const { currentUser } = useCurrentUser();
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showList, setShowList] = useState(true);
+  const [showCalendar, setShowCalendar] = useState(true);
+  const [showList, setShowList] = useState(false);
   const headerText = `Hi ${currentUser?.firstname || ''}!`;
 
   return (
@@ -34,7 +34,7 @@ const MyEventsPage: React.FC = () => {
       {showCalendar && (
         <>
           <Header>Calendar</Header>
-          <CalendarContainer />
+          <CalendarContainer editable={false} />
         </>
       )}
     </PageContainer>

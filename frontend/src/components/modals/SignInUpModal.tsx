@@ -7,6 +7,7 @@ import useSignIn from '../../hooks/useSignIn';
 import SignInForm from '../forms/SignInForm';
 import SignUpForm from '../forms/SignUpForm';
 import ModalHeader from './ModalHeader';
+import StyledModal from './StyledModal';
 
 export type SignInUpModalState = 'sign-in' | 'sign-up';
 
@@ -44,12 +45,11 @@ const SignInUpModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
   };
 
   return (
-    <Modal
+    <StyledModal
       isOpen={isOpen}
       onRequestClose={onClose}
       appElement={document.getElementById('root') as HTMLElement}
     >
-      <ModalHeader onClose={onClose} />
       {internalModalState === 'sign-in' ? (
         <SignInForm
           onSubmit={handleSignIn}
@@ -61,7 +61,7 @@ const SignInUpModal = ({ isOpen, onClose, modalState }: ILoginModalProps) => {
           onSignInClick={() => setInternalModalState('sign-in')}
         />
       )}
-    </Modal>
+    </StyledModal>
   );
 };
 

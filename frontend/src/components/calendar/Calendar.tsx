@@ -52,8 +52,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
       plugins={[dayGridPlugin, interactionPlugin]}
       eventClick={handleEventClick}
       dateClick={handleDateClick}
-      // editable=true because it sets cursor hovering events
-      editable
+      editable={props.editable}
       eventDrop={handleDrop}
       droppable={props.editable}
       selectable={false}
