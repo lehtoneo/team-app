@@ -39,4 +39,6 @@
 | 3.11 | 3 | Work on calendar features |
 | 9.11 | 3 | Refactor, work on calendar features, create / update components (commited 11.11) |
 | 11.11 | 2 | Implement event editing by dragging |
-| Total | 98.5 | |
+
+| 12.11 | 4 | Work on event type featue, work on pagination |
+| Total | 102.5 | |
