@@ -41,4 +41,5 @@
 | 11.11 | 2 | Implement event editing by dragging |
 
 | 12.11 | 4 | Work on event type featue, work on pagination |
-| Total | 102.5 | |
+| 25.11 | 5 | Finish event type feature, refactor |
+| Total | 107.5 | |
