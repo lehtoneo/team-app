@@ -1,4 +1,5 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
+import { EVENT_TYPE_CONNECTION } from '../../queries/eventTypeConnection';
 import { EventType } from '../../queries/oneEventType';
 
 export interface CreateEventTypeInput {
@@ -15,7 +16,7 @@ export type EventTypeMutationResult = Pick<
 
 export const CREATE_OR_UPDATE_EVENT_TYPE = gql`
   mutation createOrUpdateEventType(
-    $createOrUpdateEventTypeInput: CreateEventInput!
+    $createOrUpdateEventTypeInput: CreateOrUpdateEventTypeInput!
   ) {
     createOrUpdateEventType(
       createOrUpdateEventTypeInput: $createOrUpdateEventTypeInput
@@ -30,4 +31,11 @@ export const CREATE_OR_UPDATE_EVENT_TYPE = gql`
 
 export interface EventTypeMutationData {
   createOrUpdateEventType: EventTypeMutationResult | null;
+}
+
+export function useCreateOrUpdateEventMutation() {
+  return useMutation<
+    EventTypeMutationData,
+    { createOrUpdateEventTypeInput: CreateEventTypeInput }
+  >(CREATE_OR_UPDATE_EVENT_TYPE, { refetchQueries: [EVENT_TYPE_CONNECTION] });
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import useCurrentUser from '../../hooks/useCurrentUser';
-import CalendarContainer from '../calendar/CalendarContainer';
-import CheckBox from '../forms/components/CheckBox';
-import Header from '../Header';
-import MyUpcomingEvents from '../MyUpcomingEvents';
-import PageContainer from './components/PageContainer';
+import useCurrentUser from '../../../hooks/useCurrentUser';
+import CalendarContainer from '../../calendar/CalendarContainer';
+import CheckBox from '../../forms/components/CheckBox';
+import Header from '../../Header';
+import MyUpcomingEvents from './MyUpcomingEvents';
+import PageContainer from '../components/PageContainer';
 
 const MyEventsPage: React.FC = () => {
   const { currentUser } = useCurrentUser();

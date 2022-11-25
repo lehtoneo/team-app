@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { UserEventAttendace } from '../graphql/queries/event';
+import { UserEventAttendace } from '../../graphql/queries/event';
 
-import { TeamTeamMembership } from '../graphql/queries/team';
+import { TeamTeamMembership } from '../../graphql/queries/team';
 import MemberList from './MemberList';
 
 interface MembersAttendancesProps {

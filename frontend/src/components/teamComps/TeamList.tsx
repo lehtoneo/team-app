@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { TeamListInfo } from '../graphql/queries/teamConnection';
+import { TeamListInfo } from '../../graphql/queries/teamConnection';
 
 interface ITeamListProps {
   teams: TeamListInfo[];

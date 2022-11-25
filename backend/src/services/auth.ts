@@ -103,7 +103,7 @@ const validateAccessToken = async (headers: any): Promise<User | null> => {
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const accessToken = headers.authorization;
-  if (accessToken === 'iamadevuser') {
+  if (accessToken === 'bearer iamadevuser') {
     return await userService.getDevUser();
   }
   if (

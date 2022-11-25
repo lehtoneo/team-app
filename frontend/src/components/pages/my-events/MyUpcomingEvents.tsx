@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
-import EventPaginatedList from './eventComps/EventPaginatedList';
-import Header from './Header';
+import EventPaginatedList from '../../eventComps/EventPaginatedList';
+import Header from '../../Header';
 
 const MyUpcomingEvents: React.FC = () => {
   const today = moment();

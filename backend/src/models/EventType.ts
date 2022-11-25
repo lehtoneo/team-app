@@ -26,13 +26,13 @@ export class EventType extends IdAndDates {
   color?: string;
 
   @Column({ nullable: true })
-  @Field({ nullable: true })
-  teamId?: number;
+  @Field({ nullable: false })
+  teamId: number;
   @ManyToOne(() => Team, {
     lazy: true,
     cascade: true,
     onDelete: 'CASCADE',
     nullable: true
   })
-  team?: Promise<Team>;
+  team: Promise<Team>;
 }

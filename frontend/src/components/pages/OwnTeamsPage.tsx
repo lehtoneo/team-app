@@ -2,7 +2,7 @@ import React from 'react';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import useTeamConnection from '../../hooks/useTeamConnection';
 import LoadingIndicator from '../LoadingIndicator';
-import TeamList from '../TeamList';
+import TeamList from '../teamComps/TeamList';
 import PageContainer from './components/PageContainer';
 
 const NoOwnTeamsInformation: React.FC = () => {

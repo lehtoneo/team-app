@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import Button from './Button';
+import Button from '../Button';
 
 interface JoinLinkProps {
   joinLink: string;

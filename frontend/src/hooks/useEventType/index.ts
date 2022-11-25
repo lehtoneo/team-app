@@ -5,16 +5,17 @@ import {
   ONE_EVENT_TYPE
 } from '../../graphql/queries/oneEventType';
 
-const useEventType = ({ eventTypeId }: { eventTypeId: number }) => {
+const useEventType = ({ eventTypeId }: { eventTypeId?: number }) => {
   const { data, loading } = useQuery<OneEventTypeQueryData, OneEventTypeInput>(
     ONE_EVENT_TYPE,
     {
-      variables: { id: eventTypeId }
+      variables: { id: eventTypeId || -1 },
+      skip: !eventTypeId
     }
   );
 
   return {
-    eventType: data,
+    eventType: data?.oneEventType || undefined,
     loading
   };
 };

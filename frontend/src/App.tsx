@@ -17,7 +17,7 @@ import useConfirm from './hooks/useConfirm';
 import ConfirmModal from './components/modals/ConfirmModal';
 import LoadingPage from './components/pages/LoadingPage';
 import CreateTeamPage from './components/pages/CreateTeamPage';
-import MyEventsPage from './components/pages/MyEventsPage';
+import MyEventsPage from './components/pages/my-events';
 import AboutPage from './components/pages/AboutPage';
 
 function App() {

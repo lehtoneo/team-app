@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
 export interface CreateEventInput {
   name: string;
   description?: string;
-  typeId?: number;
+  typeId?: string;
   start: Date;
   end: Date;
   teamId: number;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { UserEventAttendace } from '../graphql/queries/event';
-import { TeamTeamMembership } from '../graphql/queries/team';
+import { UserEventAttendace } from '../../graphql/queries/event';
+import { TeamTeamMembership } from '../../graphql/queries/team';
 interface MemberListProps {
   currentUserId?: number;
   users: TeamTeamMembership[] | UserEventAttendace[];

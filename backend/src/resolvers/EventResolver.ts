@@ -129,6 +129,7 @@ export class EventResolver {
     if (data.description) {
       event.description = data.description;
     }
+    event.typeId = data.typeId;
     event.end = data.end;
     event.start = data.start;
     const savedEvent = await eventRepository.save(event);

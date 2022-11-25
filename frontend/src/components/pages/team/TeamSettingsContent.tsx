@@ -19,7 +19,7 @@ import TeamSettingsForm, {
   TeamSettingsFormValues
 } from '../../forms/TeamSettingsForm';
 import Header from '../../Header';
-import JoinLink from '../../JoinLink';
+import JoinLink from '../../teamComps/JoinLink';
 import LoadingPage from '../LoadingPage';
 
 interface TeamSettingsContentProps {
