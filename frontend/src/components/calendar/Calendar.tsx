@@ -24,7 +24,8 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
       id: e.id,
       start: e.start,
       end: e.end,
-      title: e.name
+      title: e.name,
+      color: e.type?.color
     };
   });
 

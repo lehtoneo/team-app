@@ -15,9 +15,7 @@ const EventSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   description: Yup.string().max(50, 'Too Long!').nullable(),
-  start: Yup.date()
-    .min(new Date(), "Start date can't be in the past")
-    .required(),
+  start: Yup.date().required(),
   end: Yup.date()
     .when('start', (start_time: Date, schema) => {
       if (start_time) {
@@ -62,12 +60,13 @@ const EventForm = (props: EventFormProps) => {
       label: et.name
     };
   });
-  console.log({ initialValues });
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={EventSchema}
       onSubmit={async (values) => {
+        console.log({ values });
         await props.onSubmit({
           ...values
         });
@@ -107,8 +106,11 @@ const EventForm = (props: EventFormProps) => {
             <FormError touched={touched.typeId} error={errors.typeId} />
             <Dropdown
               options={eventTypeOptions}
+              emptyLabel={'-- No type --'}
               value={values.typeId}
-              onChange={(val) => setFieldValue('typeId', val)}
+              onChange={(val) => {
+                setFieldValue('typeId', val);
+              }}
             />
           </div>
           <div>

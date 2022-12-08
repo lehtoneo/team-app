@@ -1,7 +1,11 @@
 import { gql } from '@apollo/client';
 import { IConnection, PaginationInput } from '../commonTypes';
 import { Event } from './event';
-export type EventListInfo = Pick<
+import { EventType } from './oneEventType';
+
+type EventListInfoEventType = Pick<EventType, 'id' | 'color'>;
+
+type EventListInfoBasicInfo = Pick<
   Event,
   | 'description'
   | 'id'
@@ -11,6 +15,9 @@ export type EventListInfo = Pick<
   | 'start'
   | 'end'
 >;
+export interface EventListInfo extends EventListInfoBasicInfo {
+  type?: EventListInfoEventType;
+}
 
 type EventConnection = IConnection<EventListInfo>;
 
@@ -49,6 +56,10 @@ export const EVENT_CONNECTION = gql`
           team {
             id
             name
+          }
+          type {
+            id
+            color
           }
           currentUserEventAttendance {
             id

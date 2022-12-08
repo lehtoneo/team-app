@@ -54,6 +54,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
     formValues: EventFormValues,
     eventId: string
   ) => {
+    console.log({ formValues });
     const result = await editEvent({
       name: formValues.name,
       description: formValues.description,

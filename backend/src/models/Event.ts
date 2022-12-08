@@ -33,16 +33,15 @@ export class Event extends IdAndDates {
   )
   userAttendances?: Promise<UserEventAttendance[]>;
 
+  @Field(() => EventType, { nullable: true })
   @ManyToOne(() => EventType, {
     lazy: true,
-    cascade: true,
     onDelete: 'CASCADE'
   })
-  @Field(() => EventType, { nullable: true })
-  type?: Promise<EventType>;
+  type?: Promise<EventType> | null;
 
   @Column({ nullable: true })
-  typeId?: number;
+  typeId?: number | null;
 
   @Field(() => Team)
   @ManyToOne(() => Team, { lazy: true, cascade: true, onDelete: 'CASCADE' })

@@ -12,7 +12,7 @@ export class EditEventInput {
   description?: string;
 
   @Field(() => ID, { nullable: true })
-  typeId?: number;
+  typeId?: number | string;
 
   @Field(() => Date)
   start: Date;
