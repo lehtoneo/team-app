@@ -1,17 +1,6 @@
-import { TeamSettings } from './TeamSettings';
-import { TeamMembership } from './TeamMembership';
-import {
-  Entity,
-  Column,
-  OneToMany,
-  Generated,
-  OneToOne,
-  JoinColumn,
-  ManyToOne
-} from 'typeorm';
-import { ObjectType, Field, Int } from 'type-graphql';
+import { Entity, Column, ManyToOne } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
-import { Event } from './Event';
 import { Team } from './Team';
 
 @Entity()

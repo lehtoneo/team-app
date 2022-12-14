@@ -7,8 +7,7 @@ import {
   Ctx,
   Query,
   Args,
-  ObjectType,
-  ID
+  ObjectType
 } from 'type-graphql';
 import { ApolloError } from 'apollo-server-express';
 import { isAuth } from '../middleware/isAuth';
