@@ -1,7 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useEvent from '../../../../hooks/useEvent';
-import EventForm, { EventFormValues } from '../../../forms/EventForm';
 import EventFormContainer from '../../../forms/EventFormContainer';
 import PageContainer from '../../components/PageContainer';
 

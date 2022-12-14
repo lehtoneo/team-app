@@ -29,16 +29,23 @@ const buttonSizeConfig: { [key in ButtonSize]: string } = {
 
 const buttonConfigCommon = `disabled:opacity-75 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-center`;
 
-const getClassName = (color: ButtonColor, size: ButtonSize, fullW: boolean) => {
+const getClassName = (
+  className: string,
+  color: ButtonColor,
+  size: ButtonSize,
+  fullW: boolean
+) => {
   const fullWStyle = fullW ? 'w-full' : '';
-  return `${fullWStyle} ${buttonConfigCommon} ${buttonColorConfig[color]} ${buttonSizeConfig[size]}`;
+  return `${fullWStyle} ${buttonConfigCommon} ${buttonColorConfig[color]} ${buttonSizeConfig[size]} ${className} `;
 };
 
 const Button: React.FC<IButtonProps> = (props) => {
   const size = props.size || 'normal';
   const color = props.color ? props.color : 'blue';
   const fullW = props.fullW !== undefined ? props.fullW : true;
-  const className = props.exactClassName || getClassName(color, size, fullW);
+  const className =
+    props.exactClassName ||
+    getClassName(props.className || '', color, size, fullW);
   const {
     exactClassName,
     color: col,

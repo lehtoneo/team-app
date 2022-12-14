@@ -8,6 +8,9 @@ export class BaseEventInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
+  @Field(() => ID, { nullable: true })
+  typeId?: number;
+
   @Field(() => Date)
   start: Date;
 

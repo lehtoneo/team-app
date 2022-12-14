@@ -3,8 +3,8 @@ import { Link, Navigate } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
 import Button from '../../Button';
 import InfoItem from '../../InfoItem';
-import JoinLink from '../../JoinLink';
-import MemberList from '../../MemberList';
+import JoinLink from '../../teamComps/JoinLink';
+import MemberList from '../../teamComps/MemberList';
 import LoadingPage from '../LoadingPage';
 
 interface TeamMainPageContentProps {

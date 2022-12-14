@@ -6,6 +6,8 @@ import FormHeader from './components/FormHeader';
 import DatePickerField from './components/DatepickerField';
 import * as Yup from 'yup';
 import FormError from './components/FormError';
+import Dropdown from './components/Dropdown';
+import { EventTypeListInfo } from '../../graphql/queries/eventTypeConnection';
 
 const EventSchema = Yup.object().shape({
   name: Yup.string()
@@ -13,11 +15,16 @@ const EventSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   description: Yup.string().max(50, 'Too Long!').nullable(),
-  start: Yup.date()
-    .min(new Date(), "Start date can't be in the past")
-    .required(),
+  start: Yup.date().required(),
   end: Yup.date()
-    .min(Yup.ref('start'), "End time can't be before start time")
+    .when('start', (start_time: Date, schema) => {
+      if (start_time) {
+        const startPlusSecond = new Date(start_time.getTime() + 1000);
+        return schema.min(startPlusSecond, 'End time must be after start time');
+      } else {
+        return schema;
+      }
+    })
     .required()
 });
 interface EventFormProps {
@@ -25,7 +32,7 @@ interface EventFormProps {
   error?: string;
   type: 'edit' | 'create';
   initialValues?: EventFormValues;
-
+  eventTypes: EventTypeListInfo[];
   disabled?: boolean;
 }
 
@@ -34,6 +41,7 @@ export interface EventFormValues {
   description?: string;
   start: string;
   end: string;
+  typeId?: string;
 }
 
 const EventForm = (props: EventFormProps) => {
@@ -46,17 +54,25 @@ const EventForm = (props: EventFormProps) => {
     start: new Date().toISOString(),
     end: new Date().toISOString()
   };
+  const eventTypeOptions = props.eventTypes.map((et) => {
+    return {
+      value: et.id.toString(),
+      label: et.name
+    };
+  });
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={EventSchema}
       onSubmit={async (values) => {
+        console.log({ values });
         await props.onSubmit({
           ...values
         });
       }}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, values, setFieldValue }) => (
         <Form className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
           <FormHeader>{headerText}</FormHeader>
           <div>
@@ -83,6 +99,18 @@ const EventForm = (props: EventFormProps) => {
               required={false}
               placeholder=""
               disabled={disabled}
+            />
+          </div>
+          <div>
+            <Label htmlFor="type">Type</Label>
+            <FormError touched={touched.typeId} error={errors.typeId} />
+            <Dropdown
+              options={eventTypeOptions}
+              emptyLabel={'-- No type --'}
+              value={values.typeId}
+              onChange={(val) => {
+                setFieldValue('typeId', val);
+              }}
             />
           </div>
           <div>

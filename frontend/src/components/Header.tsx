@@ -1,6 +1,6 @@
 import React from 'react';
 
-type HeaderSize = 4 | 3 | 2;
+type HeaderSize = 4 | 3 | 2 | 1;
 
 interface IHeaderProps {
   size?: HeaderSize;
@@ -15,7 +15,8 @@ const centerConfig: { [key in 'true' | 'false']: string } = {
 const classNameConfig: { [key in HeaderSize]: string } = {
   4: 'text-4xl',
   3: 'text-3xl',
-  2: 'text-2xl'
+  2: 'text-2xl',
+  1: 'text-1xl'
 };
 
 const Header: React.FC<IHeaderProps> = (props) => {

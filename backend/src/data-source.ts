@@ -9,6 +9,7 @@ import { Event } from './models/Event';
 import { config } from './config';
 import { TeamMembership } from './models/TeamMembership';
 import { TeamSettings } from './models/TeamSettings';
+import { EventType } from './models/EventType';
 const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
@@ -21,6 +22,7 @@ const options: DataSourceOptions = {
     RefreshToken,
     Team,
     Event,
+    EventType,
     UserEventAttendance,
     TeamMembership,
     TeamSettings

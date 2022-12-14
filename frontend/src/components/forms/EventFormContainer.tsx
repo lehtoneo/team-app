@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import useEvent from '../../hooks/useEvent';
+import useEventTypeConnection from '../../hooks/useEventTypeConnection';
 import LoadingIndicator from '../LoadingIndicator';
 import EventForm, { EventFormValues } from './EventForm';
 
@@ -21,7 +22,15 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
     editEventError,
     loading: loadingEvent
   } = useEvent(props.eventId ? { id: props.eventId } : undefined);
-
+  const eventTypeConnection = useEventTypeConnection({
+    filterEventTypes: {
+      teamId: props.teamId
+        ? props.teamId
+        : event?.team.id
+        ? Number(event.team.id)
+        : -1
+    }
+  });
   const handleCreateEventSubmit = async (
     formValues: EventFormValues,
     teamId: number
@@ -31,7 +40,8 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
       description: formValues.description,
       start: new Date(formValues.start),
       end: new Date(formValues.end),
-      teamId: teamId
+      teamId: teamId,
+      typeId: formValues.typeId
     });
 
     if (result.success) {
@@ -44,12 +54,14 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
     formValues: EventFormValues,
     eventId: string
   ) => {
+    console.log({ formValues });
     const result = await editEvent({
       name: formValues.name,
       description: formValues.description,
       start: new Date(formValues.start),
       end: new Date(formValues.end),
-      id: eventId
+      id: eventId,
+      typeId: formValues.typeId
     });
 
     if (result.success) {
@@ -70,7 +82,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
 
   const initialValues =
     props.eventId && event
-      ? { ...event }
+      ? { ...event, typeId: event.type?.id.toString() }
       : props.initialDate
       ? {
           name: '',
@@ -85,6 +97,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
         <LoadingIndicator />
       ) : (
         <EventForm
+          eventTypes={eventTypeConnection.eventTypes}
           disabled={props.disabled}
           type={props.eventId ? 'edit' : 'create'}
           onSubmit={handleSubmitAsync}

@@ -37,4 +37,10 @@
 | 28.10 | 2.5 | Refactor, work on calendar feature |
 
 | 3.11 | 3 | Work on calendar features |
-| Total | 93.5 | |
+| 9.11 | 3 | Refactor, work on calendar features, create / update components (commited 11.11) |
+| 11.11 | 2 | Implement event editing by dragging |
+
+| 12.11 | 4 | Work on event type featue, work on pagination |
+| 25.11 | 5 | Finish event type feature, refactor |
+| 8.12 | 2 | Fix event type fetching |
+| Total | 109.5 | |

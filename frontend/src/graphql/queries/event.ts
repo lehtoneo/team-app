@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import { User } from './me';
+import { EventType } from './oneEventType';
 import { Team } from './team';
 
 export type EventAttendanceUser = Pick<User, 'id' | 'firstname'>;
@@ -21,6 +22,7 @@ export interface Event {
   start: string;
   end: string;
   team: EventTeam;
+  type?: EventType;
   currentUserEventAttendance: UserEventAttendace | null;
   userAttendances: UserEventAttendace[];
 }
@@ -54,6 +56,12 @@ export const EVENT_QUERY = gql`
         }
         attendance
         reason
+      }
+      type {
+        id
+        name
+        color
+        teamId
       }
       currentUserEventAttendance {
         id

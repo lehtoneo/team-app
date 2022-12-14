@@ -2,17 +2,17 @@ import React from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 
 import SingleEventPage from './SingleEventPage';
-import CreateTeamEventContent from './CreateTeamEventContent';
 import useTeam from '../../../../hooks/useTeam';
 import Button from '../../../Button';
 import Header from '../../../Header';
 import LoadingPage from '../../LoadingPage';
 import RequireTeamAuthPage from '../RequireTeamAuthPage';
-import EventPaginatedList from '../../../eventComps/EventPaginatedList';
 import useEventConnection from '../../../../hooks/useEventConnection';
-import Calendar from '../../../calendar/Calendar';
 import CalendarContainer from '../../../calendar/CalendarContainer';
 import FieldInfo from '../../../forms/components/FieldInfo';
+import useEventTypeConnection from '../../../../hooks/useEventTypeConnection';
+import LoadingIndicator from '../../../LoadingIndicator';
+import EventTypes from './components/EventTypes';
 
 interface TeamEventsMainPageContentProps {
   teamId: number;
@@ -28,6 +28,10 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
     eventFilters: { teamId: props.teamId }
   });
 
+  const eventTypeConnection = useEventTypeConnection({
+    filterEventTypes: { teamId: props.teamId }
+  });
+
   return (
     <div>
       <Header size={2}>Events</Header>
@@ -37,6 +41,8 @@ const TeamEventsMainPageContent: React.FC<TeamEventsMainPageContentProps> = (
         editable={teamAuth.event.writeRights}
         teamId={props.teamId}
       />
+      <Header size={2}>Event types</Header>
+      <EventTypes teamId={props.teamId} />
     </div>
   );
 };
@@ -56,14 +62,6 @@ const TeamEventsPage = () => {
   return (
     <Routes>
       <Route path="/" element={<TeamEventsMainPageContent teamId={teamId} />} />
-      <Route
-        path="/create"
-        element={
-          <RequireTeamAuthPage isAuthorized={teamAuth.event.writeRights}>
-            <CreateTeamEventContent teamId={teamId} />
-          </RequireTeamAuthPage>
-        }
-      />
       <Route
         path="/:eventId/*"
         element={

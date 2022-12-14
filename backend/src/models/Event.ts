@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { EventType } from './EventType';
 import { IdAndDates } from './IdAndDates';
 import { Team } from './Team';
 
@@ -31,6 +32,16 @@ export class Event extends IdAndDates {
     { lazy: true }
   )
   userAttendances?: Promise<UserEventAttendance[]>;
+
+  @Field(() => EventType, { nullable: true })
+  @ManyToOne(() => EventType, {
+    lazy: true,
+    onDelete: 'CASCADE'
+  })
+  type?: Promise<EventType> | null;
+
+  @Column({ nullable: true })
+  typeId?: number | null;
 
   @Field(() => Team)
   @ManyToOne(() => Team, { lazy: true, cascade: true, onDelete: 'CASCADE' })

@@ -33,9 +33,11 @@ import { EditEventInput } from '../inputs/event/EditEventInput';
 import teamAuthService from '../services/teamAuth';
 import { TeamMemberRole } from '../models/TeamMembership';
 import dbUtils from '../util/db';
+import { EventType } from '../models/EventType';
 
 const teamRepository = AppDataSource.getRepository(Team);
 const eventRepository = AppDataSource.getRepository(Event);
+const eventTypeRepository = AppDataSource.getRepository(EventType);
 const userEventAttendanceRepository =
   AppDataSource.getRepository(UserEventAttendance);
 
@@ -64,6 +66,21 @@ export class EventResolver {
       eventId: event.id
     });
     return userAttendance;
+  }
+  @FieldResolver(() => EventType)
+  async type(
+    @Root() event: Event,
+    @Ctx() ctx: MyContext
+  ): Promise<EventType | null> {
+    if (!ctx.payload.user) {
+      return null;
+    }
+    const id = event.typeId;
+    if (id === null) {
+      return null;
+    }
+    const type = await eventTypeRepository.findOneBy({ id: id });
+    return type;
   }
   @UseMiddleware(isAuth)
   @Mutation(() => Event)
@@ -123,8 +140,19 @@ export class EventResolver {
       TeamMemberRole.ADMIN
     );
 
-    event.name = data.name;
-    event.description = data.description;
+    if (data.name) {
+      event.name = data.name;
+    }
+    if (data.description) {
+      event.description = data.description;
+    }
+
+    event.typeId = Number(data.typeId);
+
+    if (data.typeId === undefined) {
+      event.typeId = null;
+      event.type = null;
+    }
     event.end = data.end;
     event.start = data.start;
     const savedEvent = await eventRepository.save(event);
@@ -222,6 +250,7 @@ export class EventResolver {
       order,
       take: first + 1
     });
+
     if (connArgs?.before) {
       eventDbResult = eventDbResult.reverse();
     }
