@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 interface INavBarProps {
   currentRoute?: string;
   onSignInPress?: () => void;
+  onSignUpPress?: () => void;
   onSignOutPress?: () => any;
   isLoggedIn: boolean;
 }
@@ -13,12 +15,15 @@ const NavBar = (props: INavBarProps) => {
 
   const notLoggedIn = !props.isLoggedIn;
 
+  const menuItemClass =
+    'block py-2 pr-4 pl-3 p-0 border-gray-100  border-0 hover:text-blue-700 hover:underline ';
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
   return (
     <header>
-      <nav className="px-100 sm:px-2 bg-white border border-gray py-2.5 rounded dark:bg-gray-800">
+      <nav className=" bg-white border border-gray py-2.5 rounded dark:bg-gray-800">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="bg-red flex items-center">
             <span className="text-xl font-semibold dark:text-white">
@@ -67,11 +72,7 @@ const NavBar = (props: INavBarProps) => {
           >
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li>
-                <Link
-                  to="/"
-                  className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                  aria-current="page"
-                >
+                <Link to="/" className={menuItemClass} aria-current="page">
                   Home
                 </Link>
               </li>
@@ -79,7 +80,7 @@ const NavBar = (props: INavBarProps) => {
                 <li>
                   <Link
                     to="/my-events"
-                    className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                    className={menuItemClass}
                     aria-current="page"
                   >
                     My events
@@ -90,7 +91,7 @@ const NavBar = (props: INavBarProps) => {
                 <li>
                   <Link
                     to="/teams"
-                    className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                    className={menuItemClass}
                     aria-current="page"
                   >
                     Teams
@@ -98,24 +99,29 @@ const NavBar = (props: INavBarProps) => {
                 </li>
               )}
               <li>
-                <Link
-                  to="/about"
-                  className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                  aria-current="page"
-                >
+                <Link to="/about" className={menuItemClass} aria-current="page">
                   About
                 </Link>
               </li>
-              <li>
-                {notLoggedIn ? (
-                  <button
-                    onClick={props.onSignInPress}
-                    className="animate-pulse block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                    type="button"
-                  >
-                    Sign in
-                  </button>
-                ) : (
+              {notLoggedIn ? (
+                <div className="flex">
+                  <li>
+                    <button
+                      onClick={props.onSignInPress}
+                      className={`${menuItemClass} animate-pulse`}
+                      type="button"
+                    >
+                      Log In
+                    </button>
+                  </li>
+                  <li>
+                    <Button onClick={props.onSignUpPress} color="green">
+                      Sign Up
+                    </Button>
+                  </li>
+                </div>
+              ) : (
+                <li>
                   <button
                     onClick={props.onSignOutPress}
                     className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
@@ -124,8 +130,8 @@ const NavBar = (props: INavBarProps) => {
                     {' '}
                     Sign out
                   </button>
-                )}
-              </li>
+                </li>
+              )}
             </ul>
           </div>
         </div>

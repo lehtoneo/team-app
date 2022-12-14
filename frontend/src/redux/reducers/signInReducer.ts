@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface SignInState {
-  userWantsToLogin: boolean;
+export interface SignInState {
+  signInUpModalOpen: boolean;
+  modalState: 'sign-in' | 'sign-up';
 }
 
 const initialState = {
-  userWantsToLogin: false
+  signInUpModalOpen: false
 } as SignInState;
 
 export const signInReducer = createSlice({
@@ -13,12 +14,14 @@ export const signInReducer = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setUserWantsToLogin: (state, action: PayloadAction<boolean>) => {
-      state.userWantsToLogin = action.payload;
+    setSignInUpModalState: (state, action: PayloadAction<SignInState>) => {
+      state.signInUpModalOpen = action.payload.signInUpModalOpen;
+      state.modalState = action.payload.modalState;
     }
   }
 });
 
-export const { setUserWantsToLogin } = signInReducer.actions;
+export const { setSignInUpModalState: setSignInUpModalStateAction } =
+  signInReducer.actions;
 
 export default signInReducer.reducer;

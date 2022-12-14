@@ -1,8 +1,6 @@
 import React from 'react';
 import useCurrentUser from '../../hooks/useCurrentUser';
-import Button from '../Button';
 import PageContainer from './components/PageContainer';
-import useSignIn from '../../hooks/useSignIn';
 import useAppOpenStatistics from '../../hooks/useAppOpenStatistics';
 const AppOpenStatistics = () => {
   const { appOpenStatistics } = useAppOpenStatistics();
@@ -24,7 +22,6 @@ const AppOpenStatistics = () => {
 
 const HomePage = () => {
   const { isLoggedIn, currentUser } = useCurrentUser();
-  const { setUserWantsToLogin } = useSignIn();
   if (isLoggedIn === undefined) {
     return <PageContainer></PageContainer>;
   }
@@ -34,13 +31,6 @@ const HomePage = () => {
   return (
     <PageContainer header={headerText}>
       <AppOpenStatistics />
-      {!isLoggedIn && (
-        <div className="my-2">
-          <Button onClick={() => setUserWantsToLogin(true)}>
-            Sign In to get started
-          </Button>
-        </div>
-      )}
     </PageContainer>
   );
 };

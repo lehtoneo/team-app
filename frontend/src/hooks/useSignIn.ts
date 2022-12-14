@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from './redux';
 import { useMutation, useApolloClient } from '@apollo/client';
-import { setUserWantsToLogin as setUserWantsToLoginAction } from '../redux/reducers/signInReducer';
+import {
+  setSignInUpModalStateAction,
+  SignInState
+} from '../redux/reducers/signInReducer';
 import tokenManager from '../utils/TokenManager';
 import {
   SignInData,
@@ -18,8 +21,8 @@ const useSignIn = () => {
   >(SIGN_IN, {
     fetchPolicy: 'no-cache'
   });
-  const setUserWantsToLogin = (val: boolean) => {
-    dispatch(setUserWantsToLoginAction(val));
+  const setSignInUpModalOpen = (state: SignInState) => {
+    dispatch(setSignInUpModalStateAction(state));
   };
   const signIn = async (signInInput: SignInInput) => {
     const res = await signInMutation({
@@ -39,7 +42,7 @@ const useSignIn = () => {
   return {
     signIn,
     ...signInState,
-    setUserWantsToLogin
+    setSignInUpModalOpen
   };
 };
 

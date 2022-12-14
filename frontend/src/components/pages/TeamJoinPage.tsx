@@ -12,14 +12,23 @@ interface TeamJoinPageContentProps {
 }
 
 const NotLoggedInContent: React.FC = () => {
-  const { setUserWantsToLogin } = useSignIn();
+  const { setSignInUpModalOpen } = useSignIn();
   return (
     <div>
       <div className="text-xl my-2">
         You need to be signed in to join a team
       </div>
       <div className="my-2">
-        <Button onClick={() => setUserWantsToLogin(true)}>Sign In</Button>
+        <Button
+          onClick={() =>
+            setSignInUpModalOpen({
+              modalState: 'sign-in',
+              signInUpModalOpen: true
+            })
+          }
+        >
+          Sign In
+        </Button>
       </div>
     </div>
   );

@@ -22,14 +22,14 @@ import AboutPage from './components/pages/AboutPage';
 
 function App() {
   const { onConfirm, onCancel, confirmState } = useConfirm();
-  const { userWantsToLogin, setUserWantsToLogin } = useSignIn();
+  const { signInUpModalOpen, modalState, setSignInUpModalOpen } = useSignIn();
   const { signOut } = useSignOut();
   const userState = useCurrentUser({ updateValues: true });
   if (userState.isLoggedIn === undefined) {
     return <LoadingPage />;
   }
   return (
-    <div className="flex-row bg-gray-200" id="app">
+    <div className="flex-row bg-gray-200 min-h-screen" id="app">
       <ConfirmModal
         confirmState={confirmState}
         isOpen={confirmState.show}
@@ -37,17 +37,34 @@ function App() {
         onConfirm={onConfirm}
       />
       <SignInUpModal
-        isOpen={userWantsToLogin}
-        onClose={() => setUserWantsToLogin(false)}
+        isOpen={signInUpModalOpen}
+        modalState={modalState}
+        onClose={() =>
+          setSignInUpModalOpen({
+            modalState: modalState,
+            signInUpModalOpen: false
+          })
+        }
       />
-      <div className="p-2">
+      <div className="pb-2">
         <NavBar
-          onSignInPress={() => setUserWantsToLogin(true)}
+          onSignInPress={() =>
+            setSignInUpModalOpen({
+              modalState: 'sign-in',
+              signInUpModalOpen: true
+            })
+          }
+          onSignUpPress={() => {
+            setSignInUpModalOpen({
+              modalState: 'sign-up',
+              signInUpModalOpen: true
+            });
+          }}
           isLoggedIn={userState.isLoggedIn}
           onSignOutPress={signOut}
         />
       </div>
-      <div className="p-5 container mx-auto bg-white min-h-screen rounded my-0">
+      <div className="p-5 container mx-auto bg-white  rounded my-0">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
