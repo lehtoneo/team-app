@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   EventConnectionInput,
   EventConnectionData,
@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client';
 
 const useEventConnection = (
   initialArgs?: EventConnectionInput,
-  log?: boolean
+  skip?: boolean
 ) => {
   const [args, setArgs] = useState<EventConnectionInput>({ ...initialArgs });
   const { data, loading, error } = useQuery<
@@ -60,13 +60,18 @@ const useEventConnection = (
     });
   };
 
+  const refetch = async (args: EventConnectionInput) => {
+    setArgs({ ...args });
+  };
+
   return {
     pageInfo: data?.eventConnection?.pageInfo,
     events: data?.eventConnection?.edges.map((edge) => edge.node) || [],
     loading,
     error,
     fetchNextPage,
-    fetchPreviousPage
+    fetchPreviousPage,
+    refetch
   };
 };
 

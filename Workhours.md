@@ -43,4 +43,5 @@
 | 12.11 | 4 | Work on event type featue, work on pagination |
 | 25.11 | 5 | Finish event type feature, refactor |
 | 8.12 | 2 | Fix event type fetching |
+| 14.12 | 2 | Fix heroku deployment, fetch events mothly on calendar view|
 | Total | 109.5 | |

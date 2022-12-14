@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FullCalendar, {
+  DatesSetArg,
   EventClickArg,
   EventDropArg,
   EventInput
@@ -16,6 +17,7 @@ interface ICalendarProps {
   onDropped?: (eventId: string, newStart: Date, newEnd: Date) => any;
   editable?: boolean;
   teamId?: number;
+  onDatesSet?: (start: Date, end: Date) => any;
 }
 
 const Calendar: React.FC<ICalendarProps> = (props) => {
@@ -29,6 +31,9 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     };
   });
 
+  const handleDatesSet = (e: DatesSetArg) => {
+    props.onDatesSet && props.onDatesSet(e.start, e.end);
+  };
   const handleEventClick = (e: EventClickArg) => {
     props.onEventClick(e.event.id);
   };
@@ -51,6 +56,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
+      datesSet={handleDatesSet}
       eventClick={handleEventClick}
       dateClick={handleDateClick}
       editable={props.editable}

@@ -10,7 +10,7 @@ const useEventTypeConnection = (params: EventTypeConnectionInput) => {
   const [args, setArgs] = useState<EventTypeConnectionInput>({
     ...params
   });
-  console.log({ args });
+
   const { data, loading, error } = useQuery<
     EventTypeConnectionData,
     EventTypeConnectionInput

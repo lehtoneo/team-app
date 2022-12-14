@@ -18,15 +18,18 @@ interface ICalendarProps {
 const CalendarContainer: React.FC<ICalendarProps> = (props) => {
   const confirm = useConfirm();
   let [searchParams, setSearchParams] = useSearchParams();
-  const calendarEventConnection = useEventConnection(
-    props.teamId
-      ? {
-          eventFilters: {
-            teamId: props.teamId
-          }
-        }
-      : undefined
-  );
+  const [startEndDate, setStartEndDate] = useState<
+    { start: Date; end: Date } | undefined
+  >(undefined);
+  const calendarEventConnection = useEventConnection({
+    paginationInput: {
+      first: 2
+    },
+    eventFilters: {
+      teamId: props.teamId
+    }
+  });
+  console.log(calendarEventConnection.events.length);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
     searchParams.get('eventId') || undefined
@@ -44,6 +47,22 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
   const handleEventClose = () => {
     searchParams.delete('eventId');
     setSearchParams(searchParams);
+  };
+
+  const handleDatesChange = (start: Date, end: Date) => {
+    calendarEventConnection.refetch({
+      paginationInput: {
+        first: 10000
+      },
+      eventFilters: {
+        teamId: props.teamId,
+        start: {
+          min: start,
+          max: end
+        }
+      }
+    });
+    setStartEndDate({ start, end });
   };
 
   const handleDropped = async (
@@ -100,6 +119,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       )}
       {
         <Calendar
+          onDatesSet={handleDatesChange}
           onEventClick={handleEventClick}
           onDateClick={handleDateClick}
           onDropped={handleDropped}
