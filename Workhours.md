@@ -45,4 +45,5 @@
 | 8.12 | 2 | Fix event type fetching |
 | 14.12 | 2 | Fix heroku deployment, fetch events mothly on calendar view|
 | 14.12 | 1 | Styles, usability and refactor |
-| Total | 112.5 | |
+| 16.12 | 2 | Navbar menu component, style navbar, refactor |
+| Total | 114.5 | |

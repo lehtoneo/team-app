@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from './Button';
+import MenuDropdown from './MenuDropdown';
 
 interface INavBarProps {
   currentRoute?: string;
@@ -10,13 +11,30 @@ interface INavBarProps {
   isLoggedIn: boolean;
 }
 
+const teamsDropdownOptions = [
+  {
+    to: '/teams/own',
+    label: 'My teams'
+  },
+  {
+    to: '/teams/create',
+    label: 'Create a new Team'
+  }
+];
+
 const NavBar = (props: INavBarProps) => {
+  const location = useLocation();
+  console.log(location.pathname);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const notLoggedIn = !props.isLoggedIn;
 
-  const menuItemClass =
-    'block py-2 pr-4 pl-3 p-0 border-gray-100  border-0 hover:text-blue-700 hover:underline ';
+  const menuItemClass = (pathStart: string) => {
+    const currPathStart = location.pathname.split('/')[1];
+    return `block py-2 pr-4 pl-3 p-0 border-gray-100  border-0 hover:text-blue-700 hover:underline inline-flex items-center ${
+      currPathStart === pathStart ? 'text-blue-700' : ''
+    }`;
+  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -72,34 +90,36 @@ const NavBar = (props: INavBarProps) => {
           >
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li>
-                <Link to="/" className={menuItemClass} aria-current="page">
+                <Link to="/" className={menuItemClass('')} aria-current="page">
                   Home
                 </Link>
               </li>
               {props.isLoggedIn && (
                 <li>
+                  <MenuDropdown
+                    togglerLabel="Teams"
+                    toggleClassName={menuItemClass('teams')}
+                    menuOptions={teamsDropdownOptions}
+                  />
+                </li>
+              )}
+              {props.isLoggedIn && (
+                <li>
                   <Link
                     to="/my-events"
-                    className={menuItemClass}
+                    className={menuItemClass('my-events')}
                     aria-current="page"
                   >
                     My events
                   </Link>
                 </li>
               )}
-              {props.isLoggedIn && (
-                <li>
-                  <Link
-                    to="/teams"
-                    className={menuItemClass}
-                    aria-current="page"
-                  >
-                    Teams
-                  </Link>
-                </li>
-              )}
               <li>
-                <Link to="/about" className={menuItemClass} aria-current="page">
+                <Link
+                  to="/about"
+                  className={menuItemClass('about')}
+                  aria-current="page"
+                >
                   About
                 </Link>
               </li>
@@ -108,7 +128,7 @@ const NavBar = (props: INavBarProps) => {
                   <li>
                     <button
                       onClick={props.onSignInPress}
-                      className={`${menuItemClass} animate-pulse`}
+                      className={`${menuItemClass('l')} animate-pulse`}
                       type="button"
                     >
                       Log In
@@ -124,7 +144,7 @@ const NavBar = (props: INavBarProps) => {
                 <li>
                   <button
                     onClick={props.onSignOutPress}
-                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                    className={`${menuItemClass('s')}`}
                     type="button"
                   >
                     {' '}
