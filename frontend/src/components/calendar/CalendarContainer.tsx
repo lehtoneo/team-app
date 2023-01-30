@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { EventListInfo } from '../../graphql/queries/eventConnection';
+import moment from 'moment';
 import StyledModal from '../modals/StyledModal';
 import EventFormContainer from '../forms/EventFormContainer';
 import Calendar from './Calendar';
@@ -18,9 +18,10 @@ interface ICalendarProps {
 const CalendarContainer: React.FC<ICalendarProps> = (props) => {
   const confirm = useConfirm();
   let [searchParams, setSearchParams] = useSearchParams();
-  const [startEndDate, setStartEndDate] = useState<
-    { start: Date; end: Date } | undefined
-  >(undefined);
+
+  const searchParamsMonth = searchParams.get('month');
+  const initialCalendarDate = searchParamsMonth;
+  console.log({ initialCalendarDate });
   const calendarEventConnection = useEventConnection({
     paginationInput: {
       first: 2
@@ -29,19 +30,21 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       teamId: props.teamId
     }
   });
-  console.log(calendarEventConnection.events.length);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
     searchParams.get('eventId') || undefined
   );
-  const [initialDate, setInitialDate] = useState<Date | undefined>();
+  const [initialFormDate, setInitialFormDate] = useState<Date | undefined>();
   const { editEvent } = useEvent();
   useEffect(() => {
     setSelectedEventId(searchParams.get('eventId') || undefined);
   }, [searchParams]);
   const handleEventClick = (eventId: string) => {
     // open modal in which
-    setSearchParams({ eventId });
+    searchParams.delete('eventId');
+    searchParams.append('eventId', eventId);
+    setSearchParams(searchParams);
   };
 
   const handleEventClose = () => {
@@ -62,7 +65,12 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
         }
       }
     });
-    setStartEndDate({ start, end });
+    searchParams.delete('month');
+    searchParams.append(
+      'month',
+      moment(start).add(8, 'days').format('yyyy-MM-DD')
+    );
+    setSearchParams(searchParams);
   };
 
   const handleDropped = async (
@@ -90,7 +98,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       return;
     }
     setSelectedEventId(undefined);
-    setInitialDate(d);
+    setInitialFormDate(d);
     setIsModalOpen(true);
   };
 
@@ -102,7 +110,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       >
         {isModalOpen && (
           <EventFormContainer
-            initialDate={initialDate}
+            initialDate={initialFormDate}
             eventId={selectedEventId}
             teamId={props.teamId}
             disabled={!props.editable}
@@ -124,6 +132,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
           onDateClick={handleDateClick}
           onDropped={handleDropped}
           editable={props.editable}
+          initialDate={initialCalendarDate || undefined}
           events={calendarEventConnection.events}
         />
       }

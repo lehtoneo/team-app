@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FullCalendar, {
+  DateInput,
   DatesSetArg,
   EventClickArg,
   EventDropArg,
@@ -18,6 +19,7 @@ interface ICalendarProps {
   editable?: boolean;
   teamId?: number;
   onDatesSet?: (start: Date, end: Date) => any;
+  initialDate?: DateInput;
 }
 
 const Calendar: React.FC<ICalendarProps> = (props) => {
@@ -32,6 +34,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
   });
 
   const handleDatesSet = (e: DatesSetArg) => {
+    console.log(e);
     props.onDatesSet && props.onDatesSet(e.start, e.end);
   };
   const handleEventClick = (e: EventClickArg) => {
@@ -59,6 +62,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
       datesSet={handleDatesSet}
       eventClick={handleEventClick}
       dateClick={handleDateClick}
+      initialDate={props.initialDate}
       editable={props.editable}
       eventDrop={handleDrop}
       droppable={props.editable}

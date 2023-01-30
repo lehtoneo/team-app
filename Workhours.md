@@ -46,4 +46,5 @@
 | 14.12 | 2 | Fix heroku deployment, fetch events mothly on calendar view|
 | 14.12 | 1 | Styles, usability and refactor |
 | 16.12 | 2 | Navbar menu component, style navbar, refactor |
-| Total | 114.5 | |
+| 30.1 | 0.5 | Initial date on calendar |
+| Total | 115 | Initial date on calendar |
