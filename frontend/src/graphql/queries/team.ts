@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
-
 import { User } from './me';
+import { TeamNewsConnection } from './newsConnection';
 
 export const teamMemberRoles = ['OWNER', 'MEMBER', 'ADMIN'] as const;
 
@@ -23,6 +23,7 @@ export type TeamTeamMembership = Pick<
   TeamMembership,
   'id' | 'user' | 'role' | 'statistics'
 >;
+
 export interface TeamSettings {
   id: number;
   discordWebhookUrl: string | null;
@@ -42,6 +43,7 @@ export interface Team extends TeamBaseInfo {
   joinId: string | null;
   settings: TeamSettings | null;
   pastEventsCount: number;
+  news: TeamNewsConnection;
 }
 
 export type TeamQuerySuccessData = Pick<
@@ -54,20 +56,32 @@ export type TeamQuerySuccessData = Pick<
   | 'joinId'
   | 'settings'
   | 'pastEventsCount'
+  | 'news'
 >;
 
 interface GetTeamById {
   id: number;
   joinId?: undefined;
+  newsBefore?: string;
+  newsAfter?: string;
+  newsFirst?: string;
 }
 interface GetTeamByJoinId {
   id?: undefined;
   joinId: string;
+  newsBefore?: string;
+  newsAfter?: string;
+  newsFirst?: string;
 }
 export type GetOneTeamInput = GetTeamById | GetTeamByJoinId;
 
 export const TEAM_QUERY = gql`
-  query oneTeam($getOneTeamInput: GetOneTeamInput!) {
+  query oneTeam(
+    $getOneTeamInput: GetOneTeamInput!
+    $newsBefore: String
+    $newsAfter: String
+    $newsFirst: Float
+  ) {
     oneTeam(getOneTeamInput: $getOneTeamInput) {
       id
       pastEventsCount
@@ -83,6 +97,22 @@ export const TEAM_QUERY = gql`
       currentUserTeamMembership {
         id
         role
+      }
+      news(after: $newsAfter, before: $newsBefore, first: $newsFirst) {
+        edges {
+          cursor
+          node {
+            id
+            description
+            title
+          }
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          hasNextPage
+          endCursor
+        }
       }
       memberships {
         id

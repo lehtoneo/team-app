@@ -12,6 +12,7 @@ import { EventResolver } from './resolvers/EventResolver';
 import TeamMembershipResolver from './resolvers/TeamMembershipResolver';
 import UserEventAttendanceResolver from './resolvers/UserEventAttendanceResolver';
 import { EventTypeResolver } from './resolvers/EventTypeResolver';
+import { TeamNewsResolver } from './resolvers/TeamNewsResolver';
 
 export interface IContext {
   user?: User;
@@ -26,7 +27,8 @@ const getApolloServer = async () => {
       EventTypeResolver,
       TeamMembershipResolver,
       UserEventAttendanceResolver,
-      AppOpenStatisticsResolver
+      AppOpenStatisticsResolver,
+      TeamNewsResolver
     ]
   });
   const server = new ApolloServer({

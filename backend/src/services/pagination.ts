@@ -1,14 +1,19 @@
-/* import {
+import { UserInputError } from 'apollo-server-express';
+import {
+  BaseEntity,
   DataSource,
   EntityTarget,
   FindOptionsOrder,
+  FindOptionsOrderProperty,
   FindOptionsWhere,
+  LessThan,
+  MoreThan,
   ObjectLiteral,
   Repository
 } from 'typeorm';
 import AppDataSource from '../data-source';
 import { Dates } from '../models/IdAndDates';
-import { PageInfo } from '../relaySpec';
+import { PageInfo, PaginationInput } from '../relaySpec';
 
 type Edge<TNodeType> = {
   node: TNodeType;
@@ -19,30 +24,60 @@ type Connection<TNodeType> = {
   pageInfo: PageInfo;
 };
 
-export async function FetchPage<TNodeType extends ObjectLiteral extends Dates>(
-  target: EntityTarget<TNodeType>,
-  size: number,
+export async function fetchPageWithCreatedAtCursor<TNodeType extends Dates>(
+  paginationInput: PaginationInput,
   where: FindOptionsWhere<TNodeType>,
-  getCursor: (node: TNodeType) => string
+  repository: Repository<TNodeType>
 ): Promise<Connection<TNodeType>> {
-  const repo = AppDataSource.getRepository(target);
+  const first = paginationInput?.first || 10;
+  const after = paginationInput?.after || new Date('1800-01-01').toISOString();
 
-  const dbResult = await repo.find({
+  const afterIsDate = !isNaN(Date.parse(after));
+  if (!afterIsDate) {
+    throw new UserInputError('Arg after should be a date string');
+  }
+
+  let usedWhere = where;
+
+  if (after) {
+    // add 1 millisecond to after to exlude first
+    const afterDate = new Date(after);
+    usedWhere = {
+      ...usedWhere,
+      createdAt: LessThan(afterDate)
+    };
+  } else if (paginationInput?.before) {
+    const beforeDate = new Date(paginationInput.before);
+    usedWhere = {
+      ...usedWhere,
+      createdAt: MoreThan(beforeDate)
+    };
+  }
+
+  const order = {
+    createdAt: paginationInput.before ? 'DESC' : 'ASC'
+  } as unknown as FindOptionsOrder<TNodeType>;
+
+  let dbResult = await repository.find({
     where,
     order,
-    take: size + 1
+    take: first + 1
   });
+
+  if (paginationInput?.before) {
+    dbResult = dbResult.reverse();
+  }
+
   const edges = dbResult
     .map((node) => {
       return {
         node: node,
-        cursor: getCursor(node)
+        cursor: node.createdAt.toISOString()
       };
     })
-    .slice(0, size);
+    .slice(0, first);
 
   const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
-
   const startCursor = edges.length > 0 ? edges[0].cursor : null;
 
   const getHasPreviousPage = async () => {
@@ -50,17 +85,28 @@ export async function FetchPage<TNodeType extends ObjectLiteral extends Dates>(
       return false;
     }
 
-    const previousInDb = await Team.findOne({
-      where: {
-        ...where,
-        createdAt: LessThan(new Date(startCursor))
-      },
-      order: {
-        updatedAt: 'DESC'
-      }
+    const newWhere = {
+      ...usedWhere,
+      createdAt: MoreThan(startCursor)
+    };
+    const previousInDb = await repository.findOne({
+      order,
+      where: newWhere
     });
 
-    return previousInDb !== undefined;
+    return previousInDb !== null;
+  };
+  const hasPreviousPage = await getHasPreviousPage();
+
+  const pageInfo: PageInfo = {
+    hasNextPage: dbResult.length > first,
+    endCursor,
+    startCursor,
+    hasPreviousPage: hasPreviousPage
+  };
+
+  return {
+    edges,
+    pageInfo
   };
 }
-*/

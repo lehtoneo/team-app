@@ -35,6 +35,10 @@ import { EditTeamInput } from '../inputs/team/EditTeamInput';
 import { Event } from '../models/Event';
 import { GetByIdArgs } from '../args/GetByIdArgs';
 import * as uuid from 'uuid';
+import { TeamNews } from '../models/TeamNews';
+import { FilterTeamNewsInput } from '../inputs/team/FilterTeamNewsInput';
+import { fetchPageWithCreatedAtCursor } from '../services/pagination';
+import { TeamNewsConnection } from './TeamNewsResolver';
 
 @ObjectType()
 export class TeamEdge extends EdgeType('team', Team) {}
@@ -49,6 +53,7 @@ const teamRepository = AppDataSource.getRepository(Team);
 const teamMembershipRepository = AppDataSource.getRepository(TeamMembership);
 const teamSettingsRepository = AppDataSource.getRepository(TeamSettings);
 const eventRepository = AppDataSource.getRepository(Event);
+const teamNewsRepository = AppDataSource.getRepository(TeamNews);
 @Resolver(() => Team)
 export class TeamResolver {
   @FieldResolver(() => Int, { nullable: false })
@@ -68,6 +73,24 @@ export class TeamResolver {
       teamId: id
     });
     return memberships;
+  }
+
+  @UseMiddleware(isAuth)
+  @FieldResolver(() => TeamNewsConnection, { nullable: false })
+  async news(
+    @Ctx() ctx: MyAuthContext,
+    @Root() team: Team,
+    @Args() paginationArgs: PaginationInput
+  ): Promise<TeamNewsConnection> {
+    const where = {
+      teamId: team.id
+    };
+    const newsConnection = await fetchPageWithCreatedAtCursor(
+      paginationArgs,
+      where,
+      teamNewsRepository
+    );
+    return newsConnection;
   }
 
   @FieldResolver(() => TeamSettings, { nullable: true })

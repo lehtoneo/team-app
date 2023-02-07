@@ -10,6 +10,7 @@ import { config } from './config';
 import { TeamMembership } from './models/TeamMembership';
 import { TeamSettings } from './models/TeamSettings';
 import { EventType } from './models/EventType';
+import { TeamNews } from './models/TeamNews';
 const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
@@ -25,7 +26,8 @@ const options: DataSourceOptions = {
     EventType,
     UserEventAttendance,
     TeamMembership,
-    TeamSettings
+    TeamSettings,
+    TeamNews
   ],
   migrations: [],
   subscribers: [],

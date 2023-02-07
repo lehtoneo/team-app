@@ -11,6 +11,7 @@ import {
 import { ObjectType, Field, Int } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { Event } from './Event';
+import { TeamNews } from './TeamNews';
 
 export interface TeamBaseInfo {
   name: string;
@@ -50,6 +51,10 @@ export class Team extends IdAndDates implements TeamBaseInfo {
   @OneToOne(() => TeamSettings, { lazy: true, cascade: true })
   @JoinColumn({ name: 'settingsId' })
   settings: Promise<TeamSettings>;
+
+  @OneToOne(() => TeamNews, { lazy: true, cascade: true })
+  @JoinColumn({ name: 'newsId' })
+  news: Promise<TeamNews>;
 
   @Field(() => Int, { nullable: false })
   pastEventsCount: Promise<number>;

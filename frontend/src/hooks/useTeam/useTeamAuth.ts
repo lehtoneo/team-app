@@ -7,7 +7,8 @@ const teamRightSubjects = [
   'settings',
   'event',
   'membership',
-  'deleteTeam'
+  'deleteTeam',
+  'news'
 ] as const;
 
 type TeamRightSubject = typeof teamRightSubjects[number];
@@ -56,6 +57,10 @@ const useTeamAuth = (params: TeamAuthParams | undefined) => {
       writeRights: isAtleastOwner
     },
     event: {
+      readRights: isAtleastMember,
+      writeRights: isAtleastAdmin
+    },
+    news: {
       readRights: isAtleastMember,
       writeRights: isAtleastAdmin
     },

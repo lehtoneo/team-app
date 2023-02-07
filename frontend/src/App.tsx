@@ -19,6 +19,7 @@ import LoadingPage from './components/pages/LoadingPage';
 import CreateTeamPage from './components/pages/CreateTeamPage';
 import MyEventsPage from './components/pages/my-events';
 import AboutPage from './components/pages/AboutPage';
+import NotFoundPage from './components/pages/NotFoundPage';
 
 function App() {
   const { onConfirm, onCancel, confirmState } = useConfirm();
@@ -117,7 +118,7 @@ function App() {
               </RequireAuthPage>
             }
           />
-          <Route path="/*" element={<div>Page Not found</div>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </div>

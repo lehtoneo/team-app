@@ -1,11 +1,14 @@
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
+import useTeamNewsConnection from '../../../hooks/useTeamNews/useTeamNewsConnection';
 import Button from '../../Button';
 import Header from '../../Header';
 import PageContainer from '../components/PageContainer';
 import LoadingPage from '../LoadingPage';
+import NotFoundPage from '../NotFoundPage';
 import RequireTeamAuthPage from './RequireTeamAuthPage';
 import TeamEventsPage from './team-events/TeamEventsPage';
+import CreateOrUpdateTeamNewsPage from './team-news/CreateOrUpdateTeamNewsPage';
 import TeamEditBaseInfoContent from './TeamEditBaseInfoContent';
 import TeamMainPageContent from './TeamMainPageContent';
 import TeamSettingsContent from './TeamSettingsContent';
@@ -25,6 +28,9 @@ const TeamPage = () => {
 
   return (
     <PageContainer>
+      <div className="mb-5">
+        <Header>{`Team ${team?.name || ''}`}</Header>
+      </div>
       <div className="flex my-2">
         <Link to="">
           <Button>Main</Button>
@@ -43,9 +49,6 @@ const TeamPage = () => {
             <Button>Settings</Button>
           </Link>
         )}
-      </div>
-      <div className="mb-5">
-        <Header>{`Team ${team?.name || ''}`}</Header>
       </div>
       <Routes>
         <Route path="/" element={<TeamMainPageContent teamId={teamId} />} />
@@ -77,6 +80,23 @@ const TeamPage = () => {
             </RequireTeamAuthPage>
           }
         />
+        <Route
+          path="/news/:newsId/edit"
+          element={
+            <RequireTeamAuthPage isAuthorized={teamAuth.news.writeRights}>
+              <CreateOrUpdateTeamNewsPage />
+            </RequireTeamAuthPage>
+          }
+        />
+        <Route
+          path="/news/create"
+          element={
+            <RequireTeamAuthPage isAuthorized={teamAuth.news.writeRights}>
+              <CreateOrUpdateTeamNewsPage />
+            </RequireTeamAuthPage>
+          }
+        />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </PageContainer>
   );

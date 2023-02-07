@@ -25,3 +25,14 @@ export interface IConnection<T> {
   edges: IEdge<T>[];
   pageInfo: PageInfo;
 }
+
+export interface IDEntity {
+  id: string;
+}
+
+export interface DatesEntity {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IDAndDatesEntity extends IDEntity, DatesEntity {}

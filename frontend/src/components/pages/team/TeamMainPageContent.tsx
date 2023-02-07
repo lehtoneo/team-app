@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import useTeam from '../../../hooks/useTeam';
+import useTeamNewsConnection from '../../../hooks/useTeamNews/useTeamNewsConnection';
 import Button from '../../Button';
+import Header from '../../Header';
 import InfoItem from '../../InfoItem';
 import JoinLink from '../../teamComps/JoinLink';
 import MemberList from '../../teamComps/MemberList';
+import TeamNewsList from '../../teamComps/TeamNewsList';
 import LoadingPage from '../LoadingPage';
 
 interface TeamMainPageContentProps {
@@ -15,6 +18,9 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
   props: TeamMainPageContentProps
 ) => {
   const { team, teamAuth } = useTeam({ id: props.teamId });
+
+  const t = useTeamNewsConnection(props.teamId);
+  console.log(t.data);
   if (team === null) {
     return <Navigate to="/not-found" />;
   }
@@ -48,6 +54,14 @@ const TeamMainPageContent: React.FC<TeamMainPageContentProps> = (
           <JoinLink joinLink={joinLink} />
         </InfoItem>
       )}
+
+      <Header>News</Header>
+      <div className="flex my-2">
+        <Link to="news/create">
+          <Button>Create News</Button>
+        </Link>
+      </div>
+      <TeamNewsList teamId={props.teamId} />
     </div>
   );
 };
