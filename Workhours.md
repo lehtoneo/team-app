@@ -46,5 +46,6 @@
 | 14.12 | 2 | Fix heroku deployment, fetch events mothly on calendar view|
 | 14.12 | 1 | Styles, usability and refactor |
 | 16.12 | 2 | Navbar menu component, style navbar, refactor |
-| 30.1 | 0.5 | Initial date on calendar |
-| Total | 115 | Initial date on calendar |
+| 30.1.2023 | 0.5 | Initial date on calendar |
+| 7.2.2023 | 4 | Start working on TeamNews -feature: models, graphql endpoints, hooks to ui, initial components to ui. Also implement reusable relayStylepagination function to backend |
+| Total | 119 | Initial date on calendar |
