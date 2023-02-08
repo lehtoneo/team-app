@@ -8,10 +8,10 @@ import FormError from './components/FormError';
 
 const TeamNewsSchema = Yup.object().shape({
   title: Yup.string()
-    .min(2, 'Too Short!')
+    .min(1, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  description: Yup.string().max(50, 'Too Long!').nullable()
+  description: Yup.string().max(2000, 'Too Long!').required('Required!')
 });
 interface TeamNewsFormProps {
   onSubmit: (values: TeamNewsFormValues) => Promise<any>;

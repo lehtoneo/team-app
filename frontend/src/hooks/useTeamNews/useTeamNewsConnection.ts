@@ -1,14 +1,37 @@
+import { useState } from 'react';
 import { useNewsConnectionQuery } from '../../graphql/queries/newsConnection';
 
 const useTeamNewsConnection = (id: number) => {
-  const t = useNewsConnectionQuery({
+  const [fetchingMore, setFetchingMore] = useState(false);
+  const initialParams = {
+    teamId: id,
+    first: 10
+  };
+  const query = useNewsConnectionQuery({
     variables: {
-      teamId: id
+      ...initialParams
     }
   });
 
+  const fetchMoreIfCanAsync = async () => {
+    const connection = query.data?.newsConnection;
+    if (!connection || !connection.pageInfo.hasNextPage || fetchingMore) {
+      return;
+    }
+    setFetchingMore(true);
+    await query.fetchMore({
+      variables: {
+        ...initialParams,
+        after: connection.pageInfo.endCursor
+      }
+    });
+    setFetchingMore(false);
+  };
+
   return {
-    data: t.data
+    data: query.data,
+    fetchingMore,
+    fetchMoreIfCanAsync
   };
 };
 

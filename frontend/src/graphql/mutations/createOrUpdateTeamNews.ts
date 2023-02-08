@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, MutationHookOptions, useMutation } from '@apollo/client';
 import { IDAndDatesEntity } from '../commonTypes';
 
 export interface TeamNews extends IDAndDatesEntity {
@@ -9,7 +9,7 @@ export interface TeamNews extends IDAndDatesEntity {
 
 export type CreateOrUpdateTeamNewsMutationResult = Pick<
   TeamNews,
-  'id' | 'description' | 'teamId' | 'title'
+  'id' | 'description' | 'teamId' | 'title' | 'createdAt' | 'updatedAt'
 >;
 
 export interface CreateOrUpdateTeamNewsInput {
@@ -30,6 +30,8 @@ export const CREATE_OR_UPDATE_TEAMNEWS_MUTATION = gql`
       id
       teamId
       title
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -38,9 +40,14 @@ export interface CreateOrUpdateTeamNewsData {
   createOrUpdateTeamNews: CreateOrUpdateTeamNewsMutationResult | null;
 }
 
-export function useCreateOrUpdateTeamNewsMutation() {
+export function useCreateOrUpdateTeamNewsMutation(
+  options?: MutationHookOptions<
+    CreateOrUpdateTeamNewsData,
+    { createOrUpdateTeamNewsInput: CreateOrUpdateTeamNewsInput }
+  >
+) {
   return useMutation<
     CreateOrUpdateTeamNewsData,
     { createOrUpdateTeamNewsInput: CreateOrUpdateTeamNewsInput }
-  >(CREATE_OR_UPDATE_TEAMNEWS_MUTATION, {});
+  >(CREATE_OR_UPDATE_TEAMNEWS_MUTATION, options);
 }

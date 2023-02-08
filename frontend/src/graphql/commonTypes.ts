@@ -31,8 +31,8 @@ export interface IDEntity {
 }
 
 export interface DatesEntity {
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IDAndDatesEntity extends IDEntity, DatesEntity {}

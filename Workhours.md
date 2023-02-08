@@ -48,4 +48,5 @@
 | 16.12 | 2 | Navbar menu component, style navbar, refactor |
 | 30.1.2023 | 0.5 | Initial date on calendar |
 | 7.2.2023 | 4 | Start working on TeamNews -feature: models, graphql endpoints, hooks to ui, initial components to ui. Also implement reusable relayStylepagination function to backend |
-| Total | 119 | Initial date on calendar |
+| 8.2.2023 | 2.5| implement pagination and infinite list to TeamNews |
+| Total | 222.5 | Initial date on calendar |

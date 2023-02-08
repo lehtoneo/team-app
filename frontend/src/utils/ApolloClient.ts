@@ -21,7 +21,33 @@ export const getApolloClient = () => {
   });
   const client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            newsConnection: {
+              keyArgs: ['teamId'],
+              merge(existing, incoming, { args }) {
+                // eslint-disable-next-line no-unused-labels
+                if (!existing) {
+                  return incoming;
+                }
+
+                if (args && !args.after) {
+                  return incoming;
+                }
+                const pageInfo = incoming.pageInfo;
+
+                return {
+                  edges: [...existing.edges, ...incoming.edges],
+                  pageInfo: { ...incoming.pageInfo }
+                };
+              }
+            }
+          }
+        }
+      }
+    })
   });
   return client;
 };

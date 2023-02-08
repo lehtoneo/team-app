@@ -1,18 +1,15 @@
 import { useMutation, gql, useQuery, QueryHookOptions } from '@apollo/client';
-import { IConnection } from '../commonTypes';
+import { IConnection, PaginationInput } from '../commonTypes';
 import { TeamNews } from '../mutations/createOrUpdateTeamNews';
 
 export type TeamNewsNode = Pick<
   TeamNews,
-  'id' | 'title' | 'description' | 'teamId'
+  'id' | 'title' | 'description' | 'teamId' | 'createdAt'
 >;
 export type TeamNewsConnection = IConnection<TeamNewsNode>;
 
-export interface NewsConnectionInput {
+export interface NewsConnectionInput extends PaginationInput {
   teamId: number;
-  first?: number;
-  before?: string;
-  after?: string;
 }
 
 export const NEWS_CONNECTION_QUERY = gql`
@@ -34,6 +31,7 @@ export const NEWS_CONNECTION_QUERY = gql`
           teamId
           title
           description
+          createdAt
         }
         cursor
       }

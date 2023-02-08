@@ -30,16 +30,15 @@ export async function fetchPageWithCreatedAtCursor<TNodeType extends Dates>(
   repository: Repository<TNodeType>
 ): Promise<Connection<TNodeType>> {
   const first = paginationInput?.first || 10;
-  const after = paginationInput?.after || new Date('1800-01-01').toISOString();
-
-  const afterIsDate = !isNaN(Date.parse(after));
-  if (!afterIsDate) {
-    throw new UserInputError('Arg after should be a date string');
-  }
+  const after = paginationInput?.after || undefined;
 
   let usedWhere = where;
 
   if (after) {
+    const afterIsDate = !isNaN(Date.parse(after));
+    if (!afterIsDate) {
+      throw new UserInputError('Arg after should be a date string');
+    }
     // add 1 millisecond to after to exlude first
     const afterDate = new Date(after);
     usedWhere = {
@@ -55,11 +54,11 @@ export async function fetchPageWithCreatedAtCursor<TNodeType extends Dates>(
   }
 
   const order = {
-    createdAt: paginationInput.before ? 'DESC' : 'ASC'
+    createdAt: paginationInput.before ? 'ASC' : 'DESC'
   } as unknown as FindOptionsOrder<TNodeType>;
 
   let dbResult = await repository.find({
-    where,
+    where: usedWhere,
     order,
     take: first + 1
   });
