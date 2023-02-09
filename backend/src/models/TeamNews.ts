@@ -1,7 +1,6 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
-import { Team } from './Team';
 
 @Entity()
 @ObjectType()

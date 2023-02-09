@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, ID, Int } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
 export class Dates extends BaseEntity {

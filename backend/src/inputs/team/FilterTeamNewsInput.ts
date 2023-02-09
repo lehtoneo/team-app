@@ -1,4 +1,4 @@
-import { InputType, Field, ArgsType, ID, Int } from 'type-graphql';
+import { Field, ArgsType, Int } from 'type-graphql';
 import { PaginationInput } from '../../relaySpec';
 
 @ArgsType()

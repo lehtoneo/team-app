@@ -12,7 +12,7 @@ interface TeamMemberStatistics {
 }
 
 export interface TeamMembership {
-  id: number;
+  id: string;
   user: Pick<User, 'id' | 'firstname'>;
   team: Pick<Team, 'id'>;
   role: TeamMemberRole;

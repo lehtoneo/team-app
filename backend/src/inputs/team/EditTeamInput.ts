@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 import { TeamBaseInfo } from '../../models/Team';
 
 @InputType()

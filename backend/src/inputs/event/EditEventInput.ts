@@ -1,4 +1,4 @@
-import { InputType, Field, ID, Int } from 'type-graphql';
+import { InputType, Field, Int } from 'type-graphql';
 
 @InputType()
 export class EditEventInput {
@@ -11,7 +11,7 @@ export class EditEventInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => ID, { nullable: true })
+  @Field(() => Int, { nullable: true })
   typeId?: number | string;
 
   @Field(() => Date)

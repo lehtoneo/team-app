@@ -13,8 +13,7 @@ import {
   FieldResolver,
   Root,
   Int,
-  Args,
-  ID
+  Args
 } from 'type-graphql';
 import { Team } from '../models/Team';
 import {
@@ -36,7 +35,6 @@ import { Event } from '../models/Event';
 import { GetByIdArgs } from '../args/GetByIdArgs';
 import * as uuid from 'uuid';
 import { TeamNews } from '../models/TeamNews';
-import { FilterTeamNewsInput } from '../inputs/team/FilterTeamNewsInput';
 import { fetchPageWithCreatedAtCursor } from '../services/pagination';
 import { TeamNewsConnection } from './TeamNewsResolver';
 
@@ -357,7 +355,7 @@ export class TeamResolver {
   }
 
   @UseMiddleware(isAuth)
-  @Mutation(() => ID)
+  @Mutation(() => Int)
   async deleteTeam(
     @Args() { id }: GetByIdArgs,
     @Ctx() ctx: MyAuthContext

@@ -1,17 +1,11 @@
 import { UserInputError } from 'apollo-server-express';
 import {
-  BaseEntity,
-  DataSource,
-  EntityTarget,
   FindOptionsOrder,
-  FindOptionsOrderProperty,
   FindOptionsWhere,
   LessThan,
   MoreThan,
-  ObjectLiteral,
   Repository
 } from 'typeorm';
-import AppDataSource from '../data-source';
 import { Dates } from '../models/IdAndDates';
 import { PageInfo, PaginationInput } from '../relaySpec';
 

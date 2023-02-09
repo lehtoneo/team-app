@@ -3,17 +3,17 @@ import { Dates } from './IdAndDates';
 import { Event } from './Event';
 
 import { User } from './User';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
 @Entity()
 export class UserEventAttendance extends Dates {
   @PrimaryColumn()
-  @Field(() => ID)
+  @Field(() => Int)
   userId: number;
 
   @PrimaryColumn()
-  @Field(() => ID)
+  @Field(() => Int)
   eventId: number;
 
   @Field(() => User)

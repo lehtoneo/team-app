@@ -3,14 +3,12 @@ import {
   Arg,
   Args,
   Ctx,
-  FieldResolver,
   Mutation,
   ObjectType,
   Query,
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { EntityNotFoundError } from 'typeorm';
 import { GetByIdArgs } from '../args/GetByIdArgs';
 import AppDataSource from '../data-source';
 import { CreateOrUpdateTeamNewsInput } from '../inputs/team/CreateOrUpdateTeamNewsInput';
@@ -19,7 +17,6 @@ import { isAuth } from '../middleware/isAuth';
 import { TeamMemberRole } from '../models/TeamMembership';
 import { TeamNews } from '../models/TeamNews';
 import { ConnectionType, EdgeType, PaginationInput } from '../relaySpec';
-import authService from '../services/auth';
 import { fetchPageWithCreatedAtCursor } from '../services/pagination';
 import teamAuthService from '../services/teamAuth';
 import { MyAuthContext } from '../types/MyContext';
@@ -101,7 +98,7 @@ export class TeamNewsResolver {
         minRights
       );
 
-      const newTeamNews = await teamNewsRepository.create({
+      const newTeamNews = teamNewsRepository.create({
         ...input,
         teamId: inputTeamId
       });

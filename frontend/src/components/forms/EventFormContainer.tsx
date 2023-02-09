@@ -82,7 +82,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
 
   const initialValues =
     props.eventId && event
-      ? { ...event, typeId: event.type?.id.toString() }
+      ? { ...event, typeId: event.type?.id }
       : props.initialDate
       ? {
           name: '',

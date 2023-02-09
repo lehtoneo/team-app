@@ -41,7 +41,7 @@ export interface EventFormValues {
   description?: string;
   start: string;
   end: string;
-  typeId?: string;
+  typeId?: number;
 }
 
 const EventForm = (props: EventFormProps) => {
@@ -109,7 +109,7 @@ const EventForm = (props: EventFormProps) => {
               emptyLabel={'-- No type --'}
               value={values.typeId}
               onChange={(val) => {
-                setFieldValue('typeId', val);
+                setFieldValue('typeId', val ? Number(val) : undefined);
               }}
             />
           </div>

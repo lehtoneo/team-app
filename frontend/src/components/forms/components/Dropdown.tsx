@@ -5,7 +5,7 @@ interface Option {
 
 interface IDropdownProps {
   options: Option[];
-  value: string | undefined;
+  value: string | undefined | number;
   emptyLabel?: string;
   onChange: (val: string | undefined) => any;
 }
