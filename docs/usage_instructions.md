@@ -6,6 +6,14 @@ To use the app, one needs an account.
 
 The app landing page has a Sign In button, if user is not logged in. By pressing the button, a sign in modal opens. User can create an account by pressing "Create account" from the modal.
 
+## Whats new?
+
+For the second return, I have refactored the code and implemented some new features. These features are:
+
+- A calendar, from which one can view their events. Events can also be edited from the calendar.  
+- Event types. One can create event types for a team. Event types can have different colours, to distinguish them from the calendar
+- Team News. Admin of a team can create Team News, which can be read from the Team Main page.
+
 ## After signing in
 
 The rest of the instructions expect that user has logged in.
@@ -24,13 +32,17 @@ Note! There is some bug in the heroku environment, where a complain about unique
 
 ### Create events for the team
 
-Go to page of the team and go to events tab.
+Go to page of the team and go to events tab. Note that you must be atleast Admin to create events.
 
 Press Create events
 
 ![Create event](./images/create_event.PNG)
 
 After creating the event, you are redirected to the events page.
+
+### Creating event types
+
+One can create event types for a team from team events page.
 
 ### Mark event attendance
 
@@ -44,7 +56,7 @@ One needs a join link to join an existing team. The join link can be found from 
 
 One can test joining a team via this link:
 
-https://lehtoneo-team-app.herokuapp.com/#/teams/join/221d0c49-ae4d-4158-8bb4-15229f8c9afd
+[https://lehtoneo-team-app.herokuapp.com/#/teams/join/221d0c49-ae4d-4158-8bb4-15229f8c9afd](https://lehtoneo-team-app.herokuapp.com/#/teams/join/a6f2fe8c-f625-4704-87e7-7c695ba0a90c)
 
 ### Team settings
 
