@@ -64,7 +64,7 @@ const EventTypeForm = (props: EventTypeFormProps) => {
             <Field
               name="name"
               id="name"
-              placeholder="Event name"
+              placeholder="Event type name"
               required
               disabled={disabled}
             />
