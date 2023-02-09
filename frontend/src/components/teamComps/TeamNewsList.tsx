@@ -3,6 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import moment from 'moment';
 import { TeamNewsNode } from '../../graphql/queries/newsConnection';
 import useTeamNewsConnection from '../../hooks/useTeamNews/useTeamNewsConnection';
+import Card from '../Card';
 
 interface ITeamNewsListProps {
   teamId: number;
@@ -28,11 +29,13 @@ const NewsItem: React.FC<INewsItemProps> = (props) => {
     }
   }, [inView]);
   return (
-    <div ref={ref} className="flex flex-col border-2 border-green mb-2 p-2">
-      <div className="flex font-bold text-lg">{news.title}</div>
-      <div className="flex truncate">{news.description}</div>
-      <div className="flex ">Published {createdAtFormatted}</div>
-    </div>
+    <Card
+      viewRef={ref}
+      title={news.title}
+      description={news.description}
+      createdAt={createdAtFormatted}
+      createdBy={'Ossi'}
+    />
   );
 };
 
