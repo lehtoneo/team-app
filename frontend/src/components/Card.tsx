@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 interface CardProps {
   title: string;
   description: string;
-  createdBy: string;
   createdAt: string;
   viewRef?: (node?: Element | null | undefined) => void;
   footerRightComponent?: React.ReactNode;
@@ -23,7 +22,6 @@ const Card: React.FC<CardProps> = (props) => {
         </div>
         <div className="flex flex-row relative items-center ">
           <div className="flex-col text-sm">
-            <p className="text-gray-900 leading-none">{props.createdBy}</p>
             <p className="text-gray-600">{props.createdAt}</p>
           </div>
           <div className="flex absolute right-0">

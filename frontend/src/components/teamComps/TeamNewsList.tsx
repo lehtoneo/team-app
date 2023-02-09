@@ -38,7 +38,6 @@ const NewsItem: React.FC<INewsItemProps> = (props) => {
       title={news.title}
       description={news.description}
       createdAt={createdAtFormatted}
-      createdBy={'Ossi'}
       footerRightComponent={
         props.canEdit ? (
           <Link to={`news/${news.id}/edit`} className="link-text">
