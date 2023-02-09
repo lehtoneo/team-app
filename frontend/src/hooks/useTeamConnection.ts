@@ -5,7 +5,7 @@ import {
 } from '../graphql/queries/teamConnection';
 import { useQuery } from '@apollo/client';
 
-const useTeamConnection = (args?: TeamConnectionInput) => {
+const useTeamConnection = (args: TeamConnectionInput) => {
   const { data, loading } = useQuery<TeamConnectionData, TeamConnectionInput>(
     TEAM_CONNECTION,
     {

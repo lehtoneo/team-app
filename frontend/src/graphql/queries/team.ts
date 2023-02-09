@@ -80,7 +80,7 @@ export const TEAM_QUERY = gql`
     $getOneTeamInput: GetOneTeamInput!
     $newsBefore: String
     $newsAfter: String
-    $newsFirst: Float
+    $newsFirst: Int
   ) {
     oneTeam(getOneTeamInput: $getOneTeamInput) {
       id

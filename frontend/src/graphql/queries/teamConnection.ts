@@ -13,18 +13,21 @@ interface FilterTeamsInput {
   ownTeamsOnly?: boolean;
 }
 
-export interface TeamConnectionInput {
-  paginationInput?: PaginationInput;
+export interface TeamConnectionInput extends PaginationInput {
   teamFilters?: FilterTeamsInput;
 }
 
 export const TEAM_CONNECTION = gql`
   query teamConnection(
-    $paginationInput: PaginationInput
+    $first: Int
+    $before: String
+    $after: String
     $teamFilters: FilterTeamsInput
   ) {
     teamConnection(
-      paginationInput: $paginationInput
+      first: $first
+      before: $before
+      after: $after
       filterTeamsInput: $teamFilters
     ) {
       edges {

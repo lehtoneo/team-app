@@ -3,7 +3,8 @@ import {
   Field,
   ClassType,
   InputType,
-  ArgsType
+  ArgsType,
+  Int
 } from 'type-graphql';
 import { Min } from 'class-validator';
 @InputType()
@@ -21,7 +22,7 @@ export class PaginationInput {
   })
   before?: string;
 
-  @Field(() => Number, { nullable: true, description: 'Paginate first' })
+  @Field(() => Int, { nullable: true, description: 'Paginate first' })
   @Min(1)
   first?: number;
 }
