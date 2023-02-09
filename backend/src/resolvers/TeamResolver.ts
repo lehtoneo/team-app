@@ -16,13 +16,8 @@ import {
   Args
 } from 'type-graphql';
 import { Team } from '../models/Team';
-import {
-  EdgeType,
-  ConnectionType,
-  PaginationInput,
-  PageInfo
-} from '../relaySpec';
-import { MoreThan, LessThan, FindOptionsWhere, ILike } from 'typeorm';
+import { EdgeType, ConnectionType, PaginationInput } from '../relaySpec';
+import { LessThan, FindOptionsWhere, ILike } from 'typeorm';
 import { MyAuthContext, MyContext } from '../types/MyContext';
 import { FilterTeamsInput } from '../inputs/team/FilterTeamsInput';
 import AppDataSource from '../data-source';
@@ -225,7 +220,7 @@ export class TeamResolver {
     @Args() connArgs: PaginationInput,
     @Arg('filterTeamsInput', { nullable: true }) filterArgs?: FilterTeamsInput
   ): Promise<TeamConnection> {
-    let where: FindOptionsWhere<Team> = {};
+    const where: FindOptionsWhere<Team> = {};
     if (filterArgs?.name) {
       where.name = ILike(`${filterArgs.name}%`);
     }
