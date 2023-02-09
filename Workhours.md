@@ -46,4 +46,4 @@
 | 7.2.2023  | 4     | Start working on TeamNews -feature: models, graphql endpoints, hooks to ui, initial components to ui. Also implement reusable relayStylepagination function to backend        |
 | 8.2.2023  | 2.5   | implement pagination and infinite list to TeamNews                                                                                                                            |
 | 9.2.2023  | 1.5   | Styles. Refactor: use int as id type. Implement fetch one teamnews query and hook                                                                                             |
-|   Total   | 124.0 | Initial date on calendar                                                                                                                                                      |
+|   Total   | 127.5 |                                                                                                                                                                               |
