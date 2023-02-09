@@ -6,6 +6,14 @@ To use the app, one needs an account.
 
 The app landing page has a Sign In button, if user is not logged in. By pressing the button, a sign in modal opens. User can create an account by pressing "Create account" from the modal.
 
+## Whats new?
+
+For the second return, I have refactored the code and implemented some new features. These features are:
+
+- A calendar, from which one can view their events. Events can also be edited from the calendar.  
+- Event types. One can create event types for a team. Event types can have different colours, to distinguish them from the calendar
+- Team News. Admin of a team can create Team News, which can be read from the Team Main page.
+
 ## After signing in
 
 The rest of the instructions expect that user has logged in.
