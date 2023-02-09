@@ -1,4 +1,4 @@
-import { Field, ID, InputType } from 'type-graphql';
+import { Field, ID, InputType, Int } from 'type-graphql';
 import { TeamBaseInfo } from '../../models/Team';
 
 @InputType()
@@ -23,7 +23,7 @@ export class EditTeamBaseInfoInput implements TeamBaseInfo {
 
 @InputType()
 export class EditTeamInput {
-  @Field(() => ID)
+  @Field(() => Int)
   id: number;
 
   @Field(() => EditTeamBaseInfoInput, { nullable: true })

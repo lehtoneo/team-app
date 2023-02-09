@@ -25,11 +25,12 @@ interface ICalendarProps {
 const Calendar: React.FC<ICalendarProps> = (props) => {
   const fullCalendarEvents: EventInput[] = props.events.map((e) => {
     return {
-      id: e.id,
+      id: e.id.toString(),
       start: e.start,
       end: e.end,
       title: e.name,
-      color: e.type?.color
+      color: e.type?.color,
+      display: 'block'
     };
   });
 

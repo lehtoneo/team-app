@@ -1,8 +1,8 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class CreateOrUpdateTeamNewsInput {
-  @Field(() => ID, { nullable: true })
+  @Field(() => Int, { nullable: true })
   id?: number;
 
   @Field(() => String)
@@ -11,6 +11,6 @@ export class CreateOrUpdateTeamNewsInput {
   @Field(() => String, { nullable: false })
   description: string;
 
-  @Field(() => ID, { nullable: true })
+  @Field(() => Int, { nullable: true })
   teamId?: number;
 }

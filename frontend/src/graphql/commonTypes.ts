@@ -3,6 +3,10 @@ export interface Tokens {
   refreshToken: string;
 }
 
+export interface GetByIdArgs {
+  id: number;
+}
+
 export interface PaginationInput {
   after?: string;
   before?: string;

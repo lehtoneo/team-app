@@ -24,7 +24,7 @@ import useConfirm from '../../hooks/useConfirm';
 import LoadingIndicator from '../LoadingIndicator';
 
 interface IEventDetails {
-  eventId: string;
+  eventId: number;
   teamId: number;
 }
 

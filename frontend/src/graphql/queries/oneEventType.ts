@@ -4,7 +4,7 @@ export interface EventType {
   id: number;
   color?: string;
   name: string;
-  teamId: string;
+  teamId: number;
 }
 
 export interface OneEventTypeInput {
@@ -16,7 +16,7 @@ export type EventTypeQueryResult = Pick<
 >;
 
 export const ONE_EVENT_TYPE = gql`
-  query oneEventType($id: ID!) {
+  query oneEventType($id: Int!) {
     oneEventType(id: $id) {
       id
       name

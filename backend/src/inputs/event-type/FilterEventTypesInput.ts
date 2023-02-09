@@ -1,7 +1,7 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, Int } from 'type-graphql';
 
 @InputType()
 export class FilterEventTypesInput {
-  @Field(() => ID, { nullable: false })
+  @Field(() => Int, { nullable: false })
   teamId: number;
 }

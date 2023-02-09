@@ -6,7 +6,7 @@ import PageContainer from '../../components/PageContainer';
 
 interface EditEventPageContentProps {
   teamId: number;
-  eventId: string;
+  eventId: number;
 }
 
 const EditTeamEventContent = (props: EditEventPageContentProps) => {

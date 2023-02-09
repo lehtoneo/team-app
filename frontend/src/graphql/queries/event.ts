@@ -16,7 +16,7 @@ export interface UserEventAttendace {
 export type EventTeam = Pick<Team, 'id' | 'name' | 'currentUserTeamMembership'>;
 
 export interface Event {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   start: string;
@@ -28,11 +28,11 @@ export interface Event {
 }
 
 export interface OneEventInput {
-  id: string;
+  id: number;
 }
 
 export const EVENT_QUERY = gql`
-  query oneEvent($id: ID!) {
+  query oneEvent($id: Int!) {
     oneEvent(id: $id) {
       id
       name

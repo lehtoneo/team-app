@@ -11,6 +11,7 @@ import {
   UseMiddleware
 } from 'type-graphql';
 import { EntityNotFoundError } from 'typeorm';
+import { GetByIdArgs } from '../args/GetByIdArgs';
 import AppDataSource from '../data-source';
 import { CreateOrUpdateTeamNewsInput } from '../inputs/team/CreateOrUpdateTeamNewsInput';
 import { FilterTeamNewsInput } from '../inputs/team/FilterTeamNewsInput';
@@ -59,6 +60,27 @@ export class TeamNewsResolver {
     return newsConnection;
   }
 
+  @Query(() => TeamNews, { nullable: true })
+  @UseMiddleware(isAuth)
+  async oneTeamNews(
+    @Ctx() ctx: MyAuthContext,
+    @Args() getByidArgs: GetByIdArgs
+  ): Promise<TeamNews | null> {
+    const teamNews = await teamNewsRepository.findOneBy({ id: getByidArgs.id });
+    if (!teamNews) {
+      return null;
+    }
+    await teamAuthService.checkUserTeamRightsThrowsError(
+      ctx.payload.user.id,
+      teamNews.teamId,
+      TeamMemberRole.MEMBER
+    );
+
+    console.log({ teamNews });
+
+    return teamNews;
+  }
+
   @Mutation(() => TeamNews, { nullable: true })
   @UseMiddleware(isAuth)
   async createOrUpdateTeamNews(
@@ -98,6 +120,8 @@ export class TeamNewsResolver {
       existing.teamId,
       minRights
     );
+    console.log({ inputTeamId });
+    console.log(existing.teamId);
     // throw error if trying to change team id
     if (inputTeamId && inputTeamId !== existing.teamId) {
       throw new Error('Cannot change teamId of news');

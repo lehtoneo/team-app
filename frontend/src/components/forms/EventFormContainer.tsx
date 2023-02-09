@@ -6,9 +6,9 @@ import LoadingIndicator from '../LoadingIndicator';
 import EventForm, { EventFormValues } from './EventForm';
 
 interface EventFormContainerProps {
-  eventId?: string;
+  eventId?: number;
   teamId?: number;
-  onSuccess: (eventId: string) => any | Promise<any>;
+  onSuccess: (eventId: number) => any | Promise<any>;
   disabled?: boolean;
   initialDate?: Date;
 }
@@ -52,7 +52,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
 
   const handleEditEventSubmit = async (
     formValues: EventFormValues,
-    eventId: string
+    eventId: number
   ) => {
     console.log({ formValues });
     const result = await editEvent({

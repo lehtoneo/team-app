@@ -32,13 +32,19 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
-    searchParams.get('eventId') || undefined
+  const [selectedEventId, setSelectedEventId] = useState<number | undefined>(
+    searchParams.get('eventId')
+      ? Number(searchParams.get('eventId'))
+      : undefined
   );
   const [initialFormDate, setInitialFormDate] = useState<Date | undefined>();
   const { editEvent } = useEvent();
   useEffect(() => {
-    setSelectedEventId(searchParams.get('eventId') || undefined);
+    setSelectedEventId(
+      searchParams.get('eventId')
+        ? Number(searchParams.get('eventId'))
+        : undefined
+    );
   }, [searchParams]);
   const handleEventClick = (eventId: string) => {
     // open modal in which
@@ -85,7 +91,7 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
       return;
     }
     try {
-      await editEvent({ id: eventId, start: newStart, end: newEnd });
+      await editEvent({ id: Number(eventId), start: newStart, end: newEnd });
 
       toast('Event edited', { type: 'success' });
     } catch (e) {

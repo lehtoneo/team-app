@@ -14,7 +14,7 @@ export interface NewsConnectionInput extends PaginationInput {
 
 export const NEWS_CONNECTION_QUERY = gql`
   query NewsConnection(
-    $teamId: ID!
+    $teamId: Int!
     $first: Float
     $before: String
     $after: String

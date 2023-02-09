@@ -1,4 +1,4 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class BaseEventInput {
@@ -8,7 +8,7 @@ export class BaseEventInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => ID, { nullable: true })
+  @Field(() => Int, { nullable: true })
   typeId?: number;
 
   @Field(() => Date)
@@ -20,6 +20,6 @@ export class BaseEventInput {
 
 @InputType()
 export class CreateEventInput extends BaseEventInput {
-  @Field(() => ID)
+  @Field(() => Int)
   teamId: number;
 }

@@ -1,12 +1,12 @@
 import { TeamMemberRole } from '../../models/TeamMembership';
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class DeleteTeamMembershipInput {
-  @Field(() => ID, { nullable: false })
+  @Field(() => Int, { nullable: false })
   userId: number;
 
-  @Field(() => ID, { nullable: false })
+  @Field(() => Int, { nullable: false })
   teamId: number;
 }
 

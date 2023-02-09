@@ -1,7 +1,7 @@
-import { ArgsType, ID, Field } from 'type-graphql';
+import { ArgsType, Int, Field } from 'type-graphql';
 
 @ArgsType()
 export class GetByIdArgs {
-  @Field(() => ID, { nullable: false })
+  @Field(() => Int, { nullable: false })
   id: number;
 }

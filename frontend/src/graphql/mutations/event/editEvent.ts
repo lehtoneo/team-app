@@ -4,7 +4,7 @@ import { Event } from '../../queries/event';
 
 export interface EditEventInput
   extends Omit<CreateEventInput, 'teamId' | 'name'> {
-  id: string;
+  id: number;
   name?: string;
 }
 

@@ -19,7 +19,7 @@ const EventModalContent: React.FC<IEventModalContentProps> = (props) => {
 };
 
 interface IViewEventModalProps extends StyledModalProps {
-  eventId: string;
+  eventId: number;
 }
 
 const EventDetailsModal: React.FC<IViewEventModalProps> = (props) => {

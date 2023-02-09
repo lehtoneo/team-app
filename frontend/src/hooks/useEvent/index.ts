@@ -16,14 +16,14 @@ const useEvent = (args?: OneEventInput) => {
   const { createEvent, error: createEventError } = useCreateEvent();
   const { editEvent, error: editEventError } = useEditEvent();
   const { saveAttendance, error: saveAttendanceError } = useSaveEventAttendance(
-    { eventId: args?.id || '-1' }
+    { eventId: args?.id || -1 }
   );
 
   const { data, loading, error } = useQuery<EventQueryData, OneEventInput>(
     EVENT_QUERY,
     {
       skip: !args,
-      variables: args ? { ...args } : { id: '-1' },
+      variables: args ? { ...args } : { id: -1 },
       onError: (e) => {
         console.log(e);
       },

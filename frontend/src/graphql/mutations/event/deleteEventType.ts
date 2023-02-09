@@ -8,7 +8,7 @@ export interface DeleteEventTypeInput {
 export type DeletedEventTypeMutationResult = Pick<EventType, 'id'>;
 
 export const DELETE_EVENT_TYPE = gql`
-  mutation deleteEventType($id: ID!) {
+  mutation deleteEventType($id: Int!) {
     deleteEventType(id: $id) {
       id
     }

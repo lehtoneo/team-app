@@ -12,7 +12,7 @@ import {
 type SaveAttendanceResult =
   | { success: true; userEventAttendance: SaveAttendanceMutationResult }
   | { success: false; userEventAttendance?: null };
-const useSaveEventAttendance = ({ eventId }: { eventId: string }) => {
+const useSaveEventAttendance = ({ eventId }: { eventId: number }) => {
   const [saveAttendanceMutation, { error }] = useMutation<
     SaveAttendanceData,
     { saveAttendanceInput: SaveAttendanceInput }

@@ -1,8 +1,8 @@
-import { InputType, Field, ArgsType, ID } from 'type-graphql';
+import { InputType, Field, ArgsType, ID, Int } from 'type-graphql';
 import { PaginationInput } from '../../relaySpec';
 
 @ArgsType()
 export class FilterTeamNewsInput extends PaginationInput {
-  @Field(() => ID, { nullable: false })
+  @Field(() => Int, { nullable: false })
   teamId: number;
 }

@@ -2,7 +2,7 @@ import { TEAM_CONNECTION } from './../../queries/teamConnection';
 import { gql, useMutation } from '@apollo/client';
 
 export const EDIT_TEAM = gql`
-  mutation deleteTeam($id: ID!) {
+  mutation deleteTeam($id: Int!) {
     deleteTeam(id: $id)
   }
 `;

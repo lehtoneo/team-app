@@ -1,4 +1,5 @@
 import react from 'react';
+import { Link } from 'react-router-dom';
 
 interface CardProps {
   title: string;
@@ -6,6 +7,7 @@ interface CardProps {
   createdBy: string;
   createdAt: string;
   viewRef?: (node?: Element | null | undefined) => void;
+  footerRightComponent?: React.ReactNode;
 }
 const Card: React.FC<CardProps> = (props) => {
   return (
@@ -19,10 +21,13 @@ const Card: React.FC<CardProps> = (props) => {
             {props.description}
           </p>
         </div>
-        <div className="flex items-center">
-          <div className="text-sm">
+        <div className="flex flex-row relative items-center ">
+          <div className="flex-col text-sm">
             <p className="text-gray-900 leading-none">{props.createdBy}</p>
             <p className="text-gray-600">{props.createdAt}</p>
+          </div>
+          <div className="flex absolute right-0">
+            {props.footerRightComponent}
           </div>
         </div>
       </div>

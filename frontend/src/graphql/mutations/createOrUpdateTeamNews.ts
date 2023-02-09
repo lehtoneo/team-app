@@ -13,8 +13,8 @@ export type CreateOrUpdateTeamNewsMutationResult = Pick<
 >;
 
 export interface CreateOrUpdateTeamNewsInput {
-  id?: string;
-  teamId?: string;
+  id?: number;
+  teamId?: number;
   title: string;
   description: string;
 }

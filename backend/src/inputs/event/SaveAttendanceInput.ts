@@ -1,11 +1,11 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class SaveAttendanceInput {
-  @Field(() => ID, { nullable: true })
+  @Field(() => Int, { nullable: true })
   userId?: number;
 
-  @Field(() => ID)
+  @Field(() => Int)
   eventId: number;
 
   @Field(() => Boolean, { nullable: false })

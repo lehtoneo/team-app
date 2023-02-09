@@ -9,7 +9,7 @@ import LoadingPage from '../../LoadingPage';
 import EventDetailsContainer from '../../../eventComps/EventDetailsContainer';
 
 interface ITeamPageContentProps {
-  eventId: string;
+  eventId: number;
   teamId: number;
 }
 
@@ -39,12 +39,17 @@ const SingleEventPage = () => {
     <Routes>
       <Route
         path="/"
-        element={<EventPageContent eventId={eventId} teamId={Number(teamId)} />}
+        element={
+          <EventPageContent eventId={Number(eventId)} teamId={Number(teamId)} />
+        }
       />
       <Route
         path="/edit"
         element={
-          <EditTeamEventContent teamId={Number(teamId)} eventId={eventId} />
+          <EditTeamEventContent
+            teamId={Number(teamId)}
+            eventId={Number(eventId)}
+          />
         }
       />
     </Routes>
