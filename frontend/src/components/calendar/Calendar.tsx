@@ -59,6 +59,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
 
   return (
     <FullCalendar
+      firstDay={1}
       plugins={[dayGridPlugin, interactionPlugin]}
       datesSet={handleDatesSet}
       eventClick={handleEventClick}
