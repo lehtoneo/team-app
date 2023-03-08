@@ -109,6 +109,7 @@ export class EventResolver {
     newEvent.end = data.end;
     newEvent.start = data.start;
     newEvent.teamId = data.teamId;
+    newEvent.typeId = data.typeId;
 
     const savedEvent = await eventRepository.save(newEvent);
 
@@ -147,9 +148,9 @@ export class EventResolver {
       event.description = data.description;
     }
 
-    event.typeId = Number(data.typeId);
+    event.typeId = data.typeId === undefined ? undefined : Number(data.typeId);
 
-    if (data.typeId === undefined) {
+    if (data.typeId === null) {
       event.typeId = null;
       event.type = null;
     }

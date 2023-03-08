@@ -41,7 +41,7 @@ export interface EventFormValues {
   description?: string;
   start: string;
   end: string;
-  typeId?: number;
+  typeId?: number | null;
 }
 
 const EventForm = (props: EventFormProps) => {
@@ -107,9 +107,9 @@ const EventForm = (props: EventFormProps) => {
             <Dropdown
               options={eventTypeOptions}
               emptyLabel={'-- No type --'}
-              value={values.typeId}
+              value={!values.typeId ? undefined : values.typeId}
               onChange={(val) => {
-                setFieldValue('typeId', val ? Number(val) : undefined);
+                setFieldValue('typeId', val ? Number(val) : null);
               }}
             />
           </div>

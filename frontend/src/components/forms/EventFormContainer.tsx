@@ -41,7 +41,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
       start: new Date(formValues.start),
       end: new Date(formValues.end),
       teamId: teamId,
-      typeId: formValues.typeId
+      typeId: formValues.typeId || undefined
     });
 
     if (result.success) {
