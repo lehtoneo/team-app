@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export type ConfirmDialogType = 'editEvent' | 'copyEvent';
+
 export interface ConfirmState {
   show: boolean;
   text: string;
+  currentDialogType?: ConfirmDialogType;
+  dontShowAgainOnThisSession: ConfirmDialogType[];
 }
 
 const initialState = {
   show: false,
-  text: ''
+  text: '',
+  currentDialogType: undefined,
+  dontShowAgainOnThisSession: []
 } as ConfirmState;
 
 export const confirmDialogReducer = createSlice({
@@ -22,6 +28,19 @@ export const confirmDialogReducer = createSlice({
     hideConfirm: (state) => {
       state.show = false;
       state.text = '';
+    },
+    setCurrentDialogType: (
+      state,
+      action: PayloadAction<ConfirmDialogType | undefined>
+    ) => {
+      state.currentDialogType = action.payload;
+    },
+    disableDialog: (state, action: PayloadAction<ConfirmDialogType>) => {
+      console.log({ action });
+      state.dontShowAgainOnThisSession = [
+        ...state.dontShowAgainOnThisSession,
+        action.payload
+      ];
     }
   }
 });
