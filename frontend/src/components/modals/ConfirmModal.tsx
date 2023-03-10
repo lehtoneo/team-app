@@ -35,11 +35,13 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
           {props.confirmState.text}
         </div>
         <div>
-          <CheckBox
-            label="Don't show again on this session"
-            value={dontShowAgainCheck}
-            onValueChange={(val) => setDontShowAgainCheck(val)}
-          />
+          {props.confirmState.currentDialogType !== undefined && (
+            <CheckBox
+              label="Don't show again on this session"
+              value={dontShowAgainCheck}
+              onValueChange={(val) => setDontShowAgainCheck(val)}
+            />
+          )}
         </div>
         <div className="p-5">
           <div className="flex">

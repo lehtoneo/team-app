@@ -24,8 +24,11 @@ const useConfirm = (dialogType?: ConfirmDialogType) => {
   };
   const confirm = (text: string): Promise<boolean> => {
     const showDialog =
-      dialogType !== undefined &&
-      !confirmState.dontShowAgainOnThisSession.find((v) => v === dialogType);
+      dialogType === undefined
+        ? true
+        : !confirmState.dontShowAgainOnThisSession.find(
+            (v) => v === dialogType
+          );
     dispatch(confirmDialogActions.setCurrentDialogType(dialogType));
 
     const asyncTrue = async () => {
