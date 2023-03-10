@@ -201,17 +201,21 @@ const CalendarContainer: React.FC<ICalendarProps> = (props) => {
         />
       )}
       <div>
-        <h5>Drag behaviour</h5>
-        <RadioGroup
-          options={dropOptions}
-          value={selectedDropOption.value}
-          onValueChange={(v) => {
-            const dOption = dropOptions.find((o) => o.value === v);
-            if (dOption) {
-              setSelectedDropOption(dOption);
-            }
-          }}
-        />
+        {props.editable && (
+          <>
+            <h5>Drag behaviour</h5>
+            <RadioGroup
+              options={dropOptions}
+              value={selectedDropOption.value}
+              onValueChange={(v) => {
+                const dOption = dropOptions.find((o) => o.value === v);
+                if (dOption) {
+                  setSelectedDropOption(dOption);
+                }
+              }}
+            />
+          </>
+        )}
       </div>
       {
         <Calendar
