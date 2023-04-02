@@ -31,7 +31,7 @@ const TeamPage = () => {
       <div className="mb-5">
         <Header>{`Team ${team?.name || ''}`}</Header>
       </div>
-      <div className="flex my-2">
+      <div className="flex my-2 overflow-auto">
         <Link to="">
           <Button>Main</Button>
         </Link>
