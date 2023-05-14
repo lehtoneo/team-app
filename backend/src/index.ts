@@ -5,6 +5,7 @@ import AppDataSource from './data-source';
 import 'dotenv/config';
 import userService from './services/user';
 import { getApolloServer } from './apolloServer';
+import seeder from './services/seeder';
 async function main() {
   const app = express();
   app.use(express.static('frontend-build'));
@@ -13,7 +14,9 @@ async function main() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   await AppDataSource.initialize();
   console.log('DB connection created');
-  if (config.NODE_ENV === 'dev') {
+  const isDev = config.NODE_ENV === 'dev';
+  await seeder.seed({ resetExcercises: isDev });
+  if (isDev) {
     await userService.createDevUserIfNotExists();
   }
   const server = await getApolloServer();

@@ -11,6 +11,14 @@ import { TeamMembership } from './models/TeamMembership';
 import { TeamSettings } from './models/TeamSettings';
 import { EventType } from './models/EventType';
 import { TeamNews } from './models/TeamNews';
+import { Weight } from './models/Weight';
+import {
+  Exercise,
+  ExerciseTarget,
+  Workout,
+  WorkoutExercise,
+  WorkoutExerciseSet
+} from './models/ExerciseModels';
 const { DATABASE_URL, NODE_ENV } = config;
 
 const options: DataSourceOptions = {
@@ -27,7 +35,13 @@ const options: DataSourceOptions = {
     UserEventAttendance,
     TeamMembership,
     TeamSettings,
-    TeamNews
+    TeamNews,
+    Weight,
+    Workout,
+    WorkoutExercise,
+    WorkoutExerciseSet,
+    Exercise,
+    ExerciseTarget
   ],
   migrations: [],
   subscribers: [],

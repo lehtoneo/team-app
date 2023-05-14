@@ -5,6 +5,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import { IdAndDates } from './IdAndDates';
 import { IsEmail } from 'class-validator';
+import { Weight } from './Weight';
 
 @Entity()
 @ObjectType()
@@ -23,6 +24,9 @@ export class User extends IdAndDates {
 
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens: RefreshToken[];
+
+  @OneToMany(() => Weight, (weight) => weight.user, { lazy: true })
+  weights: Weight[];
 
   @OneToMany(
     () => UserEventAttendance,
