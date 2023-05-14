@@ -52,6 +52,7 @@ export class Exercise extends IdAndDates {
   @Column({ nullable: true })
   description?: string;
 
+  @Field(() => [ExerciseTarget])
   @ManyToMany(() => ExerciseTarget, { lazy: true })
   @JoinTable()
   targets: Promise<ExerciseTarget[]>;
@@ -72,6 +73,7 @@ export class WorkoutExercise extends IdAndDates {
   @Column({ nullable: false })
   exerciseId: number;
 
+  @Field(() => Exercise)
   @ManyToOne(() => Exercise, {
     lazy: true,
     cascade: true
@@ -86,6 +88,12 @@ export class WorkoutExercise extends IdAndDates {
   workout: Promise<Workout>;
 }
 
+export enum WorkoutType {
+  STRENGTH = 'STRENGTH',
+  CARDIO = 'CARDIO',
+  OTHER = 'OTHER'
+}
+
 @Entity()
 @ObjectType()
 export class Workout extends IdAndDates {
@@ -93,14 +101,19 @@ export class Workout extends IdAndDates {
   @Column({ nullable: true })
   name: string;
 
-  @Column({ nullable: false })
-  @Field({ nullable: false })
-  type: 'strength' | 'cardio' | 'other';
+  @Column({
+    type: 'enum',
+    enum: WorkoutType,
+    default: WorkoutType.OTHER
+  })
+  @Field(() => WorkoutType)
+  type: WorkoutType;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   cardioLength?: number;
 
+  @Field(() => [WorkoutExercise])
   @OneToMany(
     () => WorkoutExercise,
     (workoutExercise) => workoutExercise.workout,
