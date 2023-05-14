@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { toast } from 'react-toastify';
 import useEvent from '../../hooks/useEvent';
@@ -41,7 +42,7 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
       start: new Date(formValues.start),
       end: new Date(formValues.end),
       teamId: teamId,
-      typeId: formValues.typeId
+      typeId: formValues.typeId || undefined
     });
 
     if (result.success) {
@@ -86,8 +87,8 @@ const EventFormContainer: React.FC<EventFormContainerProps> = (props) => {
       : props.initialDate
       ? {
           name: '',
-          end: props.initialDate.toISOString(),
-          start: props.initialDate.toISOString()
+          start: props.initialDate.toISOString(),
+          end: moment(props.initialDate).add(1, 'hour').toISOString()
         }
       : undefined;
 

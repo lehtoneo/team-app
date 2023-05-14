@@ -15,7 +15,7 @@ interface ICalendarProps {
   events: EventListInfo[];
   onEventClick: (eventId: string) => any;
   onDateClick: (date: Date) => any;
-  onDropped?: (eventId: string, newStart: Date, newEnd: Date) => any;
+  onDropped?: (event: EventListInfo, newStart: Date, newEnd: Date) => any;
   editable?: boolean;
   teamId?: number;
   onDatesSet?: (start: Date, end: Date) => any;
@@ -50,15 +50,18 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     if (props.onDropped === undefined) {
       return;
     }
+    const event = props.events.find((e) => e.id.toString() === arg.event.id);
     console.log(arg);
     // call onDropped if start and end are dfined
-    arg.event.start &&
+    event &&
+      arg.event.start &&
       arg.event.end &&
-      props.onDropped(arg.event.id, arg.event.start, arg.event.end);
+      props.onDropped(event, arg.event.start, arg.event.end);
   };
 
   return (
     <FullCalendar
+      firstDay={1}
       plugins={[dayGridPlugin, interactionPlugin]}
       datesSet={handleDatesSet}
       eventClick={handleEventClick}
